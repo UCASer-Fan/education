@@ -5,6 +5,8 @@
 package main
 
 import (
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
+	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 	"os"
 	"fmt"
 	"github.com/kongyixueyuan.com/education/sdkInit"
@@ -20,43 +22,55 @@ const (
 	EduCC = "educc"
 )
 
-func main() {
 
+func main() {
+	sdk, channelClient := sdkStart()
+	serviceUp(sdk, channelClient)
+}
+func sdkStart() (*fabsdk.FabricSDK, *channel.Client) {
 	initInfo := &sdkInit.InitInfo{
 
-		ChannelID: "kevinkongyixueyuan",
+		ChannelID:     "kevinkongyixueyuan",
 		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/kongyixueyuan.com/education/fixtures/artifacts/channel.tx",
 
-		OrgAdmin:"Admin",
-		OrgName:"Org1",
+		OrgAdmin:       "Admin",
+		OrgName:        "Org1",
 		OrdererOrgName: "orderer.kevin.kongyixueyuan.com",
 
-		ChaincodeID: EduCC,
+		ChaincodeID:     EduCC,
 		ChaincodeGoPath: os.Getenv("GOPATH"),
-		ChaincodePath: "github.com/kongyixueyuan.com/education/chaincode/",
-		UserName:"User1",
+		ChaincodePath:   "github.com/kongyixueyuan.com/education/chaincode/",
+		UserName:        "User1",
 	}
 
 	sdk, err := sdkInit.SetupSDK(configFile, initialized)
 	if err != nil {
 		fmt.Printf(err.Error())
-		return
+		return nil, nil
 	}
 
-	defer sdk.Close()
+	//defer sdk.Close()
 
 	err = sdkInit.CreateChannel(sdk, initInfo)
 	if err != nil {
 		fmt.Println(err.Error())
-		return
+		return nil, nil
 	}
 
 	channelClient, err := sdkInit.InstallAndInstantiateCC(sdk, initInfo)
 	if err != nil {
 		fmt.Println(err.Error())
-		return
+		return nil, nil
 	}
 	fmt.Println(channelClient)
+
+	return sdk, channelClient
+
+}
+
+
+func serviceUp(sdk *fabsdk.FabricSDK, channelClient *channel.Client) {
+	defer sdk.Close()
 
 	//===========================================//
 

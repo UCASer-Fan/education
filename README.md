@@ -1,3 +1,8 @@
+参考资料：https://www.chaindesk.cn/witbook/11/220
+web：第12章 从零到壹构建基于 Fabric-SDK-Go 的Web项目实战之－Web应用实现
+
+
+
 [TOC]
 
 # 1. 需求分析与架构设计
