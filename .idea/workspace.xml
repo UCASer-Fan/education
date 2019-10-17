@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f43aa9a1-3d48-4bfd-bf14-0028ce9c1ad9" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fixtures/artifacts/channel.tx.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/fixtures/artifacts/genesis.block.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/main_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/education" beforeDir="false" afterPath="$PROJECT_DIR$/education" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fixtures/artifacts/Org1MSPanchors.tx" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/Org1MSPanchors.tx" afterDir="false" />
@@ -82,103 +82,784 @@
       <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_integration_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_integration_test.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_killall.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_killall.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/integration_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/integration_test.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/options/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/options/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/eventservice.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/eventservice.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_embedded_pems.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_embedded_pems.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_entity_matchers.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_entity_matchers.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_pem.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_pem.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/template/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/template/config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/discovery/mocks/mockdiscoveryserver.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/discovery/mocks/mockdiscoveryserver.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/events.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/registrations.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/registrations.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/mockconnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/mockconnection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/numevents.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/numevents.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/events.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockconnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockconnection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockevents.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockevents.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/events.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockconnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockconnection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockevents.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockevents.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockdelserver.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockdelserver.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockehserver.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockehserver.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/acceptanyfilter.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/acceptanyfilter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/events.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/registrations.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/registrations.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockproducer.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockproducer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockwrapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockwrapper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/fblockwrapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/fblockwrapper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockevents.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockevents.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockledger.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockledger.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockproducer.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockproducer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/changelog.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/changelog.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_header_notice.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_header_notice.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_import_patching.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_import_patching.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/insert_header_notice.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/insert_header_notice.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_fabric_ca_client_utils.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_fabric_ca_client_utils.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_upstream.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_upstream.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_client_utils.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_client_utils.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_external_utils.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_external_utils.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos_internal.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos_internal.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_upstream.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_upstream.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_pkcs11_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_pkcs11_test.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_crypto_bccsp.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_crypto_bccsp.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_endpoints.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_endpoints.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_multiorg_bootstrap.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_multiorg_bootstrap.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_no_orderer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_no_orderer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_entity_matchers.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_entity_matchers.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers_ca.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers_ca.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/prerelease-env.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/prerelease-env.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_license.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_license.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_lint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_lint.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_status.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_status.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/clean_integration.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/clean_integration.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/dependencies.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/dependencies.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredorderer.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredorderer.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredpeer.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredpeer.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/fabric_test_commitlevel.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/fabric_test_commitlevel.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/generate_channeltx.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/generate_channeltx.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/integration.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/integration.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/revoked.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/revoked.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit-pkcs11.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit-pkcs11.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/.gitreview" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/CHANGELOG.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/Gopkg.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/Gopkg.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/ci.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/doc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/gometalinter.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/api/client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/api/net.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/client/credential/credential.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/client/credential/x509/credential.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/client/credential/x509/signer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/clientconfig.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/common/serverresponses.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/identity.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/sdkpatch_serverstruct.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/serverrevoke.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/streamer/jsonstreamer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/tls/tls.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/util.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/sdkpatch/cryptosuitebridge/cryptosuitebridge.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/sdkpatch/logbridge/logbridge.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/sdkpatch/logbridge/syslogwriter.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/util/csp.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/util/util.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/aesopts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/bccsp.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/ecdsaopts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/factory/pkcs11/pkcs11factory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/factory/plugin/pluginfactory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/factory/sw/swfactory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/hashopts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/keystore.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/pkcs11/conf.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/pkcs11/ecdsa.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/pkcs11/ecdsakey.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/pkcs11/impl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/pkcs11/pkcs11.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/rsaopts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/signer/signer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/aes.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/aeskey.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/conf.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/dummyks.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/ecdsa.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/ecdsakey.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/fileks.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/hash.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/impl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/internals.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/keyderiv.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/keygen.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/keyimport.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/new.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/rsa.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/rsakey.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/ecdsa.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/errs.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/io.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/keys.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/slice.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/x509.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/attrmgr/attrmgr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/channelconfig/applicationorg.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/channelconfig/channel.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/channelconfig/orderer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/channelconfig/organization.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/channelconfig/util.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/crypto/random.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/crypto/signer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/ledger/ledger_interface.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/util/utils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/core/ledger/kvledger/txmgmt/version/version.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/core/ledger/ledger_interface.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/discovery/client/api.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/discovery/client/client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/discovery/client/selection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/events/consumer/adapter.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/events/consumer/consumer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/gossip/util/misc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/cache/cache.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/cert.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/configbuilder.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/factory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/identities.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/msp.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimpl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimplsetup.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimplvalidate.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspmgrimpl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/discovery/extensions.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/discovery/protocol.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/gossip/extensions.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/gossip/message.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/orderer/ab.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/sdkpatch/cryptosuitebridge/cryptosuitebridge.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/sdkpatch/logbridge/logbridge.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/api.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/api_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/chclient.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/chclient_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/example_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/invoke/api.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/invoke/signature.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/invoke/signature_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/invoke/txnhandler.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/invoke/txnhandler_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/discoveryfilter.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/discoveryfilter_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/chservice.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/chservice_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/localprovider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/localprovider_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/localservice.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/localservice_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/service.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/greylist/greylist.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/greylist/greylist_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/staticdiscovery/localprovider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/staticdiscovery/localservice.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/staticdiscovery/service.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/staticdiscovery/staticdiscovery_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/filter/endpoint.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/filter/endpoint_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/mocks/mockdiscovery.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/mocks/mockdiscoveryclient.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/mocks/mockselection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/mocks/mocktransactor.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/ccpolicyprovider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/ccpolicyprovider_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/dynamicselection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/dynamicselection_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/pgresolver/groups.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/pgresolver/groups_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/pgresolver/groupsimpl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/pgresolver/lbpolicyimpl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/pgresolver/mocks.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/pgresolver/pgresolver.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/pgresolver/pgresolver_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/dynamicselection/pgresolver/pgresolverimpl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection/cachekey.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection/fabricselection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection/selection_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection/selectionfilter.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/options/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/staticselection/staticselection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/staticselection/staticselection_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/verifier/signature.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/event/event.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/event/event_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/event/example_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/event/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/ledger/example_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/ledger/ledger.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/ledger/ledger_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/ledger/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/ledger/opts_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/msp/ca.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/msp/client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/msp/client_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/msp/example_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/msp/identity.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/example_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/lscc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/opts_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/resmgmt.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/resmgmt_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/testdata/extractcherr.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/testdata/signcherr.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/testdata/test.tx" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/channel.tx.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/multi/example_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/multi/multi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/multi/multi_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry/defaults.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry/invoker.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry/invoker_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry/retry.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry/retry_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status/codes.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status/example_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status/status.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status/status_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/logging/example_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/logging/logger.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/logging/logger_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/logging/logger_testing_env.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/options/options.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/context/context.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core/cryptosuite.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core/kvstore.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core/provider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core/signingmgr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/channel.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/context.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/eventservice.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/network.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/orderer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/peer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/proposer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/provider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/sender.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp/identity.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp/provider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp/store.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/test/mockcontext/mockcontext.gen.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/test/mockcore/mockcore.gen.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/test/mockfab/mockconfig.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/test/mockfab/mockfab.gen.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/test/mockmsp/mockmsp.gen.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/context/context.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/comm.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/comm_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/testdata/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/testdata/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/tls/certpool.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/tls/certpool_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/config.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/config_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/cryptoutil/cryptoutils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/cryptoutil/cryptoutils_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/defbackend.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/endpoint/endpoint.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/endpoint/endpoint_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/lookup/lookup.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/lookup/lookup_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_embedded_pems.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_entity_matchers.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_pem.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/template/config.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/viper-test.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/multisuite/cryptosuiteimpl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/multisuite/cryptosuiteimpl_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/pkcs11/cryptosuiteimpl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/pkcs11/cryptosuiteimpl_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/sw/cryptosuiteimpl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/sw/cryptosuiteimpl_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/wrapper/cryptosuiteimpl.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/wrapper/cryptosuiteimpl_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/wrapper/mocksuite_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptoconfig.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptoconfig_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptosuite.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptosuite_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/opts_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/api/logger.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/metadata/callerInfo.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/metadata/callerInfo_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/metadata/level.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/metadata/level_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/metadata/utils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/modlog/modlog.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/modlog/modlog_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/modlog/testVerifyUtils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/logging/testdata/sampleloggingprovider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/mocks/mockconfigbackend.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/mocks/mockcorecontext.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/mocks/mocksigningmgr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/api.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager/packager.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager/packager_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/cscc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/ledger.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/ledger_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/membership/cache.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/membership/cache_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/membership/membership.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/membership/membership_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/membership/reference.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/qscc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/responsevalidator.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/transactor.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/transactor_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/chconfig/cache.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/chconfig/cache_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/chconfig/chconfig.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/chconfig/chconfig_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/chconfig/reference.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/comm_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connectionopts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connector.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connector_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/mocks.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/network.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/network_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/discovery/discovery.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/discovery/discovery_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/discovery/mocks/mockdiscoveryserver.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/endpointconfig.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/endpointconfig_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/api/connection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/api/endpoint.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/events.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/registrations.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/lbp/lbp.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/lbp/lbp_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/lbp/random.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/lbp/roundrobin.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/mockconnection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/mockdiscovery.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/numevents.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/events.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockconnection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockevents.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/seek/seek.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/endpoint/endpoint.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/endpoint/endpoint_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/endpoint/endpointdiscovery.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/events.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockconnection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockevents.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockdelserver.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockehserver.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/acceptanyfilter.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/events.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/registrations.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockproducer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockwrapper.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/fblockwrapper.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockevents.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockledger.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockproducer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/keyvaluestore/filekeyvaluestore.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/keyvaluestore/filekeyvaluestore_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockbroadcastserver.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockcaclient.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockchannel.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockchconfig.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockchprovider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockconfig.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockcontext.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockcryptosuite.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockdata.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockdiscovery.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockendorserserver.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockeventserver.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockeventservice.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockfabricprovider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockidentity.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockidentitymgr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mocklocal.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockmembership.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockmsp.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockmspmanager.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockorderer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockpeer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockselection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mocktransactor.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/opts_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/orderer/orderer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/orderer/orderer_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/peer/peer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/peer/peer_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/peer/peerendorser.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/peer/peerendorser_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/resource/api.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/resource/block.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/resource/config.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/resource/config_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/resource/cscc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/resource/lscc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/resource/lscc_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/resource/resource.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/resource/resource_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/signingmgr/signingmgr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/signingmgr/signingmgr_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/txn/env.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/txn/proposal.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/txn/proposal_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/txn/txn.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/txn/txn_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/api/factory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/context.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/context_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/defpkgsuite.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/defpkgsuite_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/fabsdk.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/fabsdk_chconfig_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/fabsdk_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defcore/corefactory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defcore/corefactory_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defmsp/mspfactory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defmsp/mspfactory_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defsvc/svcfactory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defsvc/svcfactory_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/mocks_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/chpvdr/cachekey.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/chpvdr/chprovider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/chpvdr/chprovider_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/chpvdr/eventserviceref.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/chpvdr/fabprovider_testing_env.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/fabpvdr/fabpvdr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/fabpvdr/fabpvdr_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/msppvdr/msppvdr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/msppvdr/msppvdr_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/singleton_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/test/mocksdkapi/mocksdkapi.gen.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/api/api.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/caclient.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/caclient_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/certfileuserstore.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/certfileuserstore_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/enrollment_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/fabcaadapter.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/filecertstore.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/filekeystore.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/getsigid.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/getsigid_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/identityconfig.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/identityconfig_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/identitymgr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/identitymgr_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/main_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/memory_key_store.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/memory_user_store.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/opts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/opts_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/test/mockmsp/mockfabriccaserver.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/test/mockmsp/mockkey.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/test/mockmsp/mockuser.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/test/mockmsp/mockuserstore.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/test/mockmspapi/mockmspapi.gen.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/testdata/root.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/user.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/msp/user_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/concurrent/futurevalue/futurevalue.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/concurrent/futurevalue/futurevalue_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/concurrent/lazycache/keys.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/concurrent/lazycache/lazycache.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/concurrent/lazycache/lazycache_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/concurrent/lazyref/expiration.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/concurrent/lazyref/lazyref.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/concurrent/lazyref/lazyref_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/concurrent/lazyref/options.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/pathvar/subst.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/pathvar/subst_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/util/test/test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/_go/src/gofilter/cmd/gofilter/gofilter.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/_go/src/pkcs11helper/Gopkg.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/_go/src/pkcs11helper/Gopkg.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/_go/src/pkcs11helper/cmd/pkcs11helper/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/_go/src/pkcs11helper/cmd/pkcs11helper/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/_go/src/pkcs11helper/cmd/pkcs11helper/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/_go/src/pkcs11helper/cmd/pkcs11helper/testdata/key.ec.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/_go/src/pkcs11helper/pkg/pkcs11wrapper/ecdsa.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/_go/src/pkcs11helper/pkg/pkcs11wrapper/pkcs11.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/changelog.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_header_notice.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_import_patching.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/insert_header_notice.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_fabric_ca_client_utils.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_upstream.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/patches/0001-logbridge.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/patches/0002-Decouple-server-structs-needed-for-client-compilatio.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/patches/0003-cryptosuite.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_client_utils.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_external_utils.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos_internal.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_upstream.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/patches/0001-logbridge.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/patches/0002-Remove-idemix-MSP.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/patches/0003-cryptosuite.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_pkcs11_test.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_crypto_bccsp.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_endpoints.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_multiorg_bootstrap.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_no_orderer.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/mutual_tls/client_sdk_go-key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/mutual_tls/client_sdk_go.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_entity_matchers.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers_ca.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/devstable-env.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/docker-compose-expired-orderer.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/docker-compose-expired-peer.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/docker-compose-nopkcs11-test.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/docker-compose-pkcs11-test.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/docker-compose-revoked.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/docker-compose.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/latest-env.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/nomutualtls-env.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/prerelease-env.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/prev-env.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/mychannel.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/mychannelOrg1MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/mychannelOrg2MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/orgchannel.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/orgchannelOrg1MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/orgchannelOrg2MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/testchannel.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/testchannelOrg1MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/testchannelOrg2MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/channel/twoorgs.genesis.block" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.0/config/configtx.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/mychannel.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/mychannelOrg1MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/mychannelOrg2MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/orgchannel.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/orgchannelOrg1MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/orgchannelOrg2MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/testchannel.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/testchannelOrg1MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/testchannelOrg2MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/channel/twoorgs.genesis.block" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.1/config/configtx.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/mychannel.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/mychannelOrg1MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/mychannelOrg2MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/orgchannel.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/orgchannelOrg1MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/orgchannelOrg2MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/testchannel.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/testchannelOrg1MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/testchannelOrg2MSPanchors.tx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/channel/twoorgs.genesis.block" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1.2/config/configtx.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/ca/92b8e7cabc157123e30894b4ffd3fa3e94cb499bda7b58f79e57d5f8942161e4_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/ca/ca.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/expiredtlsca/expired.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/msp/admincerts/Admin@example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/msp/cacerts/ca.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/msp/tlscacerts/tlsca.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/admincerts/Admin@example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/cacerts/ca.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/keystore/07bf421d4f12606226f23b274167a956e4421ade2f8bb94e5bf265e71fd39e55_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/signcerts/orderer.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/tlsca/716843f79d51d0c78afbb42f963bffefacf44cd6df3a48a374b3a5c1f0b59b1d_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/admincerts/Admin@example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/cacerts/ca.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/f4aa194b12d13d7c2b7b275a7115af5e6f728e11710716f2c754df4587891511_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts/Admin@example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/tlscacerts/tlsca.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/ca/8791d1363e89515f9afa042b0693a2c704bb8dd95d28f97d3549a2b9e3c4352d_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/expiredtlsca/expired.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/msp/admincerts/Admin@org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/msp/cacerts/ca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/msp/crls/crl.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/admincerts/Admin@org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/cacerts/ca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/keystore/a23272f898441edb0f415f028b3b3b42627d75e150dfbae23543234751814983_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/signcerts/peer0.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/admincerts/Admin@org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/cacerts/ca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/keystore/322d7177700f59edfa128a42b437bc26f79f49523f59c54b6ebc5aa9ea2e2926_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/signcerts/peer1.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/tlsca/3f6a273ef185992857ce363958f1098610c028cf218fb97bd39147ef29c55cdc_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/admincerts/Admin@org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/cacerts/ca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/ce142124e13093a3e13bc4708b0f2b26e1d4d2ea4d4cc59942790bfc0f3bcc6d_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/admincerts/User1@org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/cacerts/ca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/abbe8ee0f86c227b1917d208921497603d2ff28f4ba8e902d703744c4a6fa7b7_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/ca/a259204dbd6adb14c05a6e02de94567b2a9f7dbe9e6a063ba767d42bf0b544c1_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/msp/admincerts/Admin@org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/msp/cacerts/ca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/msp/crls/crl.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/admincerts/Admin@org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/cacerts/ca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/crls/crl.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/keystore/116d4be58ca68fb788fdddc4e10384812e09263654666ff0bdccc31deb7a8265_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/signcerts/peer0.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/admincerts/Admin@org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/cacerts/ca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/keystore/51696d1d551fe3a8a08d809b0b71c6dae0056ec02b466e3fed62801d6854a047_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/keystore/e92288f967b17b068c0b8853417e917902bc8a52aa2aac6a1b123504eae691cf_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/signcerts/peer1.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/tlsca/401cd9e9f5a5a9ad66b535639b9b7241d708ac8ab3a519c80910919050c806ec_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/admincerts/Admin@org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/cacerts/ca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/371ea01078b18f3b92c1fc8233dfa8d209d882ae40aeff4defd118ba9d572a15_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/admincerts/User1@org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/cacerts/ca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/7777a174c9fe40ab5abe33199a4fe82f1e0a7c45715e395e73a78cc3480d0021_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/tls/ca.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/tls/server.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/tls/server.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabric/v1/mutual_tls/client_sdk_go-ca_root.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/ca/ca_root-key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/ca/ca_root.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/ca_root.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_client1-key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_client1.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/server/org1.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/server/org2.example.com-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/server/server_wild_org1or2.example.com-key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/server/server_wild_org1or2.example.com.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/softhsm2/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/softhsm2/install-softhsm2.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/testdata/src/github.com/events_cc/META-INF/sample-json/event.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/testdata/src/github.com/events_cc/events_cc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/testdata/src/github.com/example_cc/example_cc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/testdata/src/github.com/example_cc1/META-INF-foo/example1-foo.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/testdata/src/github.com/example_cc1/META-INF/example1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/testdata/src/github.com/example_cc1/example_cc1.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/testdata/src/github.com/example_cc1/foo-META-INF/foo-example.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/base_test_setup.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/e2e/configless/cryptoconfig_override_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/e2e/configless/end_to_end_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/e2e/configless/endpointconfig_override_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/e2e/configless/identityconfig_override_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/e2e/end_to_end.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/e2e/end_to_end_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/e2e/no_orderer_config_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/env.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/expiredorderer/expired_certificate_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/expiredpeer/expired_certificate_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/fab/channel_ledger_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/fab/discoveryclient_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/fab/eventclient_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/fab/install_chaincode_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/fab/main_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/fab/resource_queries_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/fab/transient_data_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/msp/check_cert_attributes.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/msp/check_cert_ser_attributes_prev.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/msp/custom_core_factory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/msp/custom_msp_factory.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/msp/enrollment_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/msp/identity_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/msp/user_data_mgmt_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/orgs/multiple_orgs_minconfig_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/orgs/multiple_orgs_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/pkcs11/e2e_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/pkcs11/env.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/revoked/revoked_peer_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/channel_client_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/channel_config_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/custom_cryptosuite_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/events_client_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/fabricselection_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/ledger_queries_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/main_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/resmgmt_queries_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/sdk_dyndiscovery_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/sdk_parent_context_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/sdk/sdk_provider_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/integration/utils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/metadata/metadata.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_license.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_lint.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_status.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/clean_integration.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/dependencies.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredorderer.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredpeer.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/fabric_test_commitlevel.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/generate_channeltx.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/integration.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/revoked.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit-pkcs11.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/cauthdsl/cauthdsl_builder.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/cauthdsl/policyparser.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/core/common/ccprovider/ccprovider.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/core/common/ccprovider/cdspackage.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/core/ledger/kvledger/txmgmt/rwsetutil/rwset_proto_util.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/core/ledger/util/txvalidationflags.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common/collection.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common/common.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common/configtx.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common/configuration.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common/ledger.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common/policies.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/ledger/rwset/kvrwset/kv_rwset.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/ledger/rwset/rwset.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/msp/identities.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/msp/msp_config.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/msp/msp_principal.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/orderer/configuration.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/chaincode.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/chaincode_event.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/configuration.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/events.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/peer.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/proposal.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/proposal_response.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/query.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/signed_cc_dep_spec.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer/transaction.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/utils/commonutils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/utils/proputils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/utils/txutils.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/web/webServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/webServer.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -212,20 +893,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="184">
               <caret line="15" column="42" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fixtures/artifacts/channel.tx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -265,7 +932,7 @@
         <entry file="file://$PROJECT_DIR$/Makefile">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="135">
-              <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+              <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -380,6 +1047,56 @@
             </path>
             <path>
               <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="education" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+              <item name="hyperledger" type="462c0819:PsiDirectoryNode" />
+              <item name="fabric-sdk-go" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="education" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+              <item name="hyperledger" type="462c0819:PsiDirectoryNode" />
+              <item name="fabric-sdk-go" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="education" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+              <item name="hyperledger" type="462c0819:PsiDirectoryNode" />
+              <item name="fabric-sdk-go" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="education" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+              <item name="hyperledger" type="462c0819:PsiDirectoryNode" />
+              <item name="fabric-sdk-go" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+              <item name="miekg" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="education" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+              <item name="hyperledger" type="462c0819:PsiDirectoryNode" />
+              <item name="fabric-sdk-go" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+              <item name="miekg" type="462c0819:PsiDirectoryNode" />
+              <item name="pkcs11" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
@@ -468,8 +1185,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="150" y="23" width="1277" height="813" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27449393" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27449393" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -482,7 +1200,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32732317" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4985694" visible="true" weight="0.28294036" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4985694" visible="true" weight="0.4216366" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50143063" side_tool="true" weight="0.12530121" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -503,16 +1221,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/config.yaml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/go/src/runtime/panic.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7755">
@@ -833,10 +1541,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/github.com/miekg/pkcs11/vendor.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-95" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/github.com/miekg/pkcs11/const.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10565" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Makefile">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+          <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
         </state>
       </provider>
     </entry>
