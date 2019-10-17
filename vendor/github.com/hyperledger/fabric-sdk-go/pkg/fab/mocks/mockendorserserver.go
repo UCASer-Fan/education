@@ -12,20 +12,22 @@ import (
 	"sync"
 
 	"github.com/golang/protobuf/proto"
+	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/core/ledger/kvledger/txmgmt/rwsetutil"
 	"github.com/hyperledger/fabric-sdk-go/pkg/util/test"
-	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/core/ledger/kvledger/txmgmt/rwsetutil"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/ledger/rwset/kvrwset"
 	pb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 // MockEndorserServer mock endoreser server to process endorsement proposals
 type MockEndorserServer struct {
+	Creds         credentials.TransportCredentials
 	ProposalError error
+	wg            sync.WaitGroup
 	AddkvWrite    bool
 	srv           *grpc.Server
-	wg            sync.WaitGroup
 }
 
 // ProcessProposal mock implementation that returns success if error is not set
@@ -80,7 +82,13 @@ func (m *MockEndorserServer) Start(address string) string {
 	if m.srv != nil {
 		panic("MockBroadcastServer already started")
 	}
-	m.srv = grpc.NewServer()
+
+	// pass in TLS creds if present
+	if m.Creds != nil {
+		m.srv = grpc.NewServer(grpc.Creds(m.Creds))
+	} else {
+		m.srv = grpc.NewServer()
+	}
 
 	lis, err := net.Listen("tcp", address)
 	if err != nil {

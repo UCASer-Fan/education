@@ -7,10 +7,10 @@ SPDX-License-Identifier: Apache-2.0
 package msp
 
 import (
-	"testing"
-
 	"fmt"
+	"path/filepath"
 	"strings"
+	"testing"
 
 	"github.com/golang/mock/gomock"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
@@ -37,13 +37,13 @@ func TestEnrollAndReenroll(t *testing.T) {
 	orgMSPID := mspIDByOrgName(t, f.endpointConfig, org1)
 
 	// Empty enrollment ID
-	err := f.caClient.Enroll("", "user1")
+	err := f.caClient.Enroll(&api.EnrollmentRequest{Name: "", Secret: "user1"})
 	if err == nil {
 		t.Fatal("Enroll didn't return error")
 	}
 
 	// Empty enrollment secret
-	err = f.caClient.Enroll("enrolledUsername", "")
+	err = f.caClient.Enroll(&api.EnrollmentRequest{Name: "enrolledUsername", Secret: ""})
 	if err == nil {
 		t.Fatal("Enroll didn't return error")
 	}
@@ -54,7 +54,7 @@ func TestEnrollAndReenroll(t *testing.T) {
 	if err != msp.ErrUserNotFound {
 		t.Fatal("Expected to not find user in user store")
 	}
-	err = f.caClient.Enroll(enrollUsername, "enrollmentSecret")
+	err = f.caClient.Enroll(&api.EnrollmentRequest{Name: enrollUsername, Secret: "enrollmentSecret"})
 	if err != nil {
 		t.Fatalf("identityManager Enroll return error %s", err)
 	}
@@ -64,7 +64,7 @@ func TestEnrollAndReenroll(t *testing.T) {
 	}
 
 	// Reenroll with empty user
-	err = f.caClient.Reenroll("")
+	err = f.caClient.Reenroll(&api.ReenrollmentRequest{Name: ""})
 	if err == nil {
 		t.Fatal("Expected error with enpty user")
 	}
@@ -85,7 +85,7 @@ func reenrollWithAppropriateUser(f textFixture, t *testing.T, enrolledUserData *
 	if err != nil {
 		t.Fatalf("newUser return error %s", err)
 	}
-	err = f.caClient.Reenroll(enrolledUser.Identifier().ID)
+	err = f.caClient.Reenroll(&api.ReenrollmentRequest{Name: enrolledUser.Identifier().ID})
 	if err != nil {
 		t.Fatalf("Reenroll return error %s", err)
 	}
@@ -132,7 +132,7 @@ func TestWrongURL(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewidentityManagerClient return error: %s", err)
 	}
-	err = f.caClient.Enroll("enrollmentID", "enrollmentSecret")
+	err = f.caClient.Enroll(&api.EnrollmentRequest{Name: "enrollmentID", Secret: "enrollmentSecret"})
 	if err == nil {
 		t.Fatal("Enroll didn't return error")
 	}
@@ -442,7 +442,7 @@ func TestCAConfigError(t *testing.T) {
 	mockContext := mockcontext.NewMockClient(mockCtrl)
 
 	mockIdentityConfig := mockmspApi.NewMockIdentityConfig(mockCtrl)
-	mockIdentityConfig.EXPECT().CAConfig(org1).Return(nil, false)
+	mockIdentityConfig.EXPECT().CAConfig(org1CA).Return(nil, false)
 	mockIdentityConfig.EXPECT().CredentialStorePath().Return(dummyUserStorePath).AnyTimes()
 
 	mockContext.EXPECT().IdentityConfig().Return(mockIdentityConfig)
@@ -464,9 +464,9 @@ func TestCAServerCertPathsError(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 	mockIdentityConfig := mockmspApi.NewMockIdentityConfig(mockCtrl)
-	mockIdentityConfig.EXPECT().CAConfig(org1).Return(&msp.CAConfig{}, true).AnyTimes()
+	mockIdentityConfig.EXPECT().CAConfig(org1CA).Return(&msp.CAConfig{}, true).AnyTimes()
 	mockIdentityConfig.EXPECT().CredentialStorePath().Return(dummyUserStorePath).AnyTimes()
-	mockIdentityConfig.EXPECT().CAServerCerts(org1).Return(nil, false)
+	mockIdentityConfig.EXPECT().CAServerCerts(org1CA).Return(nil, false)
 
 	mockContext := mockcontext.NewMockClient(mockCtrl)
 	mockContext.EXPECT().EndpointConfig().Return(f.endpointConfig).AnyTimes()
@@ -475,7 +475,7 @@ func TestCAServerCertPathsError(t *testing.T) {
 	mockContext.EXPECT().CryptoSuite().Return(f.cryptoSuite).AnyTimes()
 
 	_, err := NewCAClient(org1, mockContext)
-	if err == nil || !strings.Contains(err.Error(), "have no corresponding server certs in the configs") {
+	if err == nil || !strings.Contains(err.Error(), "has no corresponding server certs in the configs") {
 		t.Fatalf("Expected error from CAServerCertPaths. Got: %s", err)
 	}
 }
@@ -490,10 +490,10 @@ func TestCAClientCertPathError(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 	mockIdentityConfig := mockmspApi.NewMockIdentityConfig(mockCtrl)
-	mockIdentityConfig.EXPECT().CAConfig(org1).Return(&msp.CAConfig{}, true).AnyTimes()
+	mockIdentityConfig.EXPECT().CAConfig(org1CA).Return(&msp.CAConfig{}, true).AnyTimes()
 	mockIdentityConfig.EXPECT().CredentialStorePath().Return(dummyUserStorePath).AnyTimes()
-	mockIdentityConfig.EXPECT().CAServerCerts(org1).Return([][]byte{[]byte("test")}, true)
-	mockIdentityConfig.EXPECT().CAClientCert(org1).Return(nil, false)
+	mockIdentityConfig.EXPECT().CAServerCerts(org1CA).Return([][]byte{[]byte("test")}, true)
+	mockIdentityConfig.EXPECT().CAClientCert(org1CA).Return(nil, false)
 
 	mockContext := mockcontext.NewMockClient(mockCtrl)
 	mockContext.EXPECT().EndpointConfig().Return(f.endpointConfig).AnyTimes()
@@ -502,7 +502,7 @@ func TestCAClientCertPathError(t *testing.T) {
 	mockContext.EXPECT().CryptoSuite().Return(f.cryptoSuite).AnyTimes()
 
 	_, err := NewCAClient(org1, mockContext)
-	if err == nil || !strings.Contains(err.Error(), "have no corresponding client certs in the configs") {
+	if err == nil || !strings.Contains(err.Error(), "has no corresponding client certs in the configs") {
 		t.Fatalf("Expected error from CAClientCertPath. Got: %s", err)
 	}
 }
@@ -518,11 +518,11 @@ func TestCAClientKeyPathError(t *testing.T) {
 	defer mockCtrl.Finish()
 
 	mockIdentityConfig := mockmspApi.NewMockIdentityConfig(mockCtrl)
-	mockIdentityConfig.EXPECT().CAConfig(org1).Return(&msp.CAConfig{}, true).AnyTimes()
+	mockIdentityConfig.EXPECT().CAConfig(org1CA).Return(&msp.CAConfig{}, true).AnyTimes()
 	mockIdentityConfig.EXPECT().CredentialStorePath().Return(dummyUserStorePath).AnyTimes()
-	mockIdentityConfig.EXPECT().CAServerCerts(org1).Return([][]byte{[]byte("test")}, true)
-	mockIdentityConfig.EXPECT().CAClientCert(org1).Return([]byte(""), true)
-	mockIdentityConfig.EXPECT().CAClientKey(org1).Return(nil, false)
+	mockIdentityConfig.EXPECT().CAServerCerts(org1CA).Return([][]byte{[]byte("test")}, true)
+	mockIdentityConfig.EXPECT().CAClientCert(org1CA).Return([]byte(""), true)
+	mockIdentityConfig.EXPECT().CAClientKey(org1CA).Return(nil, false)
 
 	mockContext := mockcontext.NewMockClient(mockCtrl)
 	mockContext.EXPECT().EndpointConfig().Return(f.endpointConfig).AnyTimes()
@@ -531,7 +531,7 @@ func TestCAClientKeyPathError(t *testing.T) {
 	mockContext.EXPECT().CryptoSuite().Return(f.cryptoSuite).AnyTimes()
 
 	_, err := NewCAClient(org1, mockContext)
-	if err == nil || !strings.Contains(err.Error(), "have no corresponding client keys in the configs") {
+	if err == nil || !strings.Contains(err.Error(), "has no corresponding client keys in the configs") {
 		t.Fatalf("Expected error from CAClientKeyPath. Got: %s", err)
 	}
 }
@@ -544,6 +544,139 @@ func TestInterfaces(t *testing.T) {
 	apiClient = &cl
 	if apiClient == nil {
 		t.Fatal("this shouldn't happen.")
+	}
+}
+
+func TestAddAffiliation(t *testing.T) {
+	f := textFixture{}
+	f.setup()
+	defer f.close()
+
+	// Add with nil request
+	_, err := f.caClient.AddAffiliation(nil)
+	if err == nil {
+		t.Fatal("Expected error with nil request")
+	}
+
+	// Add without required parameters
+	_, err = f.caClient.AddAffiliation(&api.AffiliationRequest{})
+	if err == nil || !strings.Contains(err.Error(), "Name is required") {
+		t.Fatal("Expected error due to missing required parameter")
+	}
+
+	resp, err := f.caClient.AddAffiliation(&api.AffiliationRequest{Name: "test1.com", Force: true})
+	if err != nil {
+		t.Fatalf("Add affiliation return error %s", err)
+	}
+
+	if resp.Name != "test1.com" {
+		t.Fatalf("add affiliation returned wrong value %s", resp.Name)
+	}
+}
+
+func TestModifyAffiliation(t *testing.T) {
+	f := textFixture{}
+	f.setup()
+	defer f.close()
+
+	// Modify with nil request
+	_, err := f.caClient.ModifyAffiliation(nil)
+	if err == nil {
+		t.Fatal("Expected error with nil request")
+	}
+
+	// Modify without required parameters
+	_, err = f.caClient.ModifyAffiliation(&api.ModifyAffiliationRequest{})
+	if err == nil || !strings.Contains(err.Error(), "Name and NewName are required") {
+		t.Fatal("Expected error due to missing required parameters")
+	}
+
+	resp, err := f.caClient.ModifyAffiliation(&api.ModifyAffiliationRequest{NewName: "test1new.com", AffiliationRequest: api.AffiliationRequest{Name: "123"}})
+	if err != nil {
+		t.Fatalf("Modify affiliation return error %s", err)
+	}
+
+	if resp.Name != "test1new.com" {
+		t.Fatalf("Modify affiliation returned wrong value %s", resp.Name)
+	}
+}
+
+func TestRemoveAffiliation(t *testing.T) {
+	f := textFixture{}
+	f.setup()
+	defer f.close()
+
+	// Remove with nil request
+	_, err := f.caClient.RemoveAffiliation(nil)
+	if err == nil {
+		t.Fatal("Expected error with nil request")
+	}
+
+	// Remove without required parameters
+	_, err = f.caClient.RemoveAffiliation(&api.AffiliationRequest{})
+	if err == nil || !strings.Contains(err.Error(), "Name is required") {
+		t.Fatal("Expected error due to missing required parameters")
+	}
+
+	resp, err := f.caClient.RemoveAffiliation(&api.AffiliationRequest{Name: "123"})
+	if err != nil {
+		t.Fatalf("Remove affiliation return error %s", err)
+	}
+
+	if resp.Name != "test1.com" {
+		t.Fatalf("Remove affiliation returned wrong value %s", resp.Name)
+	}
+}
+
+func TestGetAffiliation(t *testing.T) {
+	f := textFixture{}
+	f.setup()
+	defer f.close()
+
+	// Get without required parameter
+	_, err := f.caClient.GetAffiliation("", "")
+	if err == nil || !strings.Contains(err.Error(), "affiliation is required") {
+		t.Fatal("Expected error due to missing required parameter")
+	}
+
+	// Get affiliation with valid request
+	resp, err := f.caClient.GetAffiliation("123", "")
+	if err != nil {
+		t.Fatalf("Get affiliation return error %s", err)
+	}
+
+	if resp == nil {
+		t.Fatal("Get affiliation response is nil")
+	}
+}
+
+func TestGetAllAffiliations(t *testing.T) {
+	f := textFixture{}
+	f.setup()
+	defer f.close()
+
+	response, err := f.caClient.GetAllAffiliations("")
+	if err != nil {
+		t.Fatalf("Get affiliations return error %s", err)
+	}
+
+	if len(response.Affiliations) != 1 {
+		t.Fatalf("expecting %d, got %d response", 1, len(response.Affiliations))
+	}
+}
+
+func TestGetCAInfo(t *testing.T) {
+	f := textFixture{}
+	f.setup()
+	defer f.close()
+
+	resp, err := f.caClient.GetCAInfo()
+	if err != nil {
+		t.Fatalf("Get CA info return error %s", err)
+	}
+
+	if resp.CAName != "123" {
+		t.Fatalf("expecting 123, got %s", resp.CAName)
 	}
 }
 
@@ -569,6 +702,7 @@ func getCustomBackend(configPath string) ([]core.ConfigBackend, error) {
 
 func getInvalidURLBackend() ([]core.ConfigBackend, error) {
 
+	configPath := filepath.Join(getConfigPath(), configTestFile)
 	mockConfigBackend, err := getCustomBackend(configPath)
 	if err != nil {
 		return nil, err
@@ -602,6 +736,7 @@ func getInvalidURLBackend() ([]core.ConfigBackend, error) {
 
 func getNoRegistrarBackend() ([]core.ConfigBackend, error) {
 
+	configPath := filepath.Join(getConfigPath(), configTestFile)
 	mockConfigBackend, err := getCustomBackend(configPath)
 	if err != nil {
 		return nil, err
@@ -635,6 +770,7 @@ func getNoRegistrarBackend() ([]core.ConfigBackend, error) {
 
 func getNoCAConfigBackend() ([]core.ConfigBackend, error) {
 
+	configPath := filepath.Join(getConfigPath(), configTestFile)
 	mockConfigBackend, err := getCustomBackend(configPath)
 	if err != nil {
 		return nil, err
@@ -667,6 +803,7 @@ func getNoCAConfigBackend() ([]core.ConfigBackend, error) {
 
 func getEmbeddedRegistrarConfigBackend() ([]core.ConfigBackend, error) {
 
+	configPath := filepath.Join(getConfigPath(), configTestFile)
 	mockConfigBackend, err := getCustomBackend(configPath)
 	if err != nil {
 		return nil, err

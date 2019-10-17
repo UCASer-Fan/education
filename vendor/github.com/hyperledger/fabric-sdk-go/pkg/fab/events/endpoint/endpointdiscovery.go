@@ -7,16 +7,17 @@ SPDX-License-Identifier: Apache-2.0
 package endpoint
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/logging"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/context"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
-	"github.com/pkg/errors"
 )
 
 var logger = logging.NewLogger("fabsdk/fab")
 
-// DiscoveryWrapper wraps a target discovery service and and adds endpoint data to each
+// DiscoveryWrapper wraps a target discovery service and adds endpoint data to each
 // of the discovered peers.
 type DiscoveryWrapper struct {
 	fab.DiscoveryService
@@ -39,9 +40,9 @@ func WithTargetFilter(filter fab.TargetFilter) Opt {
 // that wraps a given target discovery service and adds endpoint data to each
 // of the discovered peers.
 func NewEndpointDiscoveryWrapper(ctx context.Client, channelID string, target fab.DiscoveryService, opts ...Opt) (*DiscoveryWrapper, error) {
-	chpeers, ok := ctx.EndpointConfig().ChannelPeers(channelID)
-	if !ok {
-		return nil, errors.Errorf("unable to get channel peers for channel [%s]", channelID)
+	chpeers := ctx.EndpointConfig().ChannelPeers(channelID)
+	if len(chpeers) == 0 {
+		return nil, errors.Errorf("no channel peers for channel [%s]", channelID)
 	}
 
 	s := &DiscoveryWrapper{
@@ -103,7 +104,10 @@ func (s *DiscoveryWrapper) GetPeers() ([]fab.Peer, error) {
 func (s *DiscoveryWrapper) getChannelPeer(url string) *fab.ChannelPeer {
 	for _, chpeer := range s.chPeers {
 		if chpeer.URL == url {
-			return &chpeer
+			return &fab.ChannelPeer{
+				PeerChannelConfig: chpeer.PeerChannelConfig,
+				NetworkPeer:       chpeer.NetworkPeer,
+			}
 		}
 	}
 	return nil

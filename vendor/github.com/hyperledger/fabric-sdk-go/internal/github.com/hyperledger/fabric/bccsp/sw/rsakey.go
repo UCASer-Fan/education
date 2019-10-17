@@ -21,14 +21,11 @@ package sw
 
 import (
 	"crypto/rsa"
-	"crypto/x509"
-	"fmt"
-
 	"crypto/sha256"
-
-	"errors"
-
+	"crypto/x509"
 	"encoding/asn1"
+	"errors"
+	"fmt"
 	"math/big"
 
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp"
@@ -46,12 +43,12 @@ type rsaPrivateKey struct {
 
 // Bytes converts this key to its byte representation,
 // if this operation is allowed.
-func (k *rsaPrivateKey) Bytes() (raw []byte, err error) {
+func (k *rsaPrivateKey) Bytes() ([]byte, error) {
 	return nil, errors.New("Not supported.")
 }
 
 // SKI returns the subject key identifier of this key.
-func (k *rsaPrivateKey) SKI() (ski []byte) {
+func (k *rsaPrivateKey) SKI() []byte {
 	if k.privKey == nil {
 		return nil
 	}
@@ -104,7 +101,7 @@ func (k *rsaPublicKey) Bytes() (raw []byte, err error) {
 }
 
 // SKI returns the subject key identifier of this key.
-func (k *rsaPublicKey) SKI() (ski []byte) {
+func (k *rsaPublicKey) SKI() []byte {
 	if k.pubKey == nil {
 		return nil
 	}

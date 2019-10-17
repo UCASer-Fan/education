@@ -11,8 +11,8 @@ Please review third_party pinning scripts and patches for more details.
 package discovery
 
 import (
-	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/discovery"
-	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/gossip"
+	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/gossip/protoext"
+	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/discovery"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )
@@ -44,18 +44,17 @@ type ChannelResponse interface {
 	Config() (*discovery.ConfigResult, error)
 
 	// Peers returns a response for a peer membership query, or error if something went wrong
-	Peers() ([]*Peer, error)
+	Peers(invocationChain ...*discovery.ChaincodeCall) ([]*Peer, error)
 
 	// Endorsers returns the response for an endorser query for a given
 	// chaincode in a given channel context, or error if something went wrong.
 	// The method returns a random set of endorsers, such that signatures from all of them
 	// combined, satisfy the endorsement policy.
 	// The selection is based on the given selection hints:
-	// PrioritySelector: Determines which endorsers are selected over others
-	// ExclusionFilter: Determines which endorsers are not selected
+	// Filter: Filters and sorts the endorsers
 	// The given InvocationChain specifies the chaincode calls (along with collections)
 	// that the client passed during the construction of the request
-	Endorsers(invocationChain InvocationChain, ps PrioritySelector, ef ExclusionFilter) (Endorsers, error)
+	Endorsers(invocationChain InvocationChain, f Filter) (Endorsers, error)
 }
 
 // LocalResponse aggregates responses for a channel-less scope
@@ -72,7 +71,7 @@ type Endorsers []*Peer
 // of a certain peer.
 type Peer struct {
 	MSPID            string
-	AliveMessage     *gossip.SignedGossipMessage
-	StateInfoMessage *gossip.SignedGossipMessage
+	AliveMessage     *protoext.SignedGossipMessage
+	StateInfoMessage *protoext.SignedGossipMessage
 	Identity         []byte
 }

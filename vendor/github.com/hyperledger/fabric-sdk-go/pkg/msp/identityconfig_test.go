@@ -8,12 +8,11 @@ package msp
 
 import (
 	"crypto/x509"
-	"testing"
-
-	"os"
-	"strings"
-
 	"encoding/pem"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 	fabImpl "github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
@@ -21,24 +20,30 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config/endpoint"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/mocks"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab"
+	"github.com/hyperledger/fabric-sdk-go/test/metadata"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
 
 const (
-	configTestFilePath               = "../core/config/testdata/config_test.yaml"
-	configEmbeddedUsersTestFilePath  = "../core/config/testdata/config_test_embedded_pems.yaml"
-	configPemTestFilePath            = "../core/config/testdata/config_test_pem.yaml"
-	configTestEntityMatchersFilePath = "../core/config/testdata/config_test_entity_matchers.yaml"
-	configType                       = "yaml"
+	configTestFile               = "config_test.yaml"
+	configEmbeddedUsersTestFile  = "config_test_embedded_pems.yaml"
+	configMSPOnly                = "config_test_msp_only.yaml"
+	configPemTestFile            = "config_test_pem.yaml"
+	configTestEntityMatchersFile = "config_test_entity_matchers.yaml"
+	configType                   = "yaml"
 )
+
+func getConfigPath() string {
+	return filepath.Join(metadata.GetProjectPath(), "pkg", "core", "config", "testdata")
+}
 
 func TestCAConfigFailsByNetworkConfig(t *testing.T) {
 
 	//Tamper 'client.network' value and use a new config to avoid conflicting with other tests
-
-	configBackends, err := config.FromFile(configTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configTestFile)
+	configBackends, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatalf("Unexpected error reading config: %s", err)
 	}
@@ -101,7 +106,8 @@ func testCAConfigFailureScenario(sampleIdentityConfig *IdentityConfig, t *testin
 }
 
 func TestTLSCAConfigFromPems(t *testing.T) {
-	embeddedBackend, err := config.FromFile(configEmbeddedUsersTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configEmbeddedUsersTestFile)
+	embeddedBackend, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -113,7 +119,7 @@ func TestTLSCAConfigFromPems(t *testing.T) {
 	assert.Nil(t, err, "Failed to initialize endpoint config , reason: %s", err)
 
 	identityConfig := config.(*IdentityConfig)
-	certPem, _ := identityConfig.CAClientCert(org1)
+	certPem, _ := identityConfig.CAClientCert("ca-org1")
 	certConfig := endpoint.TLSConfig{Pem: string(certPem)}
 
 	err = certConfig.LoadBytes()
@@ -123,7 +129,8 @@ func TestTLSCAConfigFromPems(t *testing.T) {
 	assert.Nil(t, err, "TLS CA cert parse failed, reason: %s", err)
 	assert.True(t, ok, "TLS CA cert parse failed")
 
-	_, err = endpointConfig.TLSCACertPool().Get(cert)
+	endpointConfig.TLSCACertPool().Add(cert)
+	_, err = endpointConfig.TLSCACertPool().Get()
 	assert.Nil(t, err, "TLS CA cert pool fetch failed, reason: %s", err)
 	//Test TLSCA Cert Pool (Negative test case)
 
@@ -135,10 +142,11 @@ func TestTLSCAConfigFromPems(t *testing.T) {
 	assert.Nil(t, err, "TLS CA cert parse was supposed to fail")
 	assert.False(t, ok, "TLS CA cert parse was supposed to fail")
 
-	_, err = endpointConfig.TLSCACertPool().Get(badCert)
+	endpointConfig.TLSCACertPool().Add(badCert)
+	_, err = endpointConfig.TLSCACertPool().Get()
 	assert.Nil(t, err, "TLSCACertPool failed %s", err)
 
-	keyPem, ok := identityConfig.CAClientKey(org1)
+	keyPem, ok := identityConfig.CAClientKey("ca-org1")
 	assert.True(t, ok, "CAClientKey supposed to succeed")
 
 	keyConfig := endpoint.TLSConfig{Pem: string(keyPem)}
@@ -151,7 +159,8 @@ func TestTLSCAConfigFromPems(t *testing.T) {
 
 func TestInitConfigFromRawWithPem(t *testing.T) {
 	// get a config byte for testing
-	cBytes, err := loadConfigBytesFromFile(t, configPemTestFilePath)
+	configPath := filepath.Join(getConfigPath(), configPemTestFile)
+	cBytes, err := loadConfigBytesFromFile(t, configPath)
 	if err != nil {
 		t.Fatalf("Failed to load sample bytes from File. Error: %s", err)
 	}
@@ -205,22 +214,22 @@ SQtE5YgdxkUCIHReNWh/pluHTxeGu2jNCH1eh6o2ajSGeeizoapvdJbN
 	checkPeerPem(org1, endpointConfig, peer0, t)
 
 	// get CA Server cert pems (embedded) for org1
-	checkCAServerCerts("org1", idConfig, t)
+	checkCAServerCerts(org1CA, idConfig, t)
 
 	// get the client cert pem (embedded) for org1
-	checkClientCert(idConfig, "org1", t)
+	checkCAClientCert(idConfig, org1CA, t)
 
 	// get CA Server certs paths for org1
-	checkCAServerCerts("org1", idConfig, t)
+	checkCAServerCerts(org1CA, idConfig, t)
 
 	// get the client cert path for org1
-	checkClientCert(idConfig, "org1", t)
+	checkCAClientCert(idConfig, org1CA, t)
 
 	// get the client key pem (embedded) for org1
-	checkClientKey(idConfig, "org1", t)
+	checkCAClientKey(idConfig, org1CA, t)
 
 	// get the client key file path for org1
-	checkClientKey(idConfig, "org1", t)
+	checkCAClientKey(idConfig, org1CA, t)
 }
 
 func checkPeerPem(org string, endpointConfig fabImpl.EndpointConfig, peer string, t *testing.T) {
@@ -250,20 +259,20 @@ O94CDp7l2k7hMQI0zQ==
 
 }
 
-func checkCAServerCerts(org string, idConfig *IdentityConfig, t *testing.T) {
-	certs, ok := idConfig.CAServerCerts(org)
+func checkCAServerCerts(caName string, idConfig *IdentityConfig, t *testing.T) {
+	certs, ok := idConfig.CAServerCerts(caName)
 	assert.True(t, ok, "Failed to load CAServerCertPems from config.")
 	assert.NotEmpty(t, certs, "Got empty PEM certs for CAServerCertPems")
 }
 
-func checkClientCert(idConfig *IdentityConfig, org string, t *testing.T) {
-	cert, ok := idConfig.CAClientCert(org)
+func checkCAClientCert(idConfig *IdentityConfig, caName string, t *testing.T) {
+	cert, ok := idConfig.CAClientCert(caName)
 	assert.True(t, ok, "Failed to load CAClientCertPem from config.")
 	assert.NotEmpty(t, cert, "Invalid cert")
 }
 
-func checkClientKey(idConfig *IdentityConfig, org string, t *testing.T) {
-	key, ok := idConfig.CAClientKey(org)
+func checkCAClientKey(idConfig *IdentityConfig, caName string, t *testing.T) {
+	key, ok := idConfig.CAClientKey(caName)
 	assert.True(t, ok, "Failed to load CAClientKeyPem from config.")
 	assert.NotEmpty(t, key, "Invalid key")
 }
@@ -293,7 +302,8 @@ func loadConfigBytesFromFile(t *testing.T, filePath string) ([]byte, error) {
 
 func TestCAConfigCryptoFiles(t *testing.T) {
 	//Test config
-	backend, err := config.FromFile(configTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configTestFile)
+	backend, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatal("Failed to get config backend")
 	}
@@ -305,17 +315,17 @@ func TestCAConfigCryptoFiles(t *testing.T) {
 	identityConfig := config.(*IdentityConfig)
 
 	//Testing CA Client File Location
-	certfile, ok := identityConfig.CAClientCert(org1)
+	certfile, ok := identityConfig.CAClientCert(org1CA)
 	assert.True(t, ok, "CA Cert file location read failed ")
 	assert.True(t, len(certfile) > 0)
 
 	//Testing CA Key File Location
-	keyFile, ok := identityConfig.CAClientKey(org1)
+	keyFile, ok := identityConfig.CAClientKey(org1CA)
 	assert.True(t, ok, "CA Key file location read failed ")
 	assert.True(t, len(keyFile) > 0)
 
 	//Testing CA Server Cert Files
-	sCertFiles, ok := identityConfig.CAServerCerts(org1)
+	sCertFiles, ok := identityConfig.CAServerCerts(org1CA)
 	assert.True(t, ok, "Getting CA server cert files failed")
 	assert.True(t, len(sCertFiles) > 0)
 
@@ -323,7 +333,8 @@ func TestCAConfigCryptoFiles(t *testing.T) {
 
 func TestCAConfig(t *testing.T) {
 	//Test config
-	backend, err := config.FromFile(configTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configTestFile)
+	backend, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatal("Failed to get config backend")
 	}
@@ -336,15 +347,12 @@ func TestCAConfig(t *testing.T) {
 	identityConfig := config.(*IdentityConfig)
 	//Test Crypto config path
 
-	val, ok := backend[0].Lookup("client.cryptoconfig.path")
-	if !ok || val == nil {
-		t.Fatal("expected valid value")
-	}
-
 	//Testing CAConfig
-	caConfig, ok := identityConfig.CAConfig(org1)
+	caConfig, ok := identityConfig.CAConfig(org1CA)
 	assert.True(t, ok, "Get CA Config failed")
 	assert.NotNil(t, caConfig, "Get CA Config failed")
+	assert.Equal(t, 1, len(caConfig.GRPCOptions))
+	assert.Equal(t, "ca.org1.example.com", caConfig.GRPCOptions["ssl-target-name-override"])
 
 	// Test CA KeyStore Path
 	testCAKeyStorePath(backend[0], t, identityConfig)
@@ -375,11 +383,12 @@ func testCAKeyStorePath(backend core.ConfigBackend, t *testing.T, identityConfig
 
 func TestCACertAndKeys(t *testing.T) {
 
-	backend, err := config.FromFile(configEmbeddedUsersTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configEmbeddedUsersTestFile)
+	backend, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatal("Failed to get config backend")
 	}
-	orgIDs := []string{"org1", "org2"}
+	caNames := []string{"ca-org1", "ca-org2"}
 
 	config, err := ConfigFromBackend(backend...)
 	if err != nil {
@@ -387,16 +396,16 @@ func TestCACertAndKeys(t *testing.T) {
 	}
 	identityConfig := config.(*IdentityConfig)
 
-	for _, orgID := range orgIDs {
-		val, ok := identityConfig.CAClientCert(orgID)
+	for _, caName := range caNames {
+		val, ok := identityConfig.CAClientCert(caName)
 		assert.True(t, ok, "identityConfig.CAClientCert not supposed to return failure")
 		assert.True(t, len(val) > 0, "identityConfig.CAClientCert supposed to return valid cert")
 
-		val, ok = identityConfig.CAClientKey(orgID)
+		val, ok = identityConfig.CAClientKey(caName)
 		assert.True(t, ok, "identityConfig.CAClientKey not supposed to return failure")
 		assert.True(t, len(val) > 0, "identityConfig.CAClientKey supposed to return valid key")
 
-		vals, ok := identityConfig.CAServerCerts(orgID)
+		vals, ok := identityConfig.CAServerCerts(caName)
 		assert.True(t, ok, "identityConfig.CAClientKey not supposed to return failure")
 		assert.True(t, len(vals) > 0, "identityConfig.CAClientKey supposed to return server certs")
 		for _, v := range vals {
@@ -408,7 +417,8 @@ func TestCACertAndKeys(t *testing.T) {
 
 func TestIdentityConfigWithMultipleBackends(t *testing.T) {
 
-	sampleViper := newViper(configTestEntityMatchersFilePath)
+	configPath := filepath.Join(getConfigPath(), configTestEntityMatchersFile)
+	sampleViper := newViper(configPath)
 
 	var backends []core.ConfigBackend
 	backendMap := make(map[string]interface{})
@@ -451,10 +461,15 @@ func TestIdentityConfigWithMultipleBackends(t *testing.T) {
 	assert.Equal(t, client.Organization, "org1")
 
 	//CA Config
-	caConfig, ok := identityConfig.CAConfig("org1")
-	assert.True(t, ok, "identityConfig.CAConfig(org1) should have been successful for multiple backends")
+	caConfig, ok := identityConfig.CAConfig("ca.org1.example.com")
+	assert.True(t, ok, "identityConfig.CAConfig(ca.org1.example.com) should have been successful for multiple backends")
 	assert.Equal(t, caConfig.URL, "https://ca.org1.example.com:7054")
+	assert.Equal(t, 1, len(caConfig.GRPCOptions))
+	assert.Equal(t, "ca.org1.example.com", caConfig.GRPCOptions["ssl-target-name-override"])
 
+	caConfig, ok = identityConfig.CAConfig("ca.org2.example.com")
+	assert.True(t, ok, "identityConfig.CAConfig(ca.org2.example.com) should have been successful for multiple backends")
+	assert.Equal(t, caConfig.URL, "https://ca.org2.example.com:8054")
 }
 
 func newViper(path string) *viper.Viper {
@@ -484,4 +499,21 @@ func tlsCertByBytes(bytes []byte) (*x509.Certificate, error) {
 
 	//no cert found and there is no error
 	return nil, errors.New("empty byte")
+}
+
+func TestEntityMatchers(t *testing.T) {
+
+	configPath := filepath.Join(getConfigPath(), configTestEntityMatchersFile)
+	backend, err := config.FromFile(configPath)()
+	if err != nil {
+		t.Fatal("Failed to get config backend")
+	}
+
+	identityConfig, err := ConfigFromBackend(backend...)
+	assert.Nil(t, err, "Failed to get endpoint config from backend")
+	assert.NotNil(t, identityConfig, "expected valid endpointconfig")
+
+	configImpl := identityConfig.(*IdentityConfig)
+	assert.Equal(t, 3, len(configImpl.caMatchers), "preloading matchers isn't working as expected")
+
 }

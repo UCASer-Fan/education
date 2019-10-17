@@ -9,16 +9,13 @@ package configless
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/pem"
 	"fmt"
-	"os"
+	"io/ioutil"
 	"regexp"
 	"strings"
 	"sync"
 	"time"
-
-	"encoding/pem"
-
-	"io/ioutil"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
@@ -35,15 +32,15 @@ import (
 )
 
 // endpointconfig_override_test.go is an example of programmatically configuring the sdk by injecting instances that implement EndpointConfig's functions (representing the sdk's configs)
-// for the sake of overriding EndpointConfig integration tests, the structure variables below are similar to what is found in /test/fixtures/config/config_test.yaml
+// for the sake of overriding EndpointConfig integration tests, the structure variables below are similar to what is found in /test/fixtures/config/config_e2e.yaml
 // application developers can fully override these functions to load configs in any way that suit their application need
 
 // NOTE: 1. to support test local (flag: TEST_LOCAL=true to use localhost:* URLs for peers, orderers, CAs everywhere), new...() constructor functions where created to test if this flag
-//       is enabled using verifyIsLocal...() function calls. These calls will basically switch config URLs (peers, orderers or CA configs) / EventURLs (peer configs) into "localhost:..."
+//       is enabled using verifyIsLocal...() function calls. These calls will basically switch config URLs (peers, orderers or CA configs) into "localhost:..."
 //       Make sure your local /etc/hosts file does not have any ip-dns mapping entries for peers/orderers/CAs
 //
 //       2. the test assumes the use of the default channel block used in the remaining regular integration tests (for example look at Orderer.Addresses value in
-//       test/fixtures/fabric/..specific target fabric release../config/configtx.yaml to see the URL value assigned to the orderer for a specific channel).
+//       test/fixtures/fabric/<specific target fabric release>/config/configtx.yaml to see the URL value assigned to the orderer for a specific channel).
 //       So Even if the below interfaces will override orderers to localhost for TEST_LOCAL=true, the SDK will still try
 //       to create an orderer with the URL found in the channel block mentioned above. You can either create another channel block for your channels,
 //       or if you want to use an existing channel block but still want to change the orderer URL, then you can implement EntityMatchers logic for your orderers
@@ -74,11 +71,11 @@ var (
 	client       = clientConfig{
 		Organization:    "org1",
 		Logging:         api.LoggingType{Level: "info"},
-		CryptoConfig:    msp.CCType{Path: pathvar.Subst("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}")},
+		CryptoConfig:    msp.CCType{Path: pathvar.Subst("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}")},
 		CredentialStore: msp.CredentialStoreType{Path: "/tmp/msp"},
 		TLSCerts: endpoint.MutualTLSConfig{Client: endpoint.TLSKeyPair{
-			Key:  newTLSConfig("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/mutual_tls/client_sdk_go-key.pem"),
-			Cert: newTLSConfig("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/mutual_tls/client_sdk_go.pem")}},
+			Key:  newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key"),
+			Cert: newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt")}},
 	}
 
 	channelsConfig = map[string]fab.ChannelEndpointConfig{
@@ -102,6 +99,13 @@ var (
 						MaxBackoff:     5 * time.Second,
 						BackoffFactor:  2.0,
 					},
+				},
+				EventService: fab.EventServicePolicy{
+					ResolverStrategy:                 fab.MinBlockHeightStrategy,
+					MinBlockHeightResolverMode:       fab.ResolveByThreshold,
+					BlockHeightLagThreshold:          5,
+					ReconnectBlockHeightLagThreshold: 10,
+					PeerMonitorPeriod:                5 * time.Second,
 				},
 			},
 		},
@@ -137,19 +141,19 @@ var (
 	}
 	orgsConfig = map[string]fab.OrganizationConfig{
 		"org1": {
-			MSPID:      "Org1MSP",
-			CryptoPath: "peerOrganizations/org1.example.com/users/{username}@org1.example.com/msp",
-			Peers:      []string{"peer0.org1.example.com"},
+			MSPID:                  "Org1MSP",
+			CryptoPath:             "peerOrganizations/org1.example.com/users/{username}@org1.example.com/msp",
+			Peers:                  []string{"peer0.org1.example.com"},
 			CertificateAuthorities: []string{"ca.org1.example.com"},
 		},
 		"org2": {
-			MSPID:      "Org2MSP",
-			CryptoPath: "peerOrganizations/org1.example.com/users/{username}@org2.example.com/msp",
-			Peers:      []string{"peer0.org2.example.com"},
+			MSPID:                  "Org2MSP",
+			CryptoPath:             "peerOrganizations/org1.example.com/users/{username}@org2.example.com/msp",
+			Peers:                  []string{"peer0.org2.example.com"},
 			CertificateAuthorities: []string{"ca.org2.example.com"},
 		},
 		"ordererorg": {
-			MSPID:      "OrdererOrg",
+			MSPID:      "OrdererMSP",
 			CryptoPath: "ordererOrganizations/example.com/users/{username}@example.com/msp",
 		},
 	}
@@ -165,14 +169,13 @@ var (
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"),
 		},
 	}
 
 	peersConfig = map[string]fab.PeerConfig{
 		"peer0.org1.example.com": {
-			URL:      "peer0.org1.example.com:7051",
-			EventURL: "peer0.org1.example.com:7053",
+			URL: "peer0.org1.example.com:7051",
 			GRPCOptions: map[string]interface{}{
 				"ssl-target-name-override": "peer0.org1.example.com",
 				"keep-alive-time":          0 * time.Second,
@@ -181,11 +184,10 @@ var (
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem"),
 		},
 		"peer0.org2.example.com": {
-			URL:      "peer0.org2.example.com:8051",
-			EventURL: "peer0.org2.example.com:8053",
+			URL: "peer0.org2.example.com:8051",
 			GRPCOptions: map[string]interface{}{
 				"ssl-target-name-override": "peer0.org2.example.com",
 				"keep-alive-time":          0 * time.Second,
@@ -194,14 +196,13 @@ var (
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem"),
 		},
 	}
 
 	peersByLocalURL = map[string]fab.PeerConfig{
 		"localhost:7051": {
-			URL:      "localhost:7051",
-			EventURL: "localhost:7053",
+			URL: "localhost:7051",
 			GRPCOptions: map[string]interface{}{
 				"ssl-target-name-override": "peer0.org1.example.com",
 				"keep-alive-time":          0 * time.Second,
@@ -210,11 +211,10 @@ var (
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem"),
 		},
 		"localhost:8051": {
-			URL:      "localhost:8051",
-			EventURL: "localhost:8053",
+			URL: "localhost:8051",
 			GRPCOptions: map[string]interface{}{
 				"ssl-target-name-override": "peer0.org2.example.com",
 				"keep-alive-time":          0 * time.Second,
@@ -223,7 +223,7 @@ var (
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem"),
 		},
 	}
 
@@ -231,10 +231,10 @@ var (
 		"ca.org1.example.com": {
 			URL: "https://ca.org1.example.com:7054",
 			TLSCACerts: endpoint.MutualTLSConfig{
-				Path: pathvar.Subst("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/ca_root.pem"),
+				Path: pathvar.Subst("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem"),
 				Client: endpoint.TLSKeyPair{
-					Key:  newTLSConfig("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem"),
-					Cert: newTLSConfig("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem"),
+					Key:  newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key"),
+					Cert: newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt"),
 				},
 			},
 			Registrar: msp.EnrollCredentials{
@@ -246,10 +246,10 @@ var (
 		"ca.org2.example.com": {
 			URL: "https://ca.org2.example.com:8054",
 			TLSCACerts: endpoint.MutualTLSConfig{
-				Path: pathvar.Subst("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/ca_root.pem"),
+				Path: pathvar.Subst("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem"),
 				Client: endpoint.TLSKeyPair{
-					Key:  newTLSConfig("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem"),
-					Cert: newTLSConfig("${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem"),
+					Key:  newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key"),
+					Cert: newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt"),
 				},
 			},
 			Registrar: msp.EnrollCredentials{
@@ -281,7 +281,6 @@ var (
 	channelPeersImpl     = &exampleChannelPeers{}
 	channelOrderersImpl  = &exampleChannelOrderers{}
 	tlsCACertPoolImpl    = newTLSCACertPool(false)
-	eventServiceTypeImpl = &exampleEventServiceType{}
 	tlsClientCertsImpl   = &exampleTLSClientCerts{}
 	cryptoConfigPathImpl = &exampleCryptoConfigPath{}
 	endpointConfigImpls  = []interface{}{
@@ -296,7 +295,6 @@ var (
 		channelPeersImpl,
 		channelOrderersImpl,
 		tlsCACertPoolImpl,
-		eventServiceTypeImpl,
 		tlsClientCertsImpl,
 		cryptoConfigPathImpl,
 	}
@@ -305,10 +303,9 @@ var (
 type exampleTimeout struct{}
 
 var defaultTypes = map[fab.TimeoutType]time.Duration{
-	fab.EndorserConnection:       time.Second * 10,
+	fab.PeerConnection:           time.Second * 10,
 	fab.PeerResponse:             time.Minute * 3,
 	fab.DiscoveryGreylistExpiry:  time.Second * 10,
-	fab.EventHubConnection:       time.Second * 15,
 	fab.EventReg:                 time.Second * 15,
 	fab.OrdererConnection:        time.Second * 15,
 	fab.OrdererResponse:          time.Minute * 2,
@@ -464,7 +461,6 @@ func verifyIsLocalPeersURLs(pConfig map[string]fab.PeerConfig) map[string]fab.Pe
 	if integration.IsLocal() {
 		for k, peer := range pConfig {
 			peer.URL = re.ReplaceAllString(peer.URL, localhostRep)
-			peer.EventURL = re.ReplaceAllString(peer.EventURL, localhostRep)
 			newConfigs[k] = peer
 		}
 	}
@@ -475,7 +471,7 @@ func verifyIsLocalPeersURLs(pConfig map[string]fab.PeerConfig) map[string]fab.Pe
 	return newConfigs
 }
 
-//newPeersConfigImpl will create a new examplePeersConfig instance with proper peers URLs and EventURLs (local vs normal) tests
+//newPeersConfigImpl will create a new examplePeersConfig instance with proper peers URLs (local vs normal) tests
 // local tests use localhost urls, while the remaining tests use default values as set in peersConfig var
 func newPeersConfigImpl() *examplePeersConfig {
 	pConfig := verifyIsLocalPeersURLs(peersConfig)
@@ -587,7 +583,7 @@ func (m *exampleNetworkPeers) verifyPeerConfig(p fab.PeerConfig, peerName string
 type exampleChannelConfig struct{}
 
 // ChannelConfig overrides EndpointConfig's ChannelConfig function which returns the channelConfig instance for the channel name arg
-func (m *exampleChannelConfig) ChannelConfig(channelName string) (*fab.ChannelEndpointConfig, bool) {
+func (m *exampleChannelConfig) ChannelConfig(channelName string) *fab.ChannelEndpointConfig {
 	ch, ok := channelsConfig[strings.ToLower(channelName)]
 	if !ok {
 		// EntityMatchers are not used in this implementation, below is an example of how to use them if needed
@@ -596,10 +592,10 @@ func (m *exampleChannelConfig) ChannelConfig(channelName string) (*fab.ChannelEn
 		//	return nil, errors.WithMessage(matchErr, "channel config not found")
 		//}
 		//return matchingChannel, nil
-		return nil, false
+		return &fab.ChannelEndpointConfig{}
 	}
 
-	return &ch, true
+	return &ch
 }
 
 type exampleChannelPeers struct {
@@ -607,7 +603,7 @@ type exampleChannelPeers struct {
 }
 
 // ChannelPeers overrides EndpointConfig's ChannelPeers function which returns the list of peers for the channel name arg
-func (m *exampleChannelPeers) ChannelPeers(channelName string) ([]fab.ChannelPeer, bool) {
+func (m *exampleChannelPeers) ChannelPeers(channelName string) []fab.ChannelPeer {
 	peers := []fab.ChannelPeer{}
 
 	chConfig, ok := channelsConfig[strings.ToLower(channelName)]
@@ -620,7 +616,7 @@ func (m *exampleChannelPeers) ChannelPeers(channelName string) ([]fab.ChannelPee
 		//
 		//// reset 'name' with the mappedChannel as it's referenced further below
 		//chConfig = *matchingChannel
-		return nil, false
+		return nil
 	}
 
 	for peerName, chPeerConfig := range chConfig.Peers {
@@ -634,16 +630,16 @@ func (m *exampleChannelPeers) ChannelPeers(channelName string) ([]fab.ChannelPee
 			//	continue
 			//}
 			//p = *matchingPeerConfig
-			return nil, false
+			return nil
 		}
 
 		if err := m.verifyPeerConfig(p, peerName, endpoint.IsTLSEnabled(p.URL)); err != nil {
-			return nil, false
+			return nil
 		}
 
 		mspID, ok := PeerMSPID(peerName)
 		if !ok {
-			return nil, false
+			return nil
 		}
 
 		networkPeer := fab.NetworkPeer{PeerConfig: p, MSPID: mspID}
@@ -653,7 +649,7 @@ func (m *exampleChannelPeers) ChannelPeers(channelName string) ([]fab.ChannelPee
 		peers = append(peers, peer)
 	}
 
-	return peers, true
+	return peers
 
 }
 
@@ -670,26 +666,23 @@ func (m *exampleChannelPeers) verifyPeerConfig(p fab.PeerConfig, peerName string
 type exampleChannelOrderers struct{}
 
 // ChannelOrderers overrides EndpointConfig's ChannelOrderers function which returns the list of orderers for the channel name arg
-func (m *exampleChannelOrderers) ChannelOrderers(channelName string) ([]fab.OrdererConfig, bool) {
+func (m *exampleChannelOrderers) ChannelOrderers(channelName string) []fab.OrdererConfig {
 	// referencing other interfaces to call ChannelConfig and OrdererConfig to match config yaml content
 	chCfg := &exampleChannelConfig{}
 	oCfg := &exampleOrdererConfig{}
 
 	orderers := []fab.OrdererConfig{}
-	channel, ok := chCfg.ChannelConfig(channelName)
-	if !ok || channel == nil {
-		return nil, false
-	}
+	channel := chCfg.ChannelConfig(channelName)
 
 	for _, chOrderer := range channel.Orderers {
 		orderer, ok := oCfg.OrdererConfig(chOrderer)
 		if !ok || orderer == nil {
-			return nil, false
+			return nil
 		}
 		orderers = append(orderers, *orderer)
 	}
 
-	return orderers, true
+	return orderers
 }
 
 type exampleTLSCACertPool struct {
@@ -699,25 +692,17 @@ type exampleTLSCACertPool struct {
 //newTLSCACertPool will create a new exampleTLSCACertPool instance with useSystemCertPool bool flag
 func newTLSCACertPool(useSystemCertPool bool) *exampleTLSCACertPool {
 	m := &exampleTLSCACertPool{}
-	m.tlsCertPool = commtls.NewCertPool(useSystemCertPool)
+	var err error
+	m.tlsCertPool, err = commtls.NewCertPool(useSystemCertPool)
+	if err != nil {
+		panic(err)
+	}
 	return m
 }
 
 // TLSCACertPool overrides EndpointConfig's TLSCACertPool function which will add the list of cert args to the cert pool and return it
 func (m *exampleTLSCACertPool) TLSCACertPool() fab.CertPool {
 	return m.tlsCertPool
-}
-
-type exampleEventServiceType struct{}
-
-func (m *exampleEventServiceType) EventServiceType() fab.EventServiceType {
-	// if this test is run for the previous release (1.0) then update the config with EVENT_HUB as it doesn't support deliveryService
-	if os.Getenv("FABRIC_SDK_CLIENT_EVENTSERVICE_TYPE") == "eventhub" {
-		return fab.EventHubEventServiceType
-	}
-	return fab.DeliverEventServiceType
-	//or for EventHub service type, but most configs use Delivery Service starting release 1.1
-	//return fab.EventHubEventServiceType
 }
 
 type exampleTLSClientCerts struct {

@@ -32,14 +32,9 @@ client:
   logging:
     level: info
 
-  # eventService:
-  #   # Event service type (optional). If not specified then the type is automatically
-  #   # determined from channel capabilities.
-  #   type: (deliver|eventhub)
-
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
-    path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}
+    path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}
 
   # Some SDKs support pluggable KV stores, the properties under "credentialStore"
   # are implementation specific
@@ -71,9 +66,9 @@ client:
     # [Optional]. Client key and cert for TLS handshake with peers and orderers
     client:
       key:
-        path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/mutual_tls/client_sdk_go-key.pem
+        path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go-key.pem
       cert:
-        path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/mutual_tls/client_sdk_go.pem
+        path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go.pem
 
 #
 # [Optional]. But most apps would have this section so that channel objects can be constructed
@@ -121,7 +116,6 @@ channels:
         minResponses: 1
         #[Optional] channel config will be retrieved for these number of random targets
         maxTargets: 1
-        #[Optional] retry options for query config block
         retryOpts:
           #[Optional] number of retry attempts
           attempts: 5
@@ -131,6 +125,61 @@ channels:
           maxBackoff: 5s
           #[Optional] he factor by which the initial back off period is exponentially incremented
           backoffFactor: 2.0
+      #[Optional] options for selection service
+      selection:
+        #[Optional] endorser selection sorting strategy. Possible values: [BlockHeightPriority,Balanced]
+        SortingStrategy: BlockHeightPriority
+        #[Optional] load-balancer type. Possible values: [RoundRobin,Random]
+        Balancer: RoundRobin
+        #[Optional] the number of blocks from the highest block number of a group of peers that a peer
+        #can lag behind and still be considered to be up-to-date. These peers will be sorted using the
+        #given Balancer. If a peer's block height falls behind this threshold then it will be demoted
+        #to a lower priority list of peers which will be sorted according to block height.
+        #Note: This property only applies to BlockHeightPriority sorter.
+        BlockHeightLagThreshold: 5
+
+      #[Optional] options for event service
+      eventService:
+        # [Optional] resolverStrategy specifies the peer resolver strategy to use when connecting to a peer
+        # Possible values: [PreferOrg (default), MinBlockHeight, Balanced]
+        #
+        # PreferOrg:
+        #   Determines which peers are suitable based on block height lag threshold, although will prefer the peers in the
+        #   current org (as long as their block height is above a configured threshold). If none of the peers from the current org
+        #   are suitable then a peer from another org is chosen.
+        # MinBlockHeight:
+        #   Chooses the best peer according to a block height lag threshold. The maximum block height of all peers is
+        #   determined and the peers whose block heights are under the maximum height but above a provided "lag" threshold are load
+        #   balanced. The other peers are not considered.
+        # Balanced:
+        #   Chooses peers using the configured balancer.
+        resolverStrategy: MinBlockHeight
+
+        # [Optional] balancer is the balancer to use when choosing a peer to connect to
+        # Possible values: [Random (default), RoundRobin]
+
+        balancer: RoundRobin
+
+        # [Optional] blockHeightLagThreshold sets the block height lag threshold. This value is used for choosing a peer
+        # to connect to. If a peer is lagging behind the most up-to-date peer by more than the given number of
+        # blocks then it will be excluded from selection.
+        # Note that this parameter is applicable only when minBlockHeightResolverMode is set to ResolveByThreshold.
+        # Default: 5
+        blockHeightLagThreshold: 4
+
+        # [Optional] reconnectBlockHeightLagThreshold - the event client will disconnect from the peer if the peer's
+        # block height falls behind the specified number of blocks and will reconnect to a better performing peer.
+        # Note that this parameter is only applicable if peerMonitor is set to Enabled (default).
+        # Default: 10
+        # NOTES:
+        #   - Setting this value too low may cause the event client to disconnect/reconnect too frequently, thereby
+        #     affecting performance.
+        reconnectBlockHeightLagThreshold: 8
+
+        # [Optional] peerMonitorPeriod is the period in which the connected peer is monitored to see if
+        # the event client should disconnect from it and reconnect to another peer.
+        # Default: 5s
+        peerMonitorPeriod: 6s
 
   # multi-org test channel
   orgchannel:
@@ -205,7 +254,7 @@ organizations:
   # Orderer Org name
   ordererorg:
       # Membership Service Provider ID for this organization
-      mspID: "OrdererOrg"
+      mspID: OrdererMSP
 
       # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
       cryptoPath: ordererOrganizations/example.com/users/{username}@example.com/msp
@@ -218,7 +267,8 @@ organizations:
 #
 orderers:
   orderer.example.com:
-    url: orderer.example.com:7050
+    # [Optional] Default: Infer from hostname
+    #url: orderer.example.com:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
@@ -237,7 +287,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
@@ -246,10 +296,8 @@ orderers:
 peers:
   peer0.org1.example.com:
     # this URL is used to send endorsement and query requests
-    url: peer0.org1.example.com:7051
-
-    # this URL is used to connect the EventHub and registering event listeners
-    eventUrl: peer0.org1.example.com:7053
+    # [Optional] Default: Infer from hostname
+    #url: peer0.org1.example.com:7051
 
     #TODO to be moved to high level, common for all grpc connections
     grpcOptions:
@@ -266,11 +314,10 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
 
   peer0.org2.example.com:
     url: peer0.org2.example.com:8051
-    eventUrl: peer0.org2.example.com:8053
     #TODO to be moved to high level, common for all grpc connections
     grpcOptions:
       ssl-target-name-override: peer0.org2.example.com
@@ -285,7 +332,7 @@ peers:
       allow-insecure: false
 
     tlsCACerts:
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
 
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
@@ -294,16 +341,20 @@ peers:
 #
 certificateAuthorities:
   ca.org1.example.com:
-    url: https://ca.org1.example.com:7054
+    # [Optional] Default: Infer from hostname
+    #url: https://ca.org1.example.com:7054
+    # [Optional] The optional server name for target override
+    grpcOptions:
+      ssl-target-name-override: ca.org1.example.com
     tlsCACerts:
       # Comma-Separated list of paths
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/ca_root.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/ca.crt
       # Client key and cert for SSL handshake with Fabric CA
       client:
         key:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go-key.pem
         cert:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go.pem
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -313,16 +364,20 @@ certificateAuthorities:
     # [Optional] The optional name of the CA.
     caName: ca.org1.example.com
   ca.org2.example.com:
+    # [Optional] Default: Infer from hostname
     url: https://ca.org2.example.com:8054
+    # [Optional] The optional server name for target override
+    grpcOptions:
+      ssl-target-name-override: ca.org2.example.com
     tlsCACerts:
       # Comma-Separated list of paths
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/ca_root.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/ca.crt
       # Client key and cert for SSL handshake with Fabric CA
       client:
         key:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go-key.pem
         cert:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go.pem
 
      # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
      # needed to enroll and invoke new users.
@@ -332,3 +387,56 @@ certificateAuthorities:
     # [Optional] The optional name of the CA.
     caName: ca.org2.example.com
     #first one
+
+###############################################################################
+#
+#    Operations section
+#    copied from Fabric's core.yaml
+###############################################################################
+operations:
+  # host and port for the operations server
+  listenAddress: 127.0.0.1:8080
+
+  # TLS configuration for the operations endpoint
+  tls:
+    # TLS enabled
+    enabled: false
+
+    # path to PEM encoded server certificate for the operations server
+    cert:
+      file:
+
+    # path to PEM encoded server key for the operations server
+    key:
+      file:
+
+    # require client certificate authentication to access all resources
+    clientAuthRequired: false
+
+    # paths to PEM encoded ca certificates to trust for client authentication
+    clientRootCAs:
+      files: []
+
+###############################################################################
+#
+#    Metrics section
+#    copied from Fabric's core.yaml
+###############################################################################
+metrics:
+  # metrics provider is one of statsd, prometheus, or disabled
+  provider: prometheus
+
+  # statsd configuration
+  statsd:
+    # network type: tcp or udp
+    network: udp
+
+    # statsd server address
+    address: 127.0.0.1:8125
+
+    # the interval at which locally cached counters and gauges are pushed
+    # to statsd; timings are pushed immediately
+    writeInterval: 10s
+
+    # prefix is prepended to all emitted statsd metrics
+    prefix:

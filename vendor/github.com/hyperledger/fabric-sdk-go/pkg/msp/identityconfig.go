@@ -12,8 +12,6 @@ import (
 
 	"github.com/pkg/errors"
 
-	"sort"
-
 	"regexp"
 
 	"io/ioutil"
@@ -27,12 +25,14 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/util/pathvar"
 )
 
+var defaultCAServerSchema = "https"
+var defaultCAServerListenPort = 7054
+
 //ConfigFromBackend returns identity config implementation of given backend
 func ConfigFromBackend(coreBackend ...core.ConfigBackend) (msp.IdentityConfig, error) {
 
 	//create identity config
-	config := &IdentityConfig{backend: lookup.New(coreBackend...),
-		caMatchers: make(map[int]*regexp.Regexp)}
+	config := &IdentityConfig{backend: lookup.New(coreBackend...)}
 
 	//preload config identities
 	err := config.loadIdentityConfigEntities()
@@ -46,17 +46,22 @@ func ConfigFromBackend(coreBackend ...core.ConfigBackend) (msp.IdentityConfig, e
 // IdentityConfig represents the identity configuration for the client
 type IdentityConfig struct {
 	client              *msp.ClientConfig
-	caConfigsByOrg      map[string][]*msp.CAConfig
+	caConfigs           map[string]*msp.CAConfig
 	backend             *lookup.ConfigLookup
 	caKeyStorePath      string
 	credentialStorePath string
-	entityMatchers      *entityMatchers
-	caMatchers          map[int]*regexp.Regexp
+	caMatchers          []matcherEntry
 }
 
 //entityMatchers for identity configuration
 type entityMatchers struct {
 	matchers map[string][]MatchConfig
+}
+
+//matcher entry mapping regex to match config
+type matcherEntry struct {
+	regex       *regexp.Regexp
+	matchConfig MatchConfig
 }
 
 //identityConfigEntity contains all config definitions needed
@@ -83,10 +88,11 @@ type ClientTLSConfig struct {
 
 // CAConfig defines a CA configuration in identity config
 type CAConfig struct {
-	URL        string
-	TLSCACerts endpoint.MutualTLSConfig
-	Registrar  msp.EnrollCredentials
-	CAName     string
+	URL         string
+	GRPCOptions map[string]interface{}
+	TLSCACerts  endpoint.MutualTLSConfig
+	Registrar   msp.EnrollCredentials
+	CAName      string
 }
 
 // MatchConfig contains match pattern and substitution pattern
@@ -95,11 +101,15 @@ type MatchConfig struct {
 	Pattern string
 
 	// these are used for hostname mapping
-	URLSubstitutionExp string
-	MappedHost         string
+	URLSubstitutionExp                  string
+	SSLTargetOverrideURLSubstitutionExp string
+	MappedHost                          string
 
 	// this is used for Name mapping instead of hostname mappings
 	MappedName string
+
+	//IgnoreEndpoint option to exclude given entity from any kind of search or from entity list
+	IgnoreEndpoint bool
 }
 
 // Client returns the Client config
@@ -108,44 +118,38 @@ func (c *IdentityConfig) Client() *msp.ClientConfig {
 }
 
 // CAConfig returns the CA configuration.
-func (c *IdentityConfig) CAConfig(org string) (*msp.CAConfig, bool) {
-	caConfigs, ok := c.caConfigsByOrg[strings.ToLower(org)]
-	if ok {
-		//for now, we're only loading the first Cert Authority by default.
-		return caConfigs[0], true
-	}
-	return nil, false
+func (c *IdentityConfig) CAConfig(caName string) (*msp.CAConfig, bool) {
+	cfg, ok := c.caConfigs[strings.ToLower(caName)]
+	return cfg, ok
 }
 
 //CAClientCert read configuration for the fabric CA client cert bytes for given org
-func (c *IdentityConfig) CAClientCert(org string) ([]byte, bool) {
-	caConfigs, ok := c.caConfigsByOrg[strings.ToLower(org)]
+func (c *IdentityConfig) CAClientCert(caName string) ([]byte, bool) {
+	cfg, ok := c.caConfigs[strings.ToLower(caName)]
 	if ok {
 		//for now, we're only loading the first Cert Authority by default.
-		return caConfigs[0].TLSCAClientCert, true
+		return cfg.TLSCAClientCert, true
 	}
-
 	return nil, false
 }
 
 //CAClientKey read configuration for the fabric CA client key bytes for given org
-func (c *IdentityConfig) CAClientKey(org string) ([]byte, bool) {
-	caConfigs, ok := c.caConfigsByOrg[strings.ToLower(org)]
+func (c *IdentityConfig) CAClientKey(caName string) ([]byte, bool) {
+	cfg, ok := c.caConfigs[strings.ToLower(caName)]
 	if ok {
 		//for now, we're only loading the first Cert Authority by default.
-		return caConfigs[0].TLSCAClientKey, true
+		return cfg.TLSCAClientKey, true
 	}
-
 	return nil, false
 }
 
 // CAServerCerts Read configuration option for the server certificates
 // will send a list of cert bytes for given org
-func (c *IdentityConfig) CAServerCerts(org string) ([][]byte, bool) {
-	caConfigs, ok := c.caConfigsByOrg[strings.ToLower(org)]
+func (c *IdentityConfig) CAServerCerts(caName string) ([][]byte, bool) {
+	cfg, ok := c.caConfigs[strings.ToLower(caName)]
 	if ok {
 		//for now, we're only loading the first Cert Authority by default.
-		return caConfigs[0].TLSCAServerCerts, true
+		return cfg.TLSCAServerCerts, true
 	}
 	return nil, false
 }
@@ -268,46 +272,44 @@ func (c *IdentityConfig) loadCATLSConfig(configEntity *identityConfigEntity) err
 
 func (c *IdentityConfig) loadAllCAConfigs(configEntity *identityConfigEntity) error {
 
-	caConfigsByOrg := make(map[string][]*msp.CAConfig)
+	configs := make(map[string]*msp.CAConfig)
 
-	for orgName, orgConfig := range configEntity.Organizations {
-		var caConfigs []*msp.CAConfig
-		for _, caName := range orgConfig.CertificateAuthorities {
-			if caName == "" {
-				continue
-			}
-			caConfig, ok := configEntity.CertificateAuthorities[strings.ToLower(caName)]
-			if !ok {
-				logger.Debugf("Could not find Certificate Authority for [%s], trying with Entity Matchers", caName)
-				matchedCaConfig, mappedHost := c.tryMatchingCAConfig(configEntity, strings.ToLower(caName))
-				if mappedHost == "" {
-					return errors.Errorf("CA Server Name [%s] not found", caName)
-				}
-				caConfig = *matchedCaConfig
-				logger.Debugf("Mapped Certificate Authority for [%s] to [%s]", caName, mappedHost)
-			}
-			mspCAConfig, err := c.getMSPCAConfig(&caConfig)
-			if err != nil {
-				return err
-			}
-			caConfigs = append(caConfigs, mspCAConfig)
+	for _, ca := range configEntity.CertificateAuthorities {
+
+		matchedCaConfig, ok := c.tryMatchingCAConfig(configEntity, strings.ToLower(ca.CAName))
+		if !ok {
+			continue
 		}
-		caConfigsByOrg[strings.ToLower(orgName)] = caConfigs
+
+		logger.Debugf("Mapped Certificate Authority [%s]", ca.CAName)
+		mspCAConfig, err := c.getMSPCAConfig(ca.CAName, matchedCaConfig)
+		if err != nil {
+			return err
+		}
+		configs[strings.ToLower(ca.CAName)] = mspCAConfig
 	}
 
-	c.caConfigsByOrg = caConfigsByOrg
+	c.caConfigs = configs
 	return nil
 }
 
-func (c *IdentityConfig) getMSPCAConfig(caConfig *CAConfig) (*msp.CAConfig, error) {
+func (c *IdentityConfig) getMSPCAConfig(caName string, caConfig *CAConfig) (*msp.CAConfig, error) {
 
 	serverCerts, err := c.getServerCerts(caConfig)
 	if err != nil {
 		return nil, err
 	}
 
+	var URL string
+	if caConfig.URL == "" {
+		URL = defaultCAServerSchema + "://" + caName + ":" + strconv.Itoa(defaultCAServerListenPort)
+	} else {
+		URL = caConfig.URL
+	}
+
 	return &msp.CAConfig{
-		URL:              caConfig.URL,
+		URL:              URL,
+		GRPCOptions:      caConfig.GRPCOptions,
 		Registrar:        caConfig.Registrar,
 		CAName:           caConfig.CAName,
 		TLSCAClientCert:  caConfig.TLSCACerts.Client.Cert.Bytes(),
@@ -345,91 +347,91 @@ func (c *IdentityConfig) getServerCerts(caConfig *CAConfig) ([][]byte, error) {
 }
 
 func (c *IdentityConfig) compileMatchers() error {
-	entityMatchers := entityMatchers{}
+	entMatchers := entityMatchers{}
 
-	err := c.backend.UnmarshalKey("entityMatchers", &entityMatchers.matchers)
-	logger.Debugf("Matchers are: %+v", entityMatchers)
+	err := c.backend.UnmarshalKey("entityMatchers", &entMatchers.matchers)
+	logger.Debugf("Matchers are: %+v", entMatchers)
 	if err != nil {
-		return errors.WithMessage(err, "failed to parse 'entityMatchers' config item")
+		return errors.WithMessage(err, "failed to parse 'entMatchers' config item")
 	}
 
-	if entityMatchers.matchers["certificateauthority"] != nil {
-		certMatchersConfig := entityMatchers.matchers["certificateauthority"]
-		var err error
-		for i := 0; i < len(certMatchersConfig); i++ {
-			if certMatchersConfig[i].Pattern != "" {
-				c.caMatchers[i], err = regexp.Compile(certMatchersConfig[i].Pattern)
-				if err != nil {
-					return err
-				}
+	caMatcherConfigs := entMatchers.matchers["certificateauthority"]
+	c.caMatchers = make([]matcherEntry, len(caMatcherConfigs))
+
+	if len(caMatcherConfigs) > 0 {
+		for i, v := range caMatcherConfigs {
+			regex, err := regexp.Compile(v.Pattern)
+			if err != nil {
+				return err
 			}
+			c.caMatchers[i] = matcherEntry{regex: regex, matchConfig: v}
 		}
 	}
-	c.entityMatchers = &entityMatchers
+
 	return nil
 }
 
-func (c *IdentityConfig) tryMatchingCAConfig(configEntity *identityConfigEntity, caName string) (*CAConfig, string) {
-	//Return if no caMatchers are configured
-	if len(c.caMatchers) == 0 {
-		return nil, ""
-	}
+func (c *IdentityConfig) tryMatchingCAConfig(configEntity *identityConfigEntity, caName string) (*CAConfig, bool) {
 
-	//sort the keys
-	var keys []int
-	for k := range c.caMatchers {
-		keys = append(keys, k)
-	}
-	sort.Ints(keys)
-
-	//loop over certAuthorityEntityMatchers to find the matching Cert
-	for _, k := range keys {
-		v := c.caMatchers[k]
-		if v.MatchString(caName) {
-			return c.findMatchingCert(configEntity, caName, v, k)
+	//loop over certAuthorityEntityMatchers to find the matching CA Config
+	for _, matcher := range c.caMatchers {
+		if matcher.regex.MatchString(caName) {
+			return c.findMatchingCAConfig(configEntity, caName, matcher)
 		}
 	}
 
-	return nil, ""
-}
-
-func (c *IdentityConfig) findMatchingCert(configEntity *identityConfigEntity, caName string, v *regexp.Regexp, k int) (*CAConfig, string) {
-	// get the matching Config from the index number
-	certAuthorityMatchConfig := c.entityMatchers.matchers["certificateauthority"][k]
-	//Get the certAuthorityMatchConfig from mapped host
-	caConfig, ok := configEntity.CertificateAuthorities[strings.ToLower(certAuthorityMatchConfig.MappedHost)]
+	//Direct lookup, if no caMatchers are configured or no matcher matched
+	caConfig, ok := configEntity.CertificateAuthorities[strings.ToLower(caName)]
 	if !ok {
-		return nil, ""
-	}
-	_, isPortPresentInCAName := c.getPortIfPresent(caName)
-	//if substitution url is empty, use the same network certAuthority url
-	if certAuthorityMatchConfig.URLSubstitutionExp == "" {
-		port, isPortPresent := c.getPortIfPresent(caConfig.URL)
-
-		caConfig.URL = caName
-		//append port of matched config
-		if isPortPresent && !isPortPresentInCAName {
-			caConfig.URL += ":" + strconv.Itoa(port)
-		}
-	} else {
-		//else, replace url with urlSubstitutionExp if it doesnt have any variable declarations like $
-		if !strings.Contains(certAuthorityMatchConfig.URLSubstitutionExp, "$") {
-			caConfig.URL = certAuthorityMatchConfig.URLSubstitutionExp
-		} else {
-			//if the urlSubstitutionExp has $ variable declarations, use regex replaceallstring to replace networkhostname with substituionexp pattern
-			caConfig.URL = v.ReplaceAllString(caName, certAuthorityMatchConfig.URLSubstitutionExp)
-		}
+		return nil, false
 	}
 
-	return &caConfig, certAuthorityMatchConfig.MappedHost
+	if caConfig.GRPCOptions == nil {
+		caConfig.GRPCOptions = make(map[string]interface{})
+	}
+
+	return &caConfig, true
 }
 
-func (c *IdentityConfig) getPortIfPresent(url string) (int, bool) {
-	s := strings.Split(url, ":")
-	if len(s) > 1 {
-		if port, err := strconv.Atoi(s[len(s)-1]); err == nil {
-			return port, true
+func (c *IdentityConfig) findMatchingCAConfig(configEntity *identityConfigEntity, caName string, matcher matcherEntry) (*CAConfig, bool) {
+
+	if matcher.matchConfig.IgnoreEndpoint {
+		logger.Debugf("Ignoring CA `%s` since entity matcher 'IgnoreEndpoint' flag is on", caName)
+		return nil, false
+	}
+
+	mappedHost := matcher.matchConfig.MappedHost
+	if strings.Contains(mappedHost, "$") {
+		mappedHost = matcher.regex.ReplaceAllString(caName, mappedHost)
+	}
+
+	//Get the certAuthorityMatchConfig from mapped host
+	caConfig, ok := configEntity.CertificateAuthorities[strings.ToLower(mappedHost)]
+	if !ok {
+		return nil, false
+	}
+
+	if matcher.matchConfig.URLSubstitutionExp != "" {
+		caConfig.URL = matcher.matchConfig.URLSubstitutionExp
+		//check for regex replace '$'
+		if strings.Contains(caConfig.URL, "$") {
+			caConfig.URL = matcher.regex.ReplaceAllString(caName, caConfig.URL)
 		}
 	}
-	return 0, false
+
+	if caConfig.GRPCOptions == nil {
+		caConfig.GRPCOptions = make(map[string]interface{})
+	}
+
+	//SSLTargetOverrideURLSubstitutionExp if found use from entity matcher otherwise use from mapped host
+	if matcher.matchConfig.SSLTargetOverrideURLSubstitutionExp != "" {
+		hostOverride := matcher.matchConfig.SSLTargetOverrideURLSubstitutionExp
+		//check for regex replace '$'
+		if strings.Contains(hostOverride, "$") {
+			hostOverride = matcher.regex.ReplaceAllString(caName, hostOverride)
+		}
+		caConfig.GRPCOptions["ssl-target-name-override"] = hostOverride
+	}
+
+	return &caConfig, true
 }

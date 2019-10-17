@@ -24,11 +24,34 @@ Profiles:
             Capabilities:
                 <<: *OrdererCapabilities
         Consortiums:
+            TestConsortium:
+                Organizations:
+                - *org1
             SampleConsortium:
                 Organizations:
                     - *org1
                     - *org2
+
+    OneOrgChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+            - *org1
+            Capabilities:
+                <<: *ApplicationCapabilities
+
     TwoOrgsChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *org1
+                - *org2
+            Capabilities:
+                <<: *ApplicationCapabilities
+
+    DsChannel:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
@@ -113,7 +136,7 @@ Orderer: &OrdererDefaults
         - orderer.example.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
-    BatchTimeout: 2s
+    BatchTimeout: 500ms
 
     # Batch Size: Controls the number of messages batched into a block
     BatchSize:

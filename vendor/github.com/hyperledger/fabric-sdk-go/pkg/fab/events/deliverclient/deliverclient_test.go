@@ -10,12 +10,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/options"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/events/api"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client"
 	clientdisp "github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher"
 	clientmocks "github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks"
+	"github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection"
 	delivermocks "github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/seek"
 	esdispatcher "github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher"
@@ -100,7 +103,7 @@ func TestReconnect(t *testing.T) {
 		t.Parallel()
 		testConnect(t, 3, clientmocks.ConnectedOutcome,
 			clientmocks.NewConnectResults(
-				clientmocks.NewConnectResult(clientmocks.ThirdAttempt, clientmocks.SucceedResult),
+				clientmocks.NewConnectResult(clientmocks.ThirdAttempt, delivermocks.ConnFactory),
 			),
 		)
 	})
@@ -120,10 +123,10 @@ func TestReconnect(t *testing.T) {
 	//     -> should fail to reconnect on the first and second attempt but succeed on the third attempt
 	t.Run("#3", func(t *testing.T) {
 		t.Parallel()
-		testReconnect(t, true, 3, clientmocks.ReconnectedOutcome,
+		testReconnect(t, true, 3, clientmocks.ReconnectedOutcome, newDisconnectedEvent(),
 			clientmocks.NewConnectResults(
-				clientmocks.NewConnectResult(clientmocks.FirstAttempt, clientmocks.SucceedResult),
-				clientmocks.NewConnectResult(clientmocks.FourthAttempt, clientmocks.SucceedResult),
+				clientmocks.NewConnectResult(clientmocks.FirstAttempt, delivermocks.ConnFactory),
+				clientmocks.NewConnectResult(clientmocks.FourthAttempt, delivermocks.ConnFactory),
 			),
 		)
 	})
@@ -134,9 +137,9 @@ func TestReconnect(t *testing.T) {
 	//     -> should fail to reconnect after two attempts and then cleanly disconnect
 	t.Run("#4", func(t *testing.T) {
 		t.Parallel()
-		testReconnect(t, true, 2, clientmocks.ClosedOutcome,
+		testReconnect(t, true, 2, clientmocks.ClosedOutcome, newDisconnectedEvent(),
 			clientmocks.NewConnectResults(
-				clientmocks.NewConnectResult(clientmocks.FirstAttempt, clientmocks.SucceedResult),
+				clientmocks.NewConnectResult(clientmocks.FirstAttempt, delivermocks.ConnFactory),
 			),
 		)
 	})
@@ -147,9 +150,22 @@ func TestReconnect(t *testing.T) {
 	//     -> should fail and not attempt to reconnect and then cleanly disconnect
 	t.Run("#5", func(t *testing.T) {
 		t.Parallel()
-		testReconnect(t, false, 0, clientmocks.ClosedOutcome,
+		testReconnect(t, false, 0, clientmocks.ClosedOutcome, newDisconnectedEvent(),
 			clientmocks.NewConnectResults(
-				clientmocks.NewConnectResult(clientmocks.FirstAttempt, clientmocks.SucceedResult),
+				clientmocks.NewConnectResult(clientmocks.FirstAttempt, delivermocks.ConnFactory),
+			),
+		)
+	})
+
+	// (1) Connect
+	//     -> should succeed to connect
+	// (2) Receive 403 (forbidden) status response
+	//     -> should disconnect and close
+	t.Run("#6", func(t *testing.T) {
+		t.Parallel()
+		testReconnect(t, true, 0, clientmocks.ClosedOutcome, newDeliverStatusResponse(cb.Status_FORBIDDEN),
+			clientmocks.NewConnectResults(
+				clientmocks.NewConnectResult(clientmocks.FirstAttempt, delivermocks.ConnFactory),
 			),
 		)
 	})
@@ -174,10 +190,121 @@ func TestReconnectRegistration(t *testing.T) {
 		testReconnectRegistration(
 			t,
 			clientmocks.NewConnectResults(
-				clientmocks.NewConnectResult(clientmocks.FirstAttempt, clientmocks.SucceedResult),
-				clientmocks.NewConnectResult(clientmocks.SecondAttempt, clientmocks.SucceedResult)),
+				clientmocks.NewConnectResult(clientmocks.FirstAttempt, delivermocks.ConnFactory),
+				clientmocks.NewConnectResult(clientmocks.SecondAttempt, delivermocks.ConnFactory)),
 		)
 	})
+}
+
+func TestTransferRegistrations(t *testing.T) {
+	// Tests the scenario where all event registrations are transferred to another event client.
+	t.Run("Transfer", func(t *testing.T) {
+		testTransferRegistrations(t, func(client *Client) (fab.EventSnapshot, error) {
+			return client.TransferRegistrations(false)
+		})
+	})
+
+	// Tests the scenario where one event client is stopped and all
+	// of the event registrations are transferred to another event client.
+	t.Run("CloseAndTransfer", func(t *testing.T) {
+		testTransferRegistrations(t, func(client *Client) (fab.EventSnapshot, error) {
+			return client.TransferRegistrations(true)
+		})
+	})
+}
+
+type transferFunc func(client *Client) (fab.EventSnapshot, error)
+
+func testTransferRegistrations(t *testing.T, transferFunc transferFunc) {
+	channelID := "mychannel"
+
+	ledger := servicemocks.NewMockLedger(delivermocks.BlockEventFactory, sourceURL)
+
+	eventClient1, err := New(
+		newMockContext(),
+		fabmocks.NewMockChannelCfg(channelID),
+		clientmocks.NewDiscoveryService(peer1, peer2),
+		client.WithBlockEvents(),
+		WithSeekType(seek.Newest),
+		withConnectionProvider(
+			clientmocks.NewProviderFactory().Provider(
+				delivermocks.NewConnection(
+					clientmocks.WithLedger(ledger),
+				),
+			),
+		),
+	)
+	require.NoErrorf(t, err, "error creating deliver event client")
+
+	err = eventClient1.Connect()
+	require.NoErrorf(t, err, "error connecting deliver event client")
+
+	breg, beventch, err := eventClient1.RegisterBlockEvent()
+	require.NoErrorf(t, err, "error registering block events")
+
+	ledger.NewBlock(channelID,
+		servicemocks.NewTransaction("txID", pb.TxValidationCode_VALID, cb.HeaderType_ENDORSER_TRANSACTION),
+	)
+	ledger.NewBlock(channelID,
+		servicemocks.NewTransaction("txID", pb.TxValidationCode_VALID, cb.HeaderType_ENDORSER_TRANSACTION),
+	)
+
+	expectBlockNum := uint64(0)
+
+	for i := 0; i < 2; i++ {
+		select {
+		case block := <-beventch:
+			require.Equal(t, expectBlockNum, block.Block.Header.Number)
+		case <-time.After(time.Second):
+			t.Fatalf("timed out waiting for block #%d", expectBlockNum)
+		}
+		expectBlockNum++
+	}
+
+	snapshot, err := transferFunc(eventClient1)
+	require.NoError(t, err)
+	require.Equalf(t, uint64(1), snapshot.LastBlockReceived(), "expecting last block received to be 1")
+
+	// Add a new block to the ledger before connecting new client. After connecting, the new client should request
+	// all blocks starting from the next block.
+	ledger.NewBlock(channelID,
+		servicemocks.NewTransaction("txID", pb.TxValidationCode_VALID, cb.HeaderType_ENDORSER_TRANSACTION),
+	)
+
+	eventClient2, err := New(
+		newMockContext(),
+		fabmocks.NewMockChannelCfg(channelID),
+		clientmocks.NewDiscoveryService(peer1, peer2),
+		client.WithBlockEvents(),
+		esdispatcher.WithSnapshot(snapshot),
+		withConnectionProvider(
+			clientmocks.NewProviderFactory().Provider(
+				delivermocks.NewConnection(
+					clientmocks.WithLedger(ledger),
+				),
+			),
+		),
+	)
+	require.NoErrorf(t, err, "error creating deliver event client")
+
+	err = eventClient2.Connect()
+	require.NoErrorf(t, err, "error connecting deliver event client")
+
+	ledger.NewBlock(channelID,
+		servicemocks.NewTransaction("txID", pb.TxValidationCode_VALID, cb.HeaderType_ENDORSER_TRANSACTION),
+	)
+
+	for i := 0; i < 2; i++ {
+		select {
+		case block := <-beventch:
+			require.Equal(t, expectBlockNum, block.Block.Header.Number)
+		case <-time.After(time.Second):
+			t.Fatalf("timed out waiting for block #%d", expectBlockNum)
+		}
+		expectBlockNum++
+	}
+
+	eventClient2.Unregister(breg)
 }
 
 func testConnect(t *testing.T, maxConnectAttempts uint, expectedOutcome clientmocks.Outcome, connAttemptResult clientmocks.ConnectAttemptResults) {
@@ -193,9 +320,6 @@ func testConnect(t *testing.T, maxConnectAttempts uint, expectedOutcome clientmo
 			cp.FlakeyProvider(
 				connAttemptResult,
 				clientmocks.WithLedger(servicemocks.NewMockLedger(delivermocks.BlockEventFactory, sourceURL)),
-				clientmocks.WithFactory(func(opts ...clientmocks.Opt) clientmocks.Connection {
-					return delivermocks.NewConnection(opts...)
-				}),
 			),
 		),
 		esdispatcher.WithEventConsumerTimeout(time.Second),
@@ -218,7 +342,7 @@ func testConnect(t *testing.T, maxConnectAttempts uint, expectedOutcome clientmo
 	}
 }
 
-func testReconnect(t *testing.T, reconnect bool, maxReconnectAttempts uint, expectedOutcome clientmocks.Outcome, connAttemptResult clientmocks.ConnectAttemptResults) {
+func testReconnect(t *testing.T, reconnect bool, maxReconnectAttempts uint, expectedOutcome clientmocks.Outcome, event esdispatcher.Event, connAttemptResult clientmocks.ConnectAttemptResults) {
 	cp := clientmocks.NewProviderFactory()
 
 	connectch := make(chan *clientdisp.ConnectionEvent)
@@ -234,9 +358,6 @@ func testReconnect(t *testing.T, reconnect bool, maxReconnectAttempts uint, expe
 			cp.FlakeyProvider(
 				connAttemptResult,
 				clientmocks.WithLedger(ledger),
-				clientmocks.WithFactory(func(opts ...clientmocks.Opt) clientmocks.Connection {
-					return delivermocks.NewConnection(opts...)
-				}),
 			),
 		),
 		esdispatcher.WithEventConsumerTimeout(3*time.Second),
@@ -259,7 +380,7 @@ func testReconnect(t *testing.T, reconnect bool, maxReconnectAttempts uint, expe
 	go listenConnection(connectch, outcomech)
 
 	// Test automatic reconnect handling
-	cp.Connection().ProduceEvent(clientdisp.NewDisconnectedEvent(errors.New("testing reconnect handling")))
+	cp.Connection().ProduceEvent(event)
 
 	var outcome clientmocks.Outcome
 
@@ -305,9 +426,6 @@ func testReconnectRegistration(t *testing.T, connectResults clientmocks.ConnectA
 			cp.FlakeyProvider(
 				connectResults,
 				clientmocks.WithLedger(ledger),
-				clientmocks.WithFactory(func(opts ...clientmocks.Opt) clientmocks.Connection {
-					return delivermocks.NewConnection(opts...)
-				}),
 			),
 		),
 		esdispatcher.WithEventConsumerTimeout(3*time.Second),
@@ -474,4 +592,19 @@ func withConnectionProvider(connProvider api.ConnectionProvider) options.Opt {
 // connectionProviderSetter is only used in unit tests
 type connectionProviderSetter interface {
 	SetConnectionProvider(value api.ConnectionProvider)
+}
+
+func newDisconnectedEvent() esdispatcher.Event {
+	return clientdisp.NewDisconnectedEvent(errors.New("testing reconnect handling"))
+}
+
+func newDeliverStatusResponse(status cb.Status) esdispatcher.Event {
+	return connection.NewEvent(
+		&pb.DeliverResponse{
+			Type: &pb.DeliverResponse_Status{
+				Status: status,
+			},
+		},
+		"sourceURL",
+	)
 }

@@ -194,7 +194,7 @@ func (cc *CachingConnector) createConn(ctx context.Context, target string, opts 
 	logger.Debugf("creating connection [%s]", target)
 	conn, err := grpc.DialContext(ctx, target, opts...)
 	if err != nil {
-		return nil, errors.WithMessage(err, "dialing peer failed")
+		return nil, errors.WithMessage(err, "dialing node failed")
 	}
 
 	logger.Debugf("storing connection [%s]", target)
@@ -278,7 +278,6 @@ func (cc *CachingConnector) ensureJanitorStarted() {
 		cc.waitgroup.Add(1)
 		go cc.janitor()
 	default:
-		logger.Debug("janitor already started")
 	}
 }
 
@@ -300,6 +299,7 @@ func (cc *CachingConnector) janitor() {
 	defer cc.waitgroup.Done()
 
 	ticker := time.NewTicker(cc.sweepTime)
+	defer ticker.Stop()
 	for {
 		select {
 		case <-cc.janitorDone:

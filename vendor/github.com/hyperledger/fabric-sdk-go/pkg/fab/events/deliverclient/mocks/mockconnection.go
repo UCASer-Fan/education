@@ -7,10 +7,10 @@ SPDX-License-Identifier: Apache-2.0
 package mocks
 
 import (
-	ab "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/orderer"
 	clientmocks "github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection"
 	cb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common"
+	ab "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/orderer"
 	pb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer"
 	"github.com/pkg/errors"
 )
@@ -25,6 +25,11 @@ const (
 	// ForbiddenResult indicates that the user does not have permission to perform the operation
 	ForbiddenResult clientmocks.Result = "forbidden"
 )
+
+// ConnFactory is a connection factory that creates mock Deliver connections
+var ConnFactory = func(opts ...clientmocks.Opt) clientmocks.Connection {
+	return NewConnection(opts...)
+}
 
 // MockConnection is a fake connection used for unit testing
 type MockConnection struct {

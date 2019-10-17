@@ -7,21 +7,21 @@ SPDX-License-Identifier: Apache-2.0
 package integration
 
 import (
+	"fmt"
 	"os"
-	"path"
-	"time"
+	"path/filepath"
+	"testing"
 
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	mspclient "github.com/hyperledger/fabric-sdk-go/pkg/client/msp"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
+	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status"
 	contextAPI "github.com/hyperledger/fabric-sdk-go/pkg/common/providers/context"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 	fabAPI "github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
 	contextImpl "github.com/hyperledger/fabric-sdk-go/pkg/context"
-	"github.com/hyperledger/fabric-sdk-go/pkg/fab"
-	packager "github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager"
-	"github.com/hyperledger/fabric-sdk-go/pkg/fab/comm"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/resource"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 	"github.com/hyperledger/fabric-sdk-go/pkg/util/test"
@@ -29,6 +29,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/cauthdsl"
 	cb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common"
 	"github.com/pkg/errors"
+	"github.com/stretchr/testify/require"
 )
 
 // BaseSetupImpl implementation of BaseTestSetup
@@ -46,25 +47,47 @@ const (
 	ExampleCCInitB    = "200"
 	ExampleCCUpgradeB = "400"
 	AdminUser         = "Admin"
-	OrdererOrgName    = "ordererorg"
+	OrdererOrgName    = "OrdererOrg"
+	keyExp            = "key-%s-%s"
 )
 
 // ExampleCC query and transaction arguments
-var queryArgs = [][]byte{[]byte("query"), []byte("b")}
-var txArgs = [][]byte{[]byte("move"), []byte("a"), []byte("b"), []byte("1")}
+var defaultQueryArgs = [][]byte{[]byte("query"), []byte("b")}
+var defaultTxArgs = [][]byte{[]byte("move"), []byte("a"), []byte("b"), []byte("1")}
 
 // ExampleCC init and upgrade args
 var initArgs = [][]byte{[]byte("init"), []byte("a"), []byte("100"), []byte("b"), []byte(ExampleCCInitB)}
 var upgradeArgs = [][]byte{[]byte("init"), []byte("a"), []byte("100"), []byte("b"), []byte(ExampleCCUpgradeB)}
+var resetArgs = [][]byte{[]byte("a"), []byte("100"), []byte("b"), []byte(ExampleCCInitB)}
 
-// ExampleCCQueryArgs returns example cc query args
-func ExampleCCQueryArgs() [][]byte {
-	return queryArgs
+// ExampleCCDefaultQueryArgs returns example cc query args
+func ExampleCCDefaultQueryArgs() [][]byte {
+	return defaultQueryArgs
 }
 
-// ExampleCCTxArgs returns example cc move funds args
-func ExampleCCTxArgs() [][]byte {
-	return txArgs
+// ExampleCCQueryArgs returns example cc query args
+func ExampleCCQueryArgs(key string) [][]byte {
+	return [][]byte{[]byte("query"), []byte(key)}
+}
+
+// ExampleCCTxArgs returns example cc query args
+func ExampleCCTxArgs(from, to, val string) [][]byte {
+	return [][]byte{[]byte("move"), []byte(from), []byte(to), []byte(val)}
+}
+
+// ExampleCCDefaultTxArgs returns example cc move funds args
+func ExampleCCDefaultTxArgs() [][]byte {
+	return defaultTxArgs
+}
+
+// ExampleCCTxRandomSetArgs returns example cc set args with random key-value pairs
+func ExampleCCTxRandomSetArgs() [][]byte {
+	return [][]byte{[]byte("set"), []byte(GenerateRandomID()), []byte(GenerateRandomID())}
+}
+
+//ExampleCCTxSetArgs sets the given key value in examplecc
+func ExampleCCTxSetArgs(key, value string) [][]byte {
+	return [][]byte{[]byte("set"), []byte(key), []byte(value)}
 }
 
 //ExampleCCInitArgs returns example cc initialization args
@@ -91,7 +114,7 @@ func IsJoinedChannel(channelID string, resMgmtClient *resmgmt.Client, peer fabAP
 	return false, nil
 }
 
-// Initialize reads configuration from file and sets up client, channel and event hub
+// Initialize reads configuration from file and sets up client and channel
 func (setup *BaseSetupImpl) Initialize(sdk *fabsdk.FabricSDK) error {
 
 	mspClient, err := mspclient.New(sdk.Context(), mspclient.WithOrg(setup.OrgID))
@@ -139,56 +162,33 @@ func (setup *BaseSetupImpl) Initialize(sdk *fabsdk.FabricSDK) error {
 	return nil
 }
 
-// GetDeployPath ..
+// GetDeployPath returns the path to the chaincode fixtures
 func GetDeployPath() string {
-	pwd, _ := os.Getwd()
-	return path.Join(pwd, "../../fixtures/testdata")
+	const ccPath = "test/fixtures/testdata"
+	return filepath.Join(metadata.GetProjectPath(), ccPath)
 }
 
-// InstallAndInstantiateExampleCC install and instantiate using resource management client
-func InstallAndInstantiateExampleCC(sdk *fabsdk.FabricSDK, user fabsdk.ContextOption, orgName string, chainCodeID string) (resmgmt.InstantiateCCResponse, error) {
-	return InstallAndInstantiateCC(sdk, user, orgName, chainCodeID, "github.com/example_cc", "v0", GetDeployPath(), initArgs)
+// GetChannelConfigPath returns the path to the named channel config file
+func GetChannelConfigPath(filename string) string {
+	return filepath.Join(metadata.GetProjectPath(), metadata.ChannelConfigPath, filename)
 }
 
-// InstallAndInstantiateCC install and instantiate using resource management client
-func InstallAndInstantiateCC(sdk *fabsdk.FabricSDK, user fabsdk.ContextOption, orgName string, ccName, ccPath, ccVersion, goPath string, ccArgs [][]byte) (resmgmt.InstantiateCCResponse, error) {
+// GetConfigPath returns the path to the named config fixture file
+func GetConfigPath(filename string) string {
+	const configPath = "test/fixtures/config"
+	return filepath.Join(metadata.GetProjectPath(), configPath, filename)
+}
 
-	ccPkg, err := packager.NewCCPackage(ccPath, goPath)
-	if err != nil {
-		return resmgmt.InstantiateCCResponse{}, errors.WithMessage(err, "creating chaincode package failed")
-	}
+// GetConfigOverridesPath returns the path to the named config override fixture file
+func GetConfigOverridesPath(filename string) string {
+	const configPath = "test/fixtures/config"
+	return filepath.Join(metadata.GetProjectPath(), configPath, "overrides", filename)
+}
 
-	configBackend, err := sdk.Config()
-	if err != nil {
-		return resmgmt.InstantiateCCResponse{}, errors.WithMessage(err, "failed to get config backend")
-	}
-
-	endpointConfig, err := fab.ConfigFromBackend(configBackend)
-	if err != nil {
-		return resmgmt.InstantiateCCResponse{}, errors.WithMessage(err, "failed to get endpoint config")
-	}
-
-	mspID, ok := comm.MSPID(endpointConfig, orgName)
-	if !ok {
-		return resmgmt.InstantiateCCResponse{}, errors.New("looking up MSP ID failed")
-	}
-
-	//prepare context
-	clientContext := sdk.Context(user, fabsdk.WithOrg(orgName))
-
-	// Resource management client is responsible for managing resources (joining channels, install/instantiate/upgrade chaincodes)
-	resMgmtClient, err := resmgmt.New(clientContext)
-	if err != nil {
-		return resmgmt.InstantiateCCResponse{}, errors.WithMessage(err, "Failed to create new resource management client")
-	}
-
-	_, err = resMgmtClient.InstallCC(resmgmt.InstallCCRequest{Name: ccName, Path: ccPath, Version: ccVersion, Package: ccPkg}, resmgmt.WithRetry(retry.DefaultResMgmtOpts))
-	if err != nil {
-		return resmgmt.InstantiateCCResponse{}, err
-	}
-
-	ccPolicy := cauthdsl.SignedByMspMember(mspID)
-	return resMgmtClient.InstantiateCC("mychannel", resmgmt.InstantiateCCRequest{Name: ccName, Path: ccPath, Version: ccVersion, Args: ccArgs, Policy: ccPolicy}, resmgmt.WithRetry(retry.DefaultResMgmtOpts))
+// GetCryptoConfigPath returns the path to the named crypto-config override fixture file
+func GetCryptoConfigPath(filename string) string {
+	const configPath = "test/fixtures/fabric/v1/crypto-config"
+	return filepath.Join(metadata.GetProjectPath(), configPath, filename)
 }
 
 // OrgContext provides SDK client context for a given org
@@ -202,7 +202,7 @@ type OrgContext struct {
 }
 
 // CreateChannelAndUpdateAnchorPeers creates the channel and updates all of the anchor peers for all orgs
-func CreateChannelAndUpdateAnchorPeers(sdk *fabsdk.FabricSDK, channelID string, channelConfigFile string, orgsContext []*OrgContext) error {
+func CreateChannelAndUpdateAnchorPeers(t *testing.T, sdk *fabsdk.FabricSDK, channelID string, channelConfigFile string, orgsContext []*OrgContext) error {
 	ordererCtx := sdk.Context(fabsdk.WithUser(AdminUser), fabsdk.WithOrg(OrdererOrgName))
 
 	// Channel management client is responsible for managing channels (create/update channel)
@@ -211,6 +211,7 @@ func CreateChannelAndUpdateAnchorPeers(sdk *fabsdk.FabricSDK, channelID string, 
 		return errors.New("failed to get a new resmgmt client for orderer")
 	}
 
+	var lastConfigBlock uint64
 	var signingIdentities []msp.SigningIdentity
 	for _, orgCtx := range orgsContext {
 		signingIdentities = append(signingIdentities, orgCtx.SigningIdentity)
@@ -218,7 +219,7 @@ func CreateChannelAndUpdateAnchorPeers(sdk *fabsdk.FabricSDK, channelID string, 
 
 	req := resmgmt.SaveChannelRequest{
 		ChannelID:         channelID,
-		ChannelConfigPath: path.Join("../../../", metadata.ChannelConfigPath, channelConfigFile),
+		ChannelConfigPath: GetChannelConfigPath(channelConfigFile),
 		SigningIdentities: signingIdentities,
 	}
 	_, err = chMgmtClient.SaveChannel(req, resmgmt.WithRetry(retry.DefaultResMgmtOpts), resmgmt.WithOrdererEndpoint("orderer.example.com"))
@@ -226,15 +227,19 @@ func CreateChannelAndUpdateAnchorPeers(sdk *fabsdk.FabricSDK, channelID string, 
 		return err
 	}
 
+	lastConfigBlock = WaitForOrdererConfigUpdate(t, orgsContext[0].ResMgmt, channelID, true, lastConfigBlock)
+
 	for _, orgCtx := range orgsContext {
 		req := resmgmt.SaveChannelRequest{
 			ChannelID:         channelID,
-			ChannelConfigPath: path.Join("../../../", metadata.ChannelConfigPath, orgCtx.AnchorPeerConfigFile),
+			ChannelConfigPath: GetChannelConfigPath(orgCtx.AnchorPeerConfigFile),
 			SigningIdentities: []msp.SigningIdentity{orgCtx.SigningIdentity},
 		}
 		if _, err := orgCtx.ResMgmt.SaveChannel(req, resmgmt.WithRetry(retry.DefaultResMgmtOpts), resmgmt.WithOrdererEndpoint("orderer.example.com")); err != nil {
 			return err
 		}
+
+		lastConfigBlock = WaitForOrdererConfigUpdate(t, orgCtx.ResMgmt, channelID, false, lastConfigBlock)
 	}
 
 	return nil
@@ -256,26 +261,40 @@ func JoinPeersToChannel(channelID string, orgsContext []*OrgContext) error {
 	return nil
 }
 
-// InstallAndInstantiateChaincode installs the given chaincode to all peers in the given orgs and instantiates it on the given channel
-func InstallAndInstantiateChaincode(channelID string, ccPkg *resource.CCPackage, ccID, ccVersion, ccPolicy string, orgs []*OrgContext, collConfigs ...*cb.CollectionConfig) error {
+// InstallChaincodeWithOrgContexts installs the given chaincode to orgs
+func InstallChaincodeWithOrgContexts(orgs []*OrgContext, ccPkg *resource.CCPackage, ccPath, ccID, ccVersion string) error {
 	for _, orgCtx := range orgs {
-		if err := InstallChaincode(orgCtx.ResMgmt, orgCtx.CtxProvider, ccPkg, ccID, ccVersion, orgCtx.Peers); err != nil {
+		if err := InstallChaincode(orgCtx.ResMgmt, ccPkg, ccPath, ccID, ccVersion, orgCtx.Peers); err != nil {
 			return errors.Wrapf(err, "failed to install chaincode to peers in org [%s]", orgCtx.OrgID)
 		}
 	}
-	_, err := InstantiateChaincode(orgs[0].ResMgmt, channelID, ccID, ccVersion, ccPolicy, collConfigs...)
-	return err
+
+	return nil
 }
 
 // InstallChaincode installs the given chaincode to the given peers
-func InstallChaincode(resMgmt *resmgmt.Client, ctxProvider contextAPI.ClientProvider, ccPkg *resource.CCPackage, ccName, ccVersion string, localPeers []fabAPI.Peer) error {
-	installCCReq := resmgmt.InstallCCRequest{Name: ccName, Path: "github.com/example_cc", Version: ccVersion, Package: ccPkg}
+func InstallChaincode(resMgmt *resmgmt.Client, ccPkg *resource.CCPackage, ccPath, ccName, ccVersion string, localPeers []fabAPI.Peer) error {
+	installCCReq := resmgmt.InstallCCRequest{Name: ccName, Path: ccPath, Version: ccVersion, Package: ccPkg}
 	_, err := resMgmt.InstallCC(installCCReq, resmgmt.WithRetry(retry.DefaultResMgmtOpts))
-	return err
+	if err != nil {
+		return err
+	}
+
+	installed, err := queryInstalledCC(resMgmt, ccName, ccVersion, localPeers)
+
+	if err != nil {
+		return err
+	}
+
+	if !installed {
+		return errors.New("chaincode was not installed on all peers")
+	}
+
+	return nil
 }
 
 // InstantiateChaincode instantiates the given chaincode to the given channel
-func InstantiateChaincode(resMgmt *resmgmt.Client, channelID, ccName, ccVersion string, ccPolicyStr string, collConfigs ...*cb.CollectionConfig) (resmgmt.InstantiateCCResponse, error) {
+func InstantiateChaincode(resMgmt *resmgmt.Client, channelID, ccName, ccPath, ccVersion string, ccPolicyStr string, args [][]byte, collConfigs ...*cb.CollectionConfig) (resmgmt.InstantiateCCResponse, error) {
 	ccPolicy, err := cauthdsl.FromString(ccPolicyStr)
 	if err != nil {
 		return resmgmt.InstantiateCCResponse{}, errors.Wrapf(err, "error creating CC policy [%s]", ccPolicyStr)
@@ -285,9 +304,30 @@ func InstantiateChaincode(resMgmt *resmgmt.Client, channelID, ccName, ccVersion 
 		channelID,
 		resmgmt.InstantiateCCRequest{
 			Name:       ccName,
-			Path:       "github.com/example_cc",
+			Path:       ccPath,
 			Version:    ccVersion,
-			Args:       ExampleCCInitArgs(),
+			Args:       args,
+			Policy:     ccPolicy,
+			CollConfig: collConfigs,
+		},
+		resmgmt.WithRetry(retry.DefaultResMgmtOpts),
+	)
+}
+
+// UpgradeChaincode upgrades the given chaincode on the given channel
+func UpgradeChaincode(resMgmt *resmgmt.Client, channelID, ccName, ccPath, ccVersion string, ccPolicyStr string, args [][]byte, collConfigs ...*cb.CollectionConfig) (resmgmt.UpgradeCCResponse, error) {
+	ccPolicy, err := cauthdsl.FromString(ccPolicyStr)
+	if err != nil {
+		return resmgmt.UpgradeCCResponse{}, errors.Wrapf(err, "error creating CC policy [%s]", ccPolicyStr)
+	}
+
+	return resMgmt.UpgradeCC(
+		channelID,
+		resmgmt.UpgradeCCRequest{
+			Name:       ccName,
+			Path:       ccPath,
+			Version:    ccVersion,
+			Args:       args,
 			Policy:     ccPolicy,
 			CollConfig: collConfigs,
 		},
@@ -303,20 +343,133 @@ func DiscoverLocalPeers(ctxProvider contextAPI.ClientProvider, expectedPeers int
 		return nil, errors.Wrap(err, "error creating local context")
 	}
 
-	var peers []fabAPI.Peer
-	for i := 0; i < 10; i++ {
-		peers, err = ctx.LocalDiscoveryService().GetPeers()
+	discoveredPeers, err := retry.NewInvoker(retry.New(retry.TestRetryOpts)).Invoke(
+		func() (interface{}, error) {
+			peers, serviceErr := ctx.LocalDiscoveryService().GetPeers()
+			if serviceErr != nil {
+				return nil, errors.Wrapf(serviceErr, "error getting peers for MSP [%s]", ctx.Identifier().MSPID)
+			}
+			if len(peers) < expectedPeers {
+				return nil, status.New(status.TestStatus, status.GenericTransient.ToInt32(), fmt.Sprintf("Expecting %d peers but got %d", expectedPeers, len(peers)), nil)
+			}
+			return peers, nil
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return discoveredPeers.([]fabAPI.Peer), nil
+}
+
+// EnsureChannelCreatedAndPeersJoined creates a channel, joins all peers in the given orgs to the channel and updates the anchor peers of each org.
+func EnsureChannelCreatedAndPeersJoined(t *testing.T, sdk *fabsdk.FabricSDK, channelID string, channelTxFile string, orgsContext []*OrgContext) error {
+	joined, err := IsJoinedChannel(channelID, orgsContext[0].ResMgmt, orgsContext[0].Peers[0])
+	if err != nil {
+		return err
+	}
+
+	if joined {
+		return nil
+	}
+
+	// Create the channel and update anchor peers for all orgs
+	if err := CreateChannelAndUpdateAnchorPeers(t, sdk, channelID, channelTxFile, orgsContext); err != nil {
+		return err
+	}
+
+	return JoinPeersToChannel(channelID, orgsContext)
+}
+
+// WaitForOrdererConfigUpdate waits until the config block update has been committed.
+// In Fabric 1.0 there is a bug that panics the orderer if more than one config update is added to the same block.
+// This function may be invoked after each config update as a workaround.
+func WaitForOrdererConfigUpdate(t *testing.T, client *resmgmt.Client, channelID string, genesis bool, lastConfigBlock uint64) uint64 {
+
+	blockNum, err := retry.NewInvoker(retry.New(retry.TestRetryOpts)).Invoke(
+		func() (interface{}, error) {
+			chConfig, err := client.QueryConfigFromOrderer(channelID, resmgmt.WithOrdererEndpoint("orderer.example.com"))
+			if err != nil {
+				return nil, status.New(status.TestStatus, status.GenericTransient.ToInt32(), err.Error(), nil)
+			}
+
+			currentBlock := chConfig.BlockNumber()
+			if currentBlock <= lastConfigBlock && !genesis {
+				return nil, status.New(status.TestStatus, status.GenericTransient.ToInt32(), fmt.Sprintf("Block number was not incremented [%d, %d]", currentBlock, lastConfigBlock), nil)
+			}
+			return &currentBlock, nil
+		},
+	)
+
+	require.NoError(t, err)
+	return *blockNum.(*uint64)
+}
+
+func queryInstalledCC(resMgmt *resmgmt.Client, ccName, ccVersion string, peers []fabAPI.Peer) (bool, error) {
+	installed, err := retry.NewInvoker(retry.New(retry.TestRetryOpts)).Invoke(
+		func() (interface{}, error) {
+			ok, err := isCCInstalled(resMgmt, ccName, ccVersion, peers)
+			if err != nil {
+				return &ok, err
+			}
+			if !ok {
+				return &ok, status.New(status.TestStatus, status.GenericTransient.ToInt32(), fmt.Sprintf("Chaincode [%s:%s] is not installed on all peers in Org1", ccName, ccVersion), nil)
+			}
+			return &ok, nil
+		},
+	)
+
+	if err != nil {
+		s, ok := status.FromError(err)
+		if ok && s.Code == status.GenericTransient.ToInt32() {
+			return false, nil
+		}
+		return false, errors.WithMessage(err, "isCCInstalled invocation failed")
+	}
+
+	return *(installed).(*bool), nil
+}
+
+func isCCInstalled(resMgmt *resmgmt.Client, ccName, ccVersion string, peers []fabAPI.Peer) (bool, error) {
+	installedOnAllPeers := true
+	for _, peer := range peers {
+		resp, err := resMgmt.QueryInstalledChaincodes(resmgmt.WithTargets(peer))
 		if err != nil {
-			return nil, errors.Wrapf(err, "error getting peers for MSP [%s]", ctx.Identifier().MSPID)
+			return false, errors.WithMessage(err, "querying for installed chaincodes failed")
 		}
-		if len(peers) >= expectedPeers {
-			break
+
+		found := false
+		for _, ccInfo := range resp.Chaincodes {
+			if ccInfo.Name == ccName && ccInfo.Version == ccVersion {
+				found = true
+				break
+			}
 		}
-		// wait some time to allow the gossip to propagate the peers discovery
-		time.Sleep(3 * time.Second)
+		if !found {
+			installedOnAllPeers = false
+		}
 	}
-	if expectedPeers != len(peers) {
-		return nil, errors.Errorf("Expecting %d peers but got %d", expectedPeers, len(peers))
+	return installedOnAllPeers, nil
+}
+
+//GetKeyName creates random key name based on test name
+func GetKeyName(t *testing.T) string {
+	return fmt.Sprintf(keyExp, t.Name(), GenerateRandomID())
+}
+
+//ResetKeys resets given set of keys in example cc to given value
+func ResetKeys(t *testing.T, ctx contextAPI.ChannelProvider, chaincodeID, value string, keys ...string) {
+	chClient, err := channel.New(ctx)
+	require.NoError(t, err, "Failed to create new channel client for resetting keys")
+	for _, key := range keys {
+		// Synchronous transaction
+		_, e := chClient.Execute(
+			channel.Request{
+				ChaincodeID: chaincodeID,
+				Fcn:         "invoke",
+				Args:        ExampleCCTxSetArgs(key, value),
+			},
+			channel.WithRetry(retry.DefaultChannelOpts))
+		require.NoError(t, e, "Failed to reset keys")
 	}
-	return peers, nil
 }

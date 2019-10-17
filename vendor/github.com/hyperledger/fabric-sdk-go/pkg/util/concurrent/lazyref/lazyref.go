@@ -15,12 +15,17 @@ import (
 	"unsafe"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/logging"
+	"github.com/hyperledger/fabric-sdk-go/pkg/common/options"
 )
 
 var logger = logging.NewLogger("fabsdk/util")
 
 // Initializer is a function that initializes the value
 type Initializer func() (interface{}, error)
+
+// InitializerWithData is a function that initializes the value
+// using the optional data.
+type InitializerWithData func(data interface{}) (interface{}, error)
 
 // Finalizer is a function that is called when the reference
 // is closed
@@ -67,39 +72,45 @@ const (
 // is closed (via a call to Close) or if it expires. (Note: The Finalizer function
 // is not called every time the value is refreshed with the periodic refresh feature.)
 type Reference struct {
-	initialInit        time.Duration
-	wg                 sync.WaitGroup
-	initializer        Initializer
-	finalizer          Finalizer
-	expirationHandler  expirationHandler
-	expirationProvider ExpirationProvider
-	ref                unsafe.Pointer
-	lastTimeAccessed   unsafe.Pointer
-	expiryType         ExpirationType
-	closed             bool
-	running            bool
-	lock               sync.RWMutex
-	closech            chan bool
+	params
+	expirationHandler expirationHandler
+	initializer       InitializerWithData
+	ref               unsafe.Pointer
+	lastTimeAccessed  unsafe.Pointer
+	lock              sync.RWMutex
+	wg                sync.WaitGroup
+	closed            uint32
+	running           bool
+	closech           chan bool
 }
 
 // New creates a new reference
-func New(initializer Initializer, opts ...Opt) *Reference {
+func New(initializer Initializer, opts ...options.Opt) *Reference {
+	return NewWithData(func(interface{}) (interface{}, error) {
+		return initializer()
+	}, opts...)
+}
+
+// NewWithData creates a new reference where data is passed from the Get
+// function to the initializer. This is useful for refreshing the reference
+// with dynamic data.
+func NewWithData(initializer InitializerWithData, opts ...options.Opt) *Reference {
 	lazyRef := &Reference{
+		params: params{
+			initialInit: InitOnFirstAccess,
+		},
 		initializer: initializer,
-		initialInit: InitOnFirstAccess,
 	}
 
-	for _, opt := range opts {
-		opt(lazyRef)
-	}
+	options.Apply(lazyRef, opts)
 
 	if lazyRef.expirationProvider != nil {
 		// This is an expiring reference. After the initializer is
 		// called, set a timer that will call the expiration handler.
 		initializer := lazyRef.initializer
 		initialExpiration := lazyRef.expirationProvider()
-		lazyRef.initializer = func() (interface{}, error) {
-			value, err := initializer()
+		lazyRef.initializer = func(data interface{}) (interface{}, error) {
+			value, err := initializer(data)
 			if err == nil {
 				lazyRef.ensureTimerStarted(initialExpiration)
 			}
@@ -109,9 +120,13 @@ func New(initializer Initializer, opts ...Opt) *Reference {
 		lazyRef.closech = make(chan bool, 1)
 
 		if lazyRef.expirationHandler == nil {
-			// Set a default expiration handler
-			lazyRef.expirationHandler = lazyRef.resetValue
+			if lazyRef.expiryType == Refreshing {
+				lazyRef.expirationHandler = lazyRef.refreshValue
+			} else {
+				lazyRef.expirationHandler = lazyRef.resetValue
+			}
 		}
+
 		if lazyRef.initialInit >= 0 {
 			lazyRef.ensureTimerStarted(lazyRef.initialInit)
 		}
@@ -120,8 +135,17 @@ func New(initializer Initializer, opts ...Opt) *Reference {
 	return lazyRef
 }
 
+// IsClosed returns true if the referenced has been closed
+func (r *Reference) IsClosed() bool {
+	return atomic.LoadUint32(&r.closed) == 1
+}
+
 // Get returns the value, or an error if the initialiser returned an error.
-func (r *Reference) Get() (interface{}, error) {
+func (r *Reference) Get(data ...interface{}) (interface{}, error) {
+	if r.IsClosed() {
+		return nil, errors.New("reference is already closed")
+	}
+
 	// Try outside of a lock
 	if value, ok := r.get(); ok {
 		return value, nil
@@ -130,18 +154,13 @@ func (r *Reference) Get() (interface{}, error) {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
-	if r.closed {
-		return nil, errors.New("reference is already closed")
-	}
-
 	// Try again inside the lock
 	if value, ok := r.get(); ok {
 		return value, nil
 	}
 
 	// Value hasn't been set yet
-
-	value, err := r.initializer()
+	value, err := r.initializer(first(data))
 	if err != nil {
 		return nil, err
 	}
@@ -178,13 +197,7 @@ func (r *Reference) Close() {
 }
 
 func (r *Reference) setClosed() bool {
-	r.lock.Lock()
-	defer r.lock.Unlock()
-	if r.closed {
-		return false
-	}
-	r.closed = true
-	return true
+	return atomic.CompareAndSwapUint32(&r.closed, 0, 1)
 }
 
 func (r *Reference) notifyClosing() {
@@ -210,12 +223,12 @@ func (r *Reference) isSet() bool {
 }
 
 func (r *Reference) set(value interface{}) {
-	atomic.StorePointer(&r.ref, unsafe.Pointer(&valueHolder{value: value})) //nolint
+	atomic.StorePointer(&r.ref, unsafe.Pointer(&valueHolder{value: value})) // nolint: gas
 }
 
 func (r *Reference) setLastAccessed() {
 	now := time.Now()
-	atomic.StorePointer(&r.lastTimeAccessed, unsafe.Pointer(&now)) //nolint
+	atomic.StorePointer(&r.lastTimeAccessed, unsafe.Pointer(&now)) // nolint: gas
 }
 
 func (r *Reference) lastAccessed() time.Time {
@@ -227,7 +240,7 @@ func (r *Reference) setTimerRunning() bool {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
-	if r.running || r.closed {
+	if r.running || r.IsClosed() {
 		logger.Debug("Cannot start timer since timer is either already running or it is closed")
 		return false
 	}
@@ -346,9 +359,16 @@ func (r *Reference) resetValue() {
 // Note: This function is invoked from inside a write
 // lock so there's no need to lock
 func (r *Reference) refreshValue() {
-	if value, err := r.initializer(); err != nil {
+	if value, err := r.initializer(nil); err != nil {
 		logger.Warnf("Error - initializer returned error: %s. Will retry again later", err)
 	} else {
 		r.set(value)
 	}
+}
+
+func first(data []interface{}) interface{} {
+	if len(data) == 0 {
+		return nil
+	}
+	return data[0]
 }

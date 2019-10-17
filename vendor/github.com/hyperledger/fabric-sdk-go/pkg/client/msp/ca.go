@@ -136,3 +136,62 @@ type RemoveIdentityRequest struct {
 	// Name of the CA
 	CAName string
 }
+
+// AffiliationRequest represents the request to add/remove affiliation to the fabric-ca-server
+type AffiliationRequest struct {
+	// Name of the affiliation
+	Name string
+
+	// Creates parent affiliations if they do not exist
+	Force bool
+
+	// Name of the CA
+	CAName string
+}
+
+// ModifyAffiliationRequest represents the request to modify an existing affiliation on the
+// fabric-ca-server
+type ModifyAffiliationRequest struct {
+	AffiliationRequest
+
+	// New name of the affiliation
+	NewName string
+}
+
+// AffiliationResponse contains the response for get, add, modify, and remove an affiliation
+type AffiliationResponse struct {
+	AffiliationInfo
+	CAName string
+}
+
+// AffiliationInfo contains the affiliation name, child affiliation info, and identities
+// associated with this affiliation.
+type AffiliationInfo struct {
+	Name         string
+	Affiliations []AffiliationInfo
+	Identities   []IdentityInfo
+}
+
+// IdentityInfo contains information about an identity
+type IdentityInfo struct {
+	ID             string
+	Type           string
+	Affiliation    string
+	Attributes     []Attribute
+	MaxEnrollments int
+}
+
+// GetCAInfoResponse is the response from the GetCAInfo call
+type GetCAInfoResponse struct {
+	// CAName is the name of the CA
+	CAName string
+	// CAChain is the PEM-encoded bytes of the fabric-ca-server's CA chain.
+	// The 1st element of the chain is the root CA cert
+	CAChain []byte
+	// Idemix issuer public key of the CA
+	IssuerPublicKey []byte
+	// Idemix issuer revocation public key of the CA
+	IssuerRevocationPublicKey []byte
+	// Version of the server
+	Version string
+}

@@ -7,14 +7,14 @@ SPDX-License-Identifier: Apache-2.0
 package integration
 
 import (
+	"fmt"
 	"math/rand"
 	"os"
-	"testing"
-
-	"fmt"
-
 	"strings"
+	"testing"
+	"time"
 
+	mspclient "github.com/hyperledger/fabric-sdk-go/pkg/client/msp"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
@@ -27,8 +27,9 @@ import (
 )
 
 const (
-	adminUser      = "Admin"
-	ordererOrgName = "ordererorg"
+	adminUser       = "Admin"
+	ordererOrgName  = "OrdererOrg"
+	ordererEndpoint = "orderer.example.com"
 )
 
 // GenerateRandomID generates random ID
@@ -40,8 +41,10 @@ func GenerateRandomID() string {
 func randomString(strlen int) string {
 	const chars = "abcdefghijklmnopqrstuvwxyz0123456789"
 	result := make([]byte, strlen)
+	seed := rand.NewSource(time.Now().UnixNano())
+	rnd := rand.New(seed)
 	for i := 0; i < strlen; i++ {
-		result[i] = chars[rand.Intn(len(chars))]
+		result[i] = chars[rnd.Intn(len(chars))]
 	}
 	return string(result)
 }
@@ -60,7 +63,7 @@ func InitializeChannel(sdk *fabsdk.FabricSDK, orgID string, req resmgmt.SaveChan
 			return errors.Wrapf(err, "create channel failed")
 		}
 
-		_, err = JoinChannel(sdk, req.ChannelID, orgID)
+		_, err = JoinChannel(sdk, req.ChannelID, orgID, targets)
 		if err != nil {
 			return errors.Wrapf(err, "join channel failed")
 		}
@@ -106,7 +109,7 @@ func CreateChannel(sdk *fabsdk.FabricSDK, req resmgmt.SaveChannelRequest) (bool,
 	}
 
 	// Create channel (or update if it already exists)
-	if _, err = resMgmtClient.SaveChannel(req, resmgmt.WithRetry(retry.DefaultResMgmtOpts)); err != nil {
+	if _, err = resMgmtClient.SaveChannel(req, resmgmt.WithRetry(retry.DefaultResMgmtOpts), resmgmt.WithOrdererEndpoint(ordererEndpoint)); err != nil {
 		return false, err
 	}
 
@@ -114,7 +117,7 @@ func CreateChannel(sdk *fabsdk.FabricSDK, req resmgmt.SaveChannelRequest) (bool,
 }
 
 // JoinChannel attempts to save the named channel.
-func JoinChannel(sdk *fabsdk.FabricSDK, name, orgID string) (bool, error) {
+func JoinChannel(sdk *fabsdk.FabricSDK, name, orgID string, targets []string) (bool, error) {
 	//prepare context
 	clientContext := sdk.Context(fabsdk.WithUser(adminUser), fabsdk.WithOrg(orgID))
 
@@ -124,7 +127,11 @@ func JoinChannel(sdk *fabsdk.FabricSDK, name, orgID string) (bool, error) {
 		return false, errors.WithMessage(err, "Failed to create new resource management client")
 	}
 
-	if err = resMgmtClient.JoinChannel(name, resmgmt.WithRetry(retry.DefaultResMgmtOpts)); err != nil {
+	if err := resMgmtClient.JoinChannel(
+		name,
+		resmgmt.WithRetry(retry.DefaultResMgmtOpts),
+		resmgmt.WithTargetEndpoints(targets...),
+		resmgmt.WithOrdererEndpoint(ordererEndpoint)); err != nil {
 		return false, nil
 	}
 	return true, nil
@@ -147,6 +154,69 @@ func OrgTargetPeers(orgs []string, configBackend ...core.ConfigBackend) ([]strin
 		peers = append(peers, orgConfig.Peers...)
 	}
 	return peers, nil
+}
+
+// SetupMultiOrgContext creates an OrgContext for two organizations in the org channel.
+func SetupMultiOrgContext(sdk *fabsdk.FabricSDK, org1Name string, org2Name string, org1AdminUser string, org2AdminUser string) ([]*OrgContext, error) {
+	org1AdminContext := sdk.Context(fabsdk.WithUser(org1AdminUser), fabsdk.WithOrg(org1Name))
+	org1ResMgmt, err := resmgmt.New(org1AdminContext)
+	if err != nil {
+		return nil, err
+	}
+
+	org1MspClient, err := mspclient.New(sdk.Context(), mspclient.WithOrg(org1Name))
+	if err != nil {
+		return nil, err
+	}
+	org1Admin, err := org1MspClient.GetSigningIdentity(org1AdminUser)
+	if err != nil {
+		return nil, err
+	}
+
+	org2AdminContext := sdk.Context(fabsdk.WithUser(org2AdminUser), fabsdk.WithOrg(org2Name))
+	org2ResMgmt, err := resmgmt.New(org2AdminContext)
+	if err != nil {
+		return nil, err
+	}
+
+	org2MspClient, err := mspclient.New(sdk.Context(), mspclient.WithOrg(org2Name))
+	if err != nil {
+		return nil, err
+	}
+	org2Admin, err := org2MspClient.GetSigningIdentity(org2AdminUser)
+	if err != nil {
+		return nil, err
+	}
+
+	// Ensure that Gossip has propagated its view of local peers before invoking
+	// install since some peers may be missed if we call InstallCC too early
+	org1Peers, err := DiscoverLocalPeers(org1AdminContext, 2)
+	if err != nil {
+		return nil, errors.WithMessage(err, "discovery of local peers failed")
+	}
+	org2Peers, err := DiscoverLocalPeers(org2AdminContext, 2)
+	if err != nil {
+		return nil, errors.WithMessage(err, "discovery of local peers failed")
+	}
+
+	return []*OrgContext{
+		{
+			OrgID:                org1Name,
+			CtxProvider:          org1AdminContext,
+			ResMgmt:              org1ResMgmt,
+			Peers:                org1Peers,
+			SigningIdentity:      org1Admin,
+			AnchorPeerConfigFile: "orgchannelOrg1MSPanchors.tx",
+		},
+		{
+			OrgID:                org2Name,
+			CtxProvider:          org2AdminContext,
+			ResMgmt:              org2ResMgmt,
+			Peers:                org2Peers,
+			SigningIdentity:      org2Admin,
+			AnchorPeerConfigFile: "orgchannelOrg2MSPanchors.tx",
+		},
+	}, nil
 }
 
 // HasPeerJoinedChannel checks whether the peer has already joined the channel.

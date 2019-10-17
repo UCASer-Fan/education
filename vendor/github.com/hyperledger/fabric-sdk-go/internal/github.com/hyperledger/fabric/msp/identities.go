@@ -1,17 +1,7 @@
 /*
-Copyright IBM Corp. 2016 All Rights Reserved.
+Copyright IBM Corp. All Rights Reserved.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-		 http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+SPDX-License-Identifier: Apache-2.0
 */
 /*
 Notice: This file has been modified for Hyperledger Fabric SDK Go usage.
@@ -25,10 +15,11 @@ import (
 	"crypto/rand"
 	"crypto/x509"
 	"encoding/hex"
-	"encoding/pem"
-	"time"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
+
+	"encoding/pem"
+	"time"
 
 	"github.com/golang/protobuf/proto"
 	bccsp "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/sdkpatch/cryptosuitebridge"
@@ -38,7 +29,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-var mspIdentityLogger = flogging.MustGetLogger("msp/identity")
+var mspIdentityLogger = flogging.MustGetLogger("msp.identity")
 
 type identity struct {
 	// id contains the identifier (MSPID and identity identifier) for this instance
@@ -105,7 +96,7 @@ func (id *identity) GetMSPIdentifier() string {
 	return id.id.Mspid
 }
 
-// IsValid returns nil if this instance is a valid identity or an error otherwise
+// Validate returns nil if this instance is a valid identity or an error otherwise
 func (id *identity) Validate() error {
 	return id.msp.Validate(id)
 }
@@ -134,6 +125,7 @@ func (id *identity) GetOrganizationalUnits() []*OUIdentifier {
 	return res
 }
 
+// Anonymous returns true if this identity provides anonymity
 func (id *identity) Anonymous() bool {
 	return false
 }
@@ -243,6 +235,8 @@ func (id *signingidentity) Sign(msg []byte) ([]byte, error) {
 	return id.signer.Sign(rand.Reader, digest, nil)
 }
 
+// GetPublicVersion returns the public version of this identity,
+// namely, the one that is only able to verify messages and not sign them
 func (id *signingidentity) GetPublicVersion() Identity {
 	return &id.identity
 }

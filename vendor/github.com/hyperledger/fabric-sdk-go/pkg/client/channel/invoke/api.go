@@ -18,13 +18,20 @@ import (
 	pb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer"
 )
 
+// CCFilter returns true if the given chaincode should be included
+// in the invocation chain when computing endorsers.
+type CCFilter func(ccID string) bool
+
 // Opts allows the user to specify more advanced options
 type Opts struct {
 	Targets       []fab.Peer // targets
 	TargetFilter  fab.TargetFilter
+	TargetSorter  fab.TargetSorter
 	Retry         retry.Opts
+	BeforeRetry   retry.BeforeRetryHandler
 	Timeouts      map[fab.TimeoutType]time.Duration
 	ParentContext reqContext.Context //parent grpc context
+	CCFilter      CCFilter
 }
 
 // Request contains the parameters to execute transaction
@@ -79,4 +86,5 @@ type RequestContext struct {
 	RetryHandler    retry.Handler
 	Ctx             reqContext.Context
 	SelectionFilter selectopts.PeerFilter
+	PeerSorter      selectopts.PeerSorter
 }

@@ -16,9 +16,16 @@ IMPORT_SUBSTS=($IMPORT_SUBSTS)
 GOIMPORTS_CMD=goimports
 GOFILTER_CMD="go run scripts/_go/src/gofilter/cmd/gofilter/gofilter.go"
 
+# Create and populate patching directory.
+declare TMP=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
+declare PATCH_PROJECT_PATH=$TMP/src/$UPSTREAM_PROJECT
+cp -R ${TMP_PROJECT_PATH} ${PATCH_PROJECT_PATH}
+declare TMP_PROJECT_PATH=${PATCH_PROJECT_PATH}
+
 declare -a PKGS=(
     "api"
     "lib"
+    "lib/attrmgr"
     "lib/streamer"
     "lib/tls"
     "lib/client"
@@ -34,6 +41,7 @@ declare -a FILES=(
     "api/client.go"
     "api/net.go"
 
+    "lib/attrmgr/attrmgr.go"
     "lib/client.go"
     "lib/identity.go"
     "lib/clientconfig.go"
@@ -58,10 +66,6 @@ declare -a FILES=(
     "util/util.go"
     "util/csp.go"
 )
-
-echo 'Removing current upstream project from working directory ...'
-rm -Rf "${INTERNAL_PATH}"
-mkdir -p "${INTERNAL_PATH}"
 
 # Create directory structure for packages
 for i in "${PKGS[@]}"
@@ -92,17 +96,17 @@ FILTER_MODE="allow"
 FILTERS_ENABLED="fn"
 
 FILTER_FILENAME="lib/client.go"
-FILTER_FN="Enroll,GenCSR,SendReq,Init,newPost,newEnrollmentResponse,newCertificateRequest,newPut,newGet,newDelete,StreamResponse"
+FILTER_FN="Enroll,GetCAInfo,GenCSR,SendReq,Init,newPost,newEnrollmentResponse,newCertificateRequest,newPut,newGet,newDelete,StreamResponse"
 FILTER_FN+=",getURL,NormalizeURL,initHTTPClient,net2LocalServerInfo,NewIdentity,newCfsslBasicKeyRequest"
 FILTER_FN+=",handleIdemixEnroll,checkX509Enrollment,handleX509Enroll,GetCSP,NewX509Identity,net2LocalCAInfo"
 gofilter
 sed -i'' -e 's/util.GetServerPort()/\"\"/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
-sed -i'' -e '/log "github.com\// a\
-"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"\
-' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/import (/ a\"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.BCCSP/core.CryptoSuite/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.Key/core.Key/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/\/\/ Initialize BCCSP (the crypto layer)/c.csp = cfg.CSP/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/\*idemix.IssuerPublicKey/d' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/\/\/[[[:space:]]Public[[:space:]]key[[:space:]]of[[:space:]]Idemix[[:space:]]issuer/d' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 START_LINE=`grep -n "c.csp, err = util.InitBCCSP(&cfg.CSP, mspDir, c.HomeDir)" "${TMP_PROJECT_PATH}/${FILTER_FILENAME}" | head -n 1 | awk -F':' '{print $1}'`
 for i in {1..4}
 do
@@ -122,23 +126,83 @@ do
 done
 sed -i'' -e 's/return c.newIdemixEnrollmentResponse(identity, &result, sk, req.Name)/return nil, errors.New("idemix enroll not supported")/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/x509Cred := x509cred.NewCredential(c.certFile, c.keyFile, c)/x509Cred := x509cred.NewCredential(key, certByte, c)/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
-
+sed -i'' -e 's/func (c \*Client) initHTTPClient() error {/func (c \*Client) initHTTPClient(serverName string) error {/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e 's/err = c.initHTTPClient()/err = c.initHTTPClient(cfg.ServerName)/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/tlsConfig.CipherSuites = tls.DefaultCipherSuites/ a\
+//set the host name override \
+tlsConfig.ServerName = serverName\
+' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+# TODO remove below sed call for lib/client.go once Fabric CA v1.3 is not supported by the SDK anymore
+sed -i'' -e '$a\
+\
+/\/\ GetFabCAVersion is a utility function to fetch the Fabric CA version for this client\
+/\/\ TODO remove the function below once Fabric CA v1.3 is not supported by the SDK anymore\
+func (c \*Client) GetFabCAVersion() (string, error) {\
+    	i, e := c.GetCAInfo(&api.GetCAInfoRequest{CAName: c.Config.CAName})\
+	if e != nil {\
+		return "", e\
+	}\
+	return i.Version, nil\
+}\
+' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 
 FILTER_FILENAME="lib/identity.go"
-FILTER_FN="newIdentity,Revoke,Post,addTokenAuthHdr,GetECert,Reenroll,Register,GetName,GetAllIdentities,GetIdentity,AddIdentity,ModifyIdentity,RemoveIdentity,Get,Put,Delete,GetStreamResponse,NewIdentity"
+FILTER_FN="newIdentity,Revoke,Post,addTokenAuthHdr,GetECert,Reenroll,Register,GetName,GetAllIdentities,GetIdentity,AddIdentity,ModifyIdentity,RemoveIdentity,Get,Put,Delete,GetStreamResponse,NewIdentity,GetAffiliation,GetAllAffiliations,AddAffiliation,ModifyAffiliation,RemoveAffiliation"
 gofilter
 sed -i'' -e 's/util.GetDefaultBCCSP()/nil/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
-sed -i'' -e '/log "github.com\// a\
-"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"\
-' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/import (/ a\"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.BCCSP/core.CryptoSuite/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.Key/core.Key/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+# TODO remove below sed calls for lib/identity.go once Fabric CA v1.3 is not supported by the SDK anymore
+sed -i'' -e '/\"strconv\"/ a\
+    "strings"
+' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/func (i \*Identity) addTokenAuthHdr(req \*http.Request, body \[\]byte) error {/ a\
+    /\/\ TODO remove the below compatibility logic once Fabric CA v1.3 is not supported by the SDK anymore\
+	caVer, e := i.client.GetFabCAVersion()\
+	if e != nil {\
+		return errors.WithMessage(e, "Failed to add token authorization header because client is unable to fetch the Fabric CA version")\
+	}\
+	compatibility := isCompatibleFabCA(caVer)\
+' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e 's/token, err = cred.CreateToken(req, body)/token, err = cred.CreateToken(req, body, compatibility)/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '$a\
+\
+/\/\ TODO remove the function below once Fabric CA v1.3 is not supported by the SDK anymore\
+func isCompatibleFabCA(caVersion string) bool {\
+	versions := strings.Split(caVersion, ".")\
+	\/\/ 1.0-1.3 -> set Compatible CA to true, otherwise (1.4 and above) set false\
+	if len(versions) > 1 {\
+		majv, e := strconv.Atoi(versions[0])\
+		if e != nil {\
+			log.Debugf("Fabric CA version retrieval format returned error, will not use Compatible Fabric CA setup in the client: %s", e)\
+			return false\
+		}\
+		if majv == 0 {\
+			return true\
+		}\
+\
+		minv, e := strconv.Atoi(versions[1])\
+		if e != nil {\
+			log.Debugf("Fabric CA version retrieval format returned error, will not use Compatible Fabric CA setup in the client: %s", e)\
+			return false\
+		}\
+		if majv == 1 && minv < 4 {\
+			return true\
+		}\
+	}\
+	return false\
+}\
+' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 
 FILTER_FILENAME="lib/clientconfig.go"
 FILTER_FN=
 gofilter
+sed -i'' -e '/import (/ a\"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/*factory.FactoryOpts/core.CryptoSuite/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
-
+sed -i'' -e '/core.CryptoSuite `mapstructure:"bccsp" hide:"true"`/ a\
+ServerName string           `help:"CA server name to be used in case of host name override"`\
+' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 
 FILTER_FILENAME="lib/util.go"
 FILTER_FN="GetCertID,BytesToX509Cert,addQueryParm"
@@ -151,9 +215,7 @@ gofilter
 FILTER_FILENAME="lib/tls/tls.go"
 FILTER_FN="GetClientTLSConfig,checkCertDates"
 gofilter
-sed -i'' -e '/log "github.com\// a\
-"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"\
-' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/import (/ a\"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.BCCSP/core.CryptoSuite/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 START_LINE=`grep -n "// ServerTLSConfig defines key material for a TLS server" "${TMP_PROJECT_PATH}/${FILTER_FILENAME}" | head -n 1 | awk -F':' '{print $1}'`
 for i in {1..14}
@@ -181,12 +243,16 @@ do
     sed -i'' -e ${START_LINE}'d' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 done
 
+# TODO remove below filter once Fabric CA v1.3 is not supported by the SDK anymore
+FILTER_FILENAME="lib/client/credential/credential.go"
+FILTER_FN=
+gofilter
+sed -i'' -e 's/CreateToken(req \*http.Request, reqBody \[\]byte) (string, error)/CreateToken(req *http.Request, reqBody []byte, fabCACompatibilityMode bool) (string, error)/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+
 FILTER_FILENAME="lib/client/credential/x509/credential.go"
 FILTER_FN=",NewCredential,Type,Val,EnrollmentID,SetVal,Load,Store,CreateToken,RevokeSelf,getCSP"
 gofilter
-sed -i'' -e '/"encoding\/hex"/ a\
-"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"\
-' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/import (/ a\"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e '/"github.com\/cloudflare/ a\
 factory "github.com\/hyperledger\/fabric-sdk-go\/internal\/github.com\/hyperledger\/fabric-ca\/sdkpatch\/cryptosuitebridge"\
 ' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
@@ -210,18 +276,18 @@ do
     sed -i'' -e ${START_LINE}'d' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 done
 sed -i'' -e 's/log.Infof("Stored client certificate at %s", cred.certFile)/log.Debugf("Credential.Store() not supported")/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
-
+# TODO remove below 2 sed commands once Fabric CA v1.3 is not supported by the SDK anymore
+sed -i'' -e 's/func (cred \*Credential) CreateToken(req \*http.Request, reqBody \[\]byte) (string, error) {/func (cred *Credential) CreateToken(req *http.Request, reqBody []byte, fabCACompatibilityMode bool) (string, error) {/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e 's/return util.CreateToken(cred.getCSP(), cred.val.certBytes, cred.val.key, req.Method, req.URL.RequestURI(), reqBody)/return util.CreateToken(cred.getCSP(), cred.val.certBytes, cred.val.key, req.Method, req.URL.RequestURI(), reqBody, fabCACompatibilityMode)/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 
 
 
 FILTER_FILENAME="lib/client/credential/x509/signer.go"
 FILTER_FN=",NewSigner,Key,Cert,GetX509Cert,GetName,Attributes"
 gofilter
-sed -i'' -e '/"github.com\/cloudflare/ a\
-"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"\
-' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/import (/ a\"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.Key/core.Key/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
-
+sed -i'' -e 's/github.com\/hyperledger\/fabric\/common\/attrmgr/github.com\/hyperledger\/fabric\/core\/chaincode\/shim\/ext\/attrmgr/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 
 FILTER_FILENAME="util/csp.go"
 FILTER_FN=",getBCCSPKeyOpts,ImportBCCSPKeyFromPEM,LoadX509KeyPair,GetSignerFromCert,BCCSPKeyRequestGenerate,GetSignerFromCertFile"
@@ -229,9 +295,7 @@ gofilter
 sed -i'' -e '/_.\"time\"/d' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e '/\"github.com\/cloudflare\/cfssl\/cli\"/d' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e '/\"github.com\/cloudflare\/cfssl\/ocsp\"/d' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
-sed -i'' -e '/log "github.com\// a\
-"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"\
-' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/import (/ a\"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.BCCSP/core.CryptoSuite/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.Key/core.Key/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/&factory.SwOpts{}/factory.NewSwOpts()/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
@@ -280,18 +344,31 @@ FILTER_FILENAME="util/util.go"
 FILTER_FN="ReadFile,HTTPRequestToString,HTTPResponseToString"
 FILTER_FN+=",GetX509CertificateFromPEM,GetSerialAsHex,GetEnrollmentIDFromPEM"
 FILTER_FN+=",MakeFileAbs,Marshal,StructToString,LoadX509KeyPair,CreateToken"
-FILTER_FN+=",GenECDSAToken,GetEnrollmentIDFromX509Certificate,B64Encode,B64Decode"
+FILTER_FN+=",GenECDSAToken,genECDSAToken,GetEnrollmentIDFromX509Certificate,B64Encode,B64Decode"
 FILTER_FN+=",GetMaskedURL,WriteFile,FileExists"
 gofilter
-sed -i'' -e '/log "golang.org\/x/ a\
-"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"\
-' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/import (/ a\"github.com\/hyperledger\/fabric-sdk-go\/pkg\/common\/providers\/core"' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e '/mrand "math\// a\
 factory "github.com\/hyperledger\/fabric-sdk-go\/internal\/github.com\/hyperledger\/fabric-ca\/sdkpatch\/cryptosuitebridge"\
 ' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.BCCSP/core.CryptoSuite/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/bccsp.Key/core.Key/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 sed -i'' -e 's/&bccsp.SHAOpts{}/factory.GetSHAOpts()/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+# TODO remove below sed calls for util/util.go once Fabric CA v1.3 is not supported by the SDK anymore
+sed -i'' -e '/\/\/ \@param body The body of an HTTP request/ a\
+    \/\/ @param fabCACompatibilityMode will set auth token signing for Fabric CA 1.3 (true) or Fabric 1.4+ (false)\
+' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e 's/func CreateToken(csp core.CryptoSuite, cert \[\]byte, key core.Key, method, uri string, body \[\]byte) (string, error) {/func CreateToken(csp core.CryptoSuite, cert []byte, key core.Key, method, uri string, body []byte, fabCACompatibilityMode bool) (string, error) {/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e 's/token, err = GenECDSAToken(csp, cert, key, method, uri, body)/token, err = GenECDSAToken(csp, cert, key, method, uri, body, fabCACompatibilityMode)/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e 's/func GenECDSAToken(csp core.CryptoSuite, cert \[\]byte, key core.Key, method, uri string, body \[\]byte) (string, error) {/func GenECDSAToken(csp core.CryptoSuite, cert []byte, key core.Key, method, uri string, body []byte, fabCACompatibilityMode bool) (string, error) {/g' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
+sed -i'' -e '/payload := method + "\." + b64uri + "\." + b64body + "\." + b64cert/ a\
+\
+    \/\/ TODO remove this condition once Fabric CA v1.3 is not supported by the SDK anymore\
+    if fabCACompatibilityMode {\
+		payload = b64body + "." + b64cert\
+	}\
+\
+' "${TMP_PROJECT_PATH}/${FILTER_FILENAME}"
 
 FILTER_FILENAME="lib/serverrevoke.go"
 FILTER_FN=
@@ -312,3 +389,5 @@ do
     TARGET_PATH=`dirname $INTERNAL_PATH/${i}`
     cp $TMP_PROJECT_PATH/${i} $TARGET_PATH
 done
+
+rm -Rf ${TMP_PROJECT_PATH}

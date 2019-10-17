@@ -36,12 +36,14 @@ func Subst(path string) string {
 	splits := strings.Split(path, sepPrefix)
 
 	var buffer bytes.Buffer
-	buffer.WriteString(splits[0]) // first split precedes the first sepPrefix so should always be written
+
+	// first split precedes the first sepPrefix so should always be written
+	buffer.WriteString(splits[0]) // nolint: gas
 
 	for _, s := range splits[1:] {
 		subst, rest := substVar(s, sepPrefix, sepSuffix)
-		buffer.WriteString(subst)
-		buffer.WriteString(rest)
+		buffer.WriteString(subst) // nolint: gas
+		buffer.WriteString(rest)  // nolint: gas
 	}
 
 	return buffer.String()
@@ -70,6 +72,8 @@ func substVar(s string, noMatch string, sep string) (string, string) {
 func lookupVar(v string) (string, bool) {
 	// TODO: optimize if the number of variable names grows
 	switch v {
+	case "FABRIC_SDK_GO_PROJECT_PATH":
+		return metadata.GetProjectPath(), true
 	case "GOPATH":
 		return goPath(), true
 	case "CRYPTOCONFIG_FIXTURES_PATH":

@@ -7,9 +7,12 @@ SPDX-License-Identifier: Apache-2.0
 package channel
 
 import (
+	"path/filepath"
 	"testing"
-
 	"time"
+
+	"github.com/hyperledger/fabric-sdk-go/test/metadata"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
@@ -21,12 +24,23 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/txn"
 	mspmocks "github.com/hyperledger/fabric-sdk-go/pkg/msp/test/mockmsp"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateTxnID(t *testing.T) {
 	transactor := createTransactor(t)
-	createTxnID(t, transactor)
+
+	txh := createTxnID(t, transactor)
+	assert.NotEmpty(t, txh.Nonce())
+	assert.NotEmpty(t, txh.Creator())
+	assert.NotEmpty(t, txh.TransactionID())
+
+	creator := []byte("creator")
+	nonce := []byte("12345")
+
+	txh = createTxnID(t, transactor, fab.WithCreator(creator), fab.WithNonce(nonce))
+	assert.Equal(t, nonce, txh.Nonce())
+	assert.Equal(t, creator, txh.Creator())
+	assert.NotEmpty(t, txh.TransactionID())
 }
 
 func TestTransactionProposal(t *testing.T) {
@@ -78,8 +92,8 @@ func createTransactor(t *testing.T) *Transactor {
 	return transactor
 }
 
-func createTxnID(t *testing.T, transactor *Transactor) fab.TransactionHeader {
-	txh, err := transactor.CreateTransactionHeader()
+func createTxnID(t *testing.T, transactor *Transactor, opts ...fab.TxnHeaderOpt) fab.TransactionHeader {
+	txh, err := transactor.CreateTransactionHeader(opts...)
 	assert.Nil(t, err, "creation of transaction ID failed")
 
 	return txh
@@ -159,7 +173,8 @@ func TestOrderersURLOverride(t *testing.T) {
 	sampleOrdererURL := "orderer.example.com.sample.url:100090"
 
 	//Create endpoint config
-	configBackends, err := config.FromFile("../../core/config/testdata/config_test.yaml")()
+	configPath := filepath.Join(metadata.GetProjectPath(), "pkg", "core", "config", "testdata", "config_test.yaml")
+	configBackends, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatal("failed to get config backends")
 	}

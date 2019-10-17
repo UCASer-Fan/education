@@ -69,15 +69,6 @@ func TestNewPeerEndorserMutualTLS(t *testing.T) {
 
 	config := mockfab.DefaultMockConfig(mockCtrl)
 
-	//mutualTLSCerts := apiconfig.MutualTLSConfig{
-	//	Client: struct {
-	//		KeyPem   string
-	//		Keyfile  string
-	//		CertPem  string
-	//		Certfile string
-	//	}{KeyPem: "", Keyfile: "../../../test/fixtures/config/mutual_tls/client_sdk_go-key.pem", CertPem: "", Certfile: "../../../test/fixtures/config/mutual_tls/client_sdk_go.pem"},
-	//}
-
 	url := "grpcs://0.0.0.0:1234"
 	conn, err := newPeerEndorser(getPeerEndorserRequest(url, mockfab.GoodCert, "", config, kap, false, false))
 
@@ -297,8 +288,8 @@ func TestExtractPrematureExecError(t *testing.T) {
 func TestExtractChaincodeAlreadyLaunchingError(t *testing.T) {
 
 	err := grpcstatus.New(grpcCodes.Unknown, "some error")
-	_, _, e := extractPrematureExecutionError(err)
-	assert.EqualError(t, e, "not a premature execution error")
+	_, _, e := extractChaincodeAlreadyLaunchingError(err)
+	assert.EqualError(t, e, "not a chaincode already launching error")
 
 	err = grpcstatus.New(grpcCodes.Unknown, "error executing chaincode: error chaincode is already launching: somecc:v1")
 	code, message, extractErr := extractChaincodeAlreadyLaunchingError(err)
@@ -308,6 +299,32 @@ func TestExtractChaincodeAlreadyLaunchingError(t *testing.T) {
 
 	err = grpcstatus.New(grpcCodes.Unknown, "error executing chaincode: some random error: somecc:v1")
 	code, message, extractErr = extractChaincodeAlreadyLaunchingError(err)
+	assert.NotNil(t, extractErr)
+	assert.EqualValues(t, 0, code)
+	assert.Empty(t, message)
+
+}
+
+func TestExtractChaincodeNameNotFoundError(t *testing.T) {
+
+	err := grpcstatus.New(grpcCodes.Unknown, "some error")
+	_, _, e := extractChaincodeNameNotFoundError(err)
+	assert.EqualError(t, e, "not a 'could not find chaincode with name' error")
+
+	err = grpcstatus.New(grpcCodes.Unknown, "make sure the chaincode uq7q9y7lu7 has been successfully instantiated and try again: getccdata mychannel/uq7q9y7lu7 responded with error: could not find chaincode with name 'uq7q9y7lu7'")
+	code, message, extractErr := extractChaincodeNameNotFoundError(err)
+	assert.EqualValues(t, int32(status.ChaincodeNameNotFound), code, "Expected chaincode name not found error")
+	assert.EqualValues(t, "could not find chaincode with name 'uq7q9y7lu7'", message, "Invalid message")
+	assert.Nil(t, extractErr)
+
+	err = grpcstatus.New(grpcCodes.Unknown, "cannot get package for chaincode (vl5knffa37:v0)")
+	code, message, extractErr = extractChaincodeNameNotFoundError(err)
+	assert.EqualValues(t, int32(status.ChaincodeNameNotFound), code, "Expected chaincode name not found error")
+	assert.EqualValues(t, "cannot get package for chaincode (vl5knffa37:v0)", message, "Invalid message")
+	assert.Nil(t, extractErr)
+
+	err = grpcstatus.New(grpcCodes.Unknown, "error executing chaincode: some random error: somecc:v1")
+	code, message, extractErr = extractChaincodeNameNotFoundError(err)
 	assert.NotNil(t, extractErr)
 	assert.EqualValues(t, 0, code)
 	assert.Empty(t, message)
@@ -327,11 +344,74 @@ func TestChaincodeStatusFromResponse(t *testing.T) {
 	assert.Equal(t, status.ChaincodeStatus, s.Group)
 	assert.Equal(t, []byte("Unknown function"), s.Details[1])
 
-	//For successful response
+	//For successful response 200
 	response = &pb.ProposalResponse{
 		Response: &pb.Response{Status: 200, Payload: []byte("TEST"), Message: "Success"},
 	}
 	err = extractChaincodeErrorFromResponse(response)
 	assert.True(t, ok)
 	assert.Nil(t, err)
+
+	//For successful response 201
+	response = &pb.ProposalResponse{
+		Response: &pb.Response{Status: 201, Payload: []byte("TEST"), Message: "Success"},
+	}
+	err = extractChaincodeErrorFromResponse(response)
+	assert.True(t, ok)
+	assert.Nil(t, err)
+
+	//For error response - premature execution
+	response = &pb.ProposalResponse{
+		Response: &pb.Response{Status: 500, Payload: []byte("Unknown Description"), Message: "transaction returned with failure: premature execution - chaincode (somecc:v1) is being launched"},
+	}
+	err = extractChaincodeErrorFromResponse(response)
+	s, ok = status.FromError(err)
+	assert.True(t, ok)
+	assert.Equal(t, "transaction returned with failure: premature execution - chaincode (somecc:v1) is being launched", s.Message)
+	assert.Equal(t, int32(status.PrematureChaincodeExecution), s.Code)
+	assert.Equal(t, status.EndorserClientStatus, s.Group)
+
+	//For error response -  premature execution
+	response = &pb.ProposalResponse{
+		Response: &pb.Response{Status: 500, Payload: []byte("Unknown Description"), Message: "transaction returned with failure: premature execution - chaincode (somecc:v1) is being launched"},
+	}
+	err = extractChaincodeErrorFromResponse(response)
+	s, ok = status.FromError(err)
+	assert.True(t, ok)
+	assert.Equal(t, "transaction returned with failure: premature execution - chaincode (somecc:v1) is being launched", s.Message)
+	assert.Equal(t, int32(status.PrematureChaincodeExecution), s.Code)
+	assert.Equal(t, status.EndorserClientStatus, s.Group)
+
+	//For error response - chaincode already launching
+	response = &pb.ProposalResponse{
+		Response: &pb.Response{Status: 500, Payload: []byte("Unknown Description"), Message: "error executing chaincode: error chaincode is already launching: somecc:v1"},
+	}
+	err = extractChaincodeErrorFromResponse(response)
+	s, ok = status.FromError(err)
+	assert.True(t, ok)
+	assert.Equal(t, "error executing chaincode: error chaincode is already launching: somecc:v1", s.Message)
+	assert.Equal(t, int32(status.ChaincodeAlreadyLaunching), s.Code)
+	assert.Equal(t, status.EndorserClientStatus, s.Group)
+
+	//For error response - chaincode name not found
+	response = &pb.ProposalResponse{
+		Response: &pb.Response{Status: 500, Payload: []byte("Unknown Description"), Message: "make sure the chaincode uq7q9y7lu7 has been successfully instantiated and try again: getccdata mychannel/uq7q9y7lu7 responded with error: could not find chaincode with name 'uq7q9y7lu7'"},
+	}
+	err = extractChaincodeErrorFromResponse(response)
+	s, ok = status.FromError(err)
+	assert.True(t, ok)
+	assert.Equal(t, "make sure the chaincode uq7q9y7lu7 has been successfully instantiated and try again: getccdata mychannel/uq7q9y7lu7 responded with error: could not find chaincode with name 'uq7q9y7lu7'", s.Message)
+	assert.Equal(t, int32(status.ChaincodeNameNotFound), s.Code)
+	assert.Equal(t, status.EndorserClientStatus, s.Group)
+
+	//For error response - chaincode package not found
+	response = &pb.ProposalResponse{
+		Response: &pb.Response{Status: 500, Payload: []byte("Unknown Description"), Message: "cannot get package for chaincode (vl5knffa37:v0)"},
+	}
+	err = extractChaincodeErrorFromResponse(response)
+	s, ok = status.FromError(err)
+	assert.True(t, ok)
+	assert.Equal(t, "cannot get package for chaincode (vl5knffa37:v0)", s.Message)
+	assert.Equal(t, int32(status.ChaincodeNameNotFound), s.Code)
+	assert.Equal(t, status.EndorserClientStatus, s.Group)
 }

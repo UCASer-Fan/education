@@ -7,9 +7,10 @@ SPDX-License-Identifier: Apache-2.0
 package defmsp
 
 import (
+	"path/filepath"
 	"testing"
 
-	"strings"
+	"reflect"
 
 	"github.com/golang/mock/gomock"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
@@ -20,6 +21,8 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defcore"
 	mspimpl "github.com/hyperledger/fabric-sdk-go/pkg/msp"
+	"github.com/hyperledger/fabric-sdk-go/test/metadata"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateUserStore(t *testing.T) {
@@ -79,8 +82,8 @@ func TestCreateUserStoreEmptyConfig(t *testing.T) {
 	mockConfig.EXPECT().Client().Return(&mockClientConfig)
 
 	_, err := factory.CreateUserStore(mockConfig)
-	if err == nil {
-		t.Fatal("Expected error creating user store")
+	if err != nil {
+		t.Fatal("Expected user store created")
 	}
 }
 
@@ -95,8 +98,8 @@ func TestCreateUserStoreFailConfig(t *testing.T) {
 	mockConfig.EXPECT().Client().Return(&mockClientConfig)
 
 	_, err := factory.CreateUserStore(mockConfig)
-	if err == nil || !strings.Contains(err.Error(), "FileKeyValueStore path is empty") {
-		t.Fatal("Expected error creating user store")
+	if err != nil {
+		t.Fatal("Expected user store created")
 	}
 }
 
@@ -104,7 +107,8 @@ func TestCreateIdentityManager(t *testing.T) {
 
 	coreFactory := defcore.NewProviderFactory()
 
-	configBackend, err := config.FromFile("../../../../test/fixtures/config/config_test.yaml")()
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, "config_test.yaml")
+	configBackend, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -149,4 +153,31 @@ func TestCreateIdentityManager(t *testing.T) {
 	if !ok {
 		t.Fatal("Unexpected signing manager created")
 	}
+}
+
+func TestCreateUserStoreWithoutCredentialStorePath(t *testing.T) {
+
+	configPath := filepath.Join(metadata.GetProjectPath(), "pkg", "core", "config", "testdata", "config_test_embedded_pems.yaml")
+	configBackend, err := config.FromFile(configPath)()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	identityCfg, err := mspimpl.ConfigFromBackend(configBackend...)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Empty(t, identityCfg.CredentialStorePath())
+
+	factory := NewProviderFactory()
+	userStore, err := factory.CreateUserStore(identityCfg)
+	if err != nil {
+		t.Fatalf("Unexpected error creating user store %s", err)
+	}
+
+	_, err = userStore.Load(msp.IdentityIdentifier{MSPID: "abc", ID: "ef"})
+	assert.Equal(t, msp.ErrUserNotFound, err)
+
+	assert.Equal(t, reflect.TypeOf(mspimpl.NewMemoryUserStore()), reflect.TypeOf(userStore))
 }

@@ -9,6 +9,7 @@ SPDX-License-Identifier: Apache-2.0
 package fabsdk
 
 import (
+	"path/filepath"
 	"testing"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
@@ -20,6 +21,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/chpvdr"
 	"github.com/hyperledger/fabric-sdk-go/pkg/msp"
+	"github.com/hyperledger/fabric-sdk-go/test/metadata"
 	"github.com/pkg/errors"
 )
 
@@ -29,7 +31,8 @@ const (
 
 func TestNewDefaultSDK(t *testing.T) {
 	// Test New SDK with valid config file
-	sdk, err := New(config.FromFile(sdkConfigFile))
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	sdk, err := New(config.FromFile(configPath))
 	if err != nil {
 		t.Fatalf("Error initializing SDK: %s", err)
 	}
@@ -40,8 +43,10 @@ func TestNewDefaultSDK(t *testing.T) {
 func verifySDK(t *testing.T, sdk *FabricSDK) {
 
 	// Mock channel provider cache
-	sdk.provider.ChannelProvider().(*chpvdr.ChannelProvider).SetChannelConfig(mocks.NewMockChannelCfg("mychannel"))
-	sdk.provider.ChannelProvider().(*chpvdr.ChannelProvider).SetChannelConfig(mocks.NewMockChannelCfg("orgchannel"))
+	chpvdr.SetChannelConfig(
+		mocks.NewMockChannelCfg("mychannel"),
+		mocks.NewMockChannelCfg("orgchannel"),
+	)
 
 	// Get a common client context for the following tests
 	chCtx := sdk.ChannelContext("orgchannel", WithUser(sdkValidClientUser), WithOrg(sdkValidClientOrg2))
@@ -55,7 +60,8 @@ func verifySDK(t *testing.T, sdk *FabricSDK) {
 
 func TestWithConfigOpt(t *testing.T) {
 	// Test New SDK with valid config file
-	c := config.FromFile(sdkConfigFile)
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := config.FromFile(configPath)
 
 	sdk, err := New(c)
 	if err != nil {
@@ -66,15 +72,17 @@ func TestWithConfigOpt(t *testing.T) {
 }
 
 func TestNewDefaultTwoValidSDK(t *testing.T) {
-	sdk1, err := New(config.FromFile(sdkConfigFile))
+	// Mock channel provider cache
+	chpvdr.SetChannelConfig(
+		mocks.NewMockChannelCfg("mychannel"),
+		mocks.NewMockChannelCfg("orgchannel"),
+	)
+
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	sdk1, err := New(config.FromFile(configPath))
 	if err != nil {
 		t.Fatalf("Error initializing SDK: %s", err)
 	}
-
-	// Mock channel provider cache
-
-	sdk1.provider.ChannelProvider().(*chpvdr.ChannelProvider).SetChannelConfig(mocks.NewMockChannelCfg("mychannel"))
-	sdk1.provider.ChannelProvider().(*chpvdr.ChannelProvider).SetChannelConfig(mocks.NewMockChannelCfg("orgchannel"))
 
 	//prepare config backend for sdk2
 
@@ -90,9 +98,6 @@ func TestNewDefaultTwoValidSDK(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error initializing SDK: %s", err)
 	}
-
-	// Mock channel provider cache
-	sdk2.provider.ChannelProvider().(*chpvdr.ChannelProvider).SetChannelConfig(mocks.NewMockChannelCfg("orgchannel"))
 
 	// Default sdk with two channels
 	configBackend, err := sdk1.Config()
@@ -146,7 +151,8 @@ func checkClientOrg(configBackend core.ConfigBackend, t *testing.T, orgName stri
 }
 
 func getCustomBackend() ([]core.ConfigBackend, error) {
-	backend, err := config.FromFile(sdkConfigFile)()
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	backend, err := config.FromFile(configPath)()
 	if err != nil {
 		return nil, err
 	}

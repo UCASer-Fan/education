@@ -72,7 +72,6 @@ func TestTxProposalResponseFilter(t *testing.T) {
 }
 
 func TestQuery(t *testing.T) {
-
 	chClient := setupChannelClient(nil, t)
 
 	_, err := chClient.Query(Request{})
@@ -385,7 +384,6 @@ func TestTransactionValidationError(t *testing.T) {
 }
 
 func TestTransactionTimeout(t *testing.T) {
-
 	mockEventService := fcmocks.NewMockEventService()
 	mockEventService.Timeout = true
 	testPeer1 := fcmocks.NewMockPeer("Peer1", "http://peer1.com")
@@ -433,6 +431,20 @@ func TestExecuteTxWithRetries(t *testing.T) {
 	assert.Equal(t, testResp, resp.Payload, "expected correct response")
 }
 
+func TestBeforeRetryOption(t *testing.T) {
+	testStatus := status.New(status.EndorserClientStatus, status.ConnectionFailed.ToInt32(), "test", nil)
+
+	testPeer1 := fcmocks.NewMockPeer("Peer1", "http://peer1.com")
+	testPeer1.Error = testStatus
+	chClient := setupChannelClient([]fab.Peer{testPeer1}, t)
+
+	var callbacks int
+
+	_, _ = chClient.Query(Request{ChaincodeID: "testCC", Fcn: "invoke", Args: [][]byte{[]byte("query"), []byte("b")}},
+		WithRetry(retry.DefaultChannelOpts), WithBeforeRetry(func(error) { callbacks++ }))
+	assert.Equal(t, retry.DefaultChannelOpts.Attempts, callbacks, "Expected callback on each attempt")
+}
+
 func TestMultiErrorPropogation(t *testing.T) {
 	testErr := fmt.Errorf("Test Error")
 
@@ -450,11 +462,10 @@ func TestMultiErrorPropogation(t *testing.T) {
 	assert.True(t, ok, "Expected status error")
 	assert.EqualValues(t, status.MultipleErrors, status.ToSDKStatusCode(statusError.Code))
 	assert.Equal(t, status.ClientStatus, statusError.Group)
-	assert.Equal(t, "Multiple errors occurred: \nTest Error\nTest Error", statusError.Message, "Expected multi error message")
+	assert.Equal(t, "Multiple errors occurred: - Test Error - Test Error", statusError.Message, "Expected multi error message")
 }
 
 func TestDiscoveryGreylist(t *testing.T) {
-
 	testPeer1 := fcmocks.NewMockPeer("Peer1", "http://peer1.com")
 	testPeer1.Error = status.New(status.EndorserClientStatus,
 		status.ConnectionFailed.ToInt32(), "test", []interface{}{testPeer1.URL()})

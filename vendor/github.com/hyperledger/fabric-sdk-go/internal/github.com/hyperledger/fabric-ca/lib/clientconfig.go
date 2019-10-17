@@ -21,9 +21,10 @@ Please review third_party pinning scripts and patches for more details.
 package lib
 
 import (
+	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
+
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/api"
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/tls"
-	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 )
 
 // ClientConfig is the fabric-ca client's config
@@ -37,5 +38,9 @@ type ClientConfig struct {
 	Revoke     api.RevocationRequest
 	CAInfo     api.GetCAInfoRequest
 	CAName     string           `help:"Name of CA"`
-	CSP        core.CryptoSuite `mapstructure:"bccsp"`
+	CSP        core.CryptoSuite `mapstructure:"bccsp" hide:"true"`
+	ServerName string           `help:"CA server name to be used in case of host name override"`
+
+	Debug    bool   `opt:"d" help:"Enable debug level logging" hide:"true"`
+	LogLevel string `help:"Set logging level (info, warning, debug, error, fatal, critical)"`
 }

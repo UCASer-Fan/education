@@ -9,19 +9,19 @@ package fab
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"testing"
-
-	"os"
-
+	"encoding/pem"
 	"fmt"
-
+	"os"
+	"path/filepath"
+	"reflect"
+	"strings"
+	"testing"
 	"time"
 
-	"strings"
-
-	"reflect"
-
-	"encoding/pem"
+	"github.com/pkg/errors"
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
@@ -31,28 +31,26 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/mocks"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/comm"
 	"github.com/hyperledger/fabric-sdk-go/pkg/util/pathvar"
-	"github.com/pkg/errors"
-	"github.com/spf13/viper"
-	"github.com/stretchr/testify/assert"
 )
 
 const (
-	org2                             = "org2"
-	org1                             = "org1"
-	configTestFilePath               = "../core/config/testdata/config_test.yaml"
-	certPath                         = "${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem"
-	keyPath                          = "${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem"
-	configPemTestFilePath            = "../core/config/testdata/config_test_pem.yaml"
-	configEmbeddedUsersTestFilePath  = "../core/config/testdata/config_test_embedded_pems.yaml"
-	configTestEntityMatchersFilePath = "../core/config/testdata/config_test_entity_matchers.yaml"
-	configType                       = "yaml"
-	orgChannelID                     = "orgchannel"
+	org2                         = "org2"
+	org1                         = "org1"
+	configTestFile               = "config_test.yaml"
+	certPath                     = "${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go.pem"
+	keyPath                      = "${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go-key.pem"
+	configPemTestFile            = "config_test_pem.yaml"
+	configEmbeddedUsersTestFile  = "config_test_embedded_pems.yaml"
+	configTestEntityMatchersFile = "config_test_entity_matchers.yaml"
+	configType                   = "yaml"
+	orgChannelID                 = "orgchannel"
 )
 
 var configBackend core.ConfigBackend
 
 func TestMain(m *testing.M) {
-	cfgBackend, err := config.FromFile(configTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configTestFile)
+	cfgBackend, err := config.FromFile(configPath)()
 	if err != nil {
 		panic(fmt.Sprintf("Unexpected error reading config: %s", err))
 	}
@@ -129,19 +127,14 @@ func TestCAConfigFailsByNetworkConfig(t *testing.T) {
 }
 
 func checkCAConfigFailsByNetworkConfig(sampleEndpointConfig *EndpointConfig, t *testing.T) {
-	//Testing ChannelConfig failure scenario
-	chConfig, ok := sampleEndpointConfig.ChannelConfig("invalid")
-	if chConfig != nil || ok {
-		t.Fatal("Testing ChannelConfig supposed to fail")
-	}
 	//Testing ChannelPeers failure scenario
-	cpConfigs, ok := sampleEndpointConfig.ChannelPeers("invalid")
-	if cpConfigs != nil || ok {
+	cpConfigs := sampleEndpointConfig.ChannelPeers("invalid")
+	if len(cpConfigs) > 0 {
 		t.Fatal("Testing ChannelPeeers supposed to fail")
 	}
 	//Testing ChannelOrderers failure scenario
-	coConfigs, ok := sampleEndpointConfig.ChannelOrderers("invalid")
-	if coConfigs != nil || ok {
+	coConfigs := sampleEndpointConfig.ChannelOrderers("invalid")
+	if len(coConfigs) > 0 {
 		t.Fatal("Testing ChannelOrderers supposed to fail")
 	}
 }
@@ -173,9 +166,9 @@ func TestTimeouts(t *testing.T) {
 	}
 
 	errStr := "%s timeout not read correctly. Got: %s"
-	t1 := endpointConfig.Timeout(fab.EndorserConnection)
+	t1 := endpointConfig.Timeout(fab.PeerConnection)
 	if t1 != time.Second*12 {
-		t.Fatalf(errStr, "EndorserConnection", t1)
+		t.Fatalf(errStr, "PeerConnection", t1)
 	}
 	t1 = endpointConfig.Timeout(fab.PeerResponse)
 	if t1 != time.Second*6 {
@@ -184,10 +177,6 @@ func TestTimeouts(t *testing.T) {
 	t1 = endpointConfig.Timeout(fab.DiscoveryGreylistExpiry)
 	if t1 != time.Minute*5 {
 		t.Fatalf(errStr, "DiscoveryGreylistExpiry", t1)
-	}
-	t1 = endpointConfig.Timeout(fab.EventHubConnection)
-	if t1 != time.Minute*2 {
-		t.Fatalf(errStr, "EventHubConnection", t1)
 	}
 	t1 = endpointConfig.Timeout(fab.EventReg)
 	if t1 != time.Hour*2 {
@@ -198,6 +187,16 @@ func TestTimeouts(t *testing.T) {
 		t.Fatalf(errStr, "OrdererConnection", t1)
 	}
 	checkTimeouts(endpointConfig, t, errStr)
+}
+
+func TestEventServiceConfig(t *testing.T) {
+	customBackend := getCustomBackend()
+	customBackend.KeyValueMap["client.eventService.type"] = "deliver"
+	customBackend.KeyValueMap["client.eventService.blockHeightLagThreshold"] = "4"
+	customBackend.KeyValueMap["client.eventService.reconnectBlockHeightLagThreshold"] = "7"
+	customBackend.KeyValueMap["client.eventService.peerMonitorPeriod"] = "7s"
+	customBackend.KeyValueMap["client.eventService.resolverStrategy"] = "Balanced"
+	customBackend.KeyValueMap["client.eventService.balancer"] = "RoundRobin"
 }
 
 func checkTimeouts(endpointConfig fab.EndpointConfig, t *testing.T, errStr string) {
@@ -252,9 +251,9 @@ func TestDefaultTimeouts(t *testing.T) {
 	}
 
 	errStr := "%s default timeout not read correctly. Got: %s"
-	t1 := endpointConfig.Timeout(fab.EndorserConnection)
-	if t1 != defaultEndorserConnectionTimeout {
-		t.Fatalf(errStr, "EndorserConnection", t1)
+	t1 := endpointConfig.Timeout(fab.PeerConnection)
+	if t1 != defaultPeerConnectionTimeout {
+		t.Fatalf(errStr, "PeerConnection", t1)
 	}
 	t1 = endpointConfig.Timeout(fab.PeerResponse)
 	if t1 != defaultPeerResponseTimeout {
@@ -263,10 +262,6 @@ func TestDefaultTimeouts(t *testing.T) {
 	t1 = endpointConfig.Timeout(fab.DiscoveryGreylistExpiry)
 	if t1 != defaultDiscoveryGreylistExpiryTimeout {
 		t.Fatalf(errStr, "DiscoveryGreylistExpiry", t1)
-	}
-	t1 = endpointConfig.Timeout(fab.EventHubConnection)
-	if t1 != defaultEventHubConnectionTimeout {
-		t.Fatalf(errStr, "EventHubConnection", t1)
 	}
 	t1 = endpointConfig.Timeout(fab.EventReg)
 	if t1 != defaultEventRegTimeout {
@@ -345,11 +340,7 @@ func TestChannelOrderers(t *testing.T) {
 		t.Fatal("Failed to get endpoint config from backend")
 	}
 
-	orderers, ok := endpointConfig.ChannelOrderers("mychannel")
-	if orderers == nil || !ok {
-		t.Fatal("Testing ChannelOrderers failed")
-	}
-
+	orderers := endpointConfig.ChannelOrderers("mychannel")
 	if len(orderers) != 1 {
 		t.Fatalf("Expecting one channel orderer got %d", len(orderers))
 	}
@@ -389,7 +380,7 @@ func testCommonConfigPeerByURL(t *testing.T, expectedConfigURL string, fetchedCo
 		t.Fatal("Expected Config and fetched config differ")
 	}
 
-	if fetchedConfig.URL != expectedConfig.URL || fetchedConfig.EventURL != expectedConfig.EventURL || fetchedConfig.GRPCOptions["ssl-target-name-override"] != expectedConfig.GRPCOptions["ssl-target-name-override"] {
+	if fetchedConfig.URL != expectedConfig.URL || fetchedConfig.GRPCOptions["ssl-target-name-override"] != expectedConfig.GRPCOptions["ssl-target-name-override"] {
 		t.Fatal("Expected Config and fetched config differ")
 	}
 }
@@ -436,11 +427,11 @@ func TestOrdererWithSubstitutedConfig_WithADifferentSubstituteUrl(t *testing.T) 
 func TestOrdererWithSubstitutedConfig_WithEmptySubstituteUrl(t *testing.T) {
 	_, fetchedConfig := testCommonConfigOrderer(t, "orderer.example.com", "orderer.example3.com")
 
-	if fetchedConfig.URL != "orderer.example3.com:7050" {
+	if fetchedConfig.URL != "orderer.example.com:7050" {
 		t.Fatal("Fetched Config should have the same url")
 	}
 
-	if fetchedConfig.GRPCOptions["ssl-target-name-override"] != "orderer.example3.com" {
+	if fetchedConfig.GRPCOptions["ssl-target-name-override"] != "orderer.example.com" {
 		t.Fatal("Fetched config should have the same ssl-target-name-override as its hostname")
 	}
 }
@@ -491,13 +482,10 @@ func testCommonConfigChannel(t *testing.T, expectedConfigName string, fetchedCon
 		t.Fatal("Failed to get endpoint config from backend")
 	}
 
-	expectedConfig, ok := endpointConfig.ChannelConfig(expectedConfigName)
-	assert.True(t, ok)
+	expectedConfig = endpointConfig.ChannelConfig(expectedConfigName)
+	fetchedConfig = endpointConfig.ChannelConfig(fetchedConfigName)
 
-	fetchedConfig, ok = endpointConfig.ChannelConfig(fetchedConfigName)
-	assert.True(t, ok)
-
-	return expectedConfig, fetchedConfig
+	return
 }
 
 func deepEquals(n, n2 interface{}) bool {
@@ -518,9 +506,6 @@ func TestPeersConfig(t *testing.T) {
 		if value.URL == "" {
 			t.Fatal("Url value for the host is empty")
 		}
-		if value.EventURL == "" {
-			t.Fatal("EventUrl value is empty")
-		}
 	}
 
 	pc, ok = endpointConfig.PeersConfig(org1)
@@ -529,9 +514,6 @@ func TestPeersConfig(t *testing.T) {
 	for _, value := range pc {
 		if value.URL == "" {
 			t.Fatal("Url value for the host is empty")
-		}
-		if value.EventURL == "" {
-			t.Fatal("EventUrl value is empty")
 		}
 	}
 }
@@ -572,10 +554,6 @@ func TestPeerWithSubstitutedConfig_WithADifferentSubstituteUrl(t *testing.T) {
 		t.Fatal("Expected Config should have url that is given in urlSubstitutionExp of match pattern")
 	}
 
-	if fetchedConfig.EventURL == "peer3.org1.example5.com:7053" || fetchedConfig.EventURL == expectedConfig.EventURL {
-		t.Fatal("Expected Config should have event url that is given in eventUrlSubstitutionExp of match pattern")
-	}
-
 	if fetchedConfig.GRPCOptions["ssl-target-name-override"] != "localhost" {
 		t.Fatal("Config should have got localhost as its ssl-target-name-override url as per the matched config")
 	}
@@ -584,15 +562,11 @@ func TestPeerWithSubstitutedConfig_WithADifferentSubstituteUrl(t *testing.T) {
 func TestPeerWithSubstitutedConfig_WithEmptySubstituteUrl(t *testing.T) {
 	_, fetchedConfig := testCommonConfigPeer(t, "peer0.org1.example.com", "peer4.org1.example3.com")
 
-	if fetchedConfig.URL != "peer4.org1.example3.com:7051" {
+	if fetchedConfig.URL != "peer0.org1.example.com:7051" {
 		t.Fatal("Fetched Config should have the same url")
 	}
 
-	if fetchedConfig.EventURL != "peer4.org1.example3.com:7053" {
-		t.Fatal("Fetched Config should have the same event url")
-	}
-
-	if fetchedConfig.GRPCOptions["ssl-target-name-override"] != "peer4.org1.example3.com" {
+	if fetchedConfig.GRPCOptions["ssl-target-name-override"] != "peer0.org1.example.com" {
 		t.Fatal("Fetched config should have the same ssl-target-name-override as its hostname")
 	}
 }
@@ -602,10 +576,6 @@ func TestPeerWithSubstitutedConfig_WithSubstituteUrlExpression(t *testing.T) {
 
 	if fetchedConfig.URL != "peer5.org1.example.com:1234" {
 		t.Fatal("fetched Config url should change to include org1 as given in the substituteexp in yaml file")
-	}
-
-	if fetchedConfig.EventURL != "peer5.org1.example.com:7053" {
-		t.Fatal("fetched Config event url should change to include org1 as given in the eventsubstituteexp in yaml file")
 	}
 
 	if fetchedConfig.GRPCOptions["ssl-target-name-override"] != "peer5.org1.example.com" {
@@ -619,10 +589,6 @@ func TestPeerWithSubstitutedConfig_WithMultipleMatchings(t *testing.T) {
 	//Both 2nd and 5th entityMatchers match, however we are only taking 2nd one as its the first one to match
 	if fetchedConfig.URL == "peer0.org2.example.com:7051" {
 		t.Fatal("fetched Config url should be matched with the first suitable matcher")
-	}
-
-	if fetchedConfig.EventURL != "localhost:7053" {
-		t.Fatal("fetched Config event url should have the config from first suitable matcher")
 	}
 
 	if fetchedConfig.GRPCOptions["ssl-target-name-override"] != "localhost" {
@@ -670,7 +636,8 @@ func TestSystemCertPoolDisabled(t *testing.T) {
 
 func TestInitConfigFromRawWithPem(t *testing.T) {
 	// get a config byte for testing
-	cBytes, err := loadConfigBytesFromFile(t, configPemTestFilePath)
+	configPath := filepath.Join(getConfigPath(), configPemTestFile)
+	cBytes, err := loadConfigBytesFromFile(t, configPath)
 	if err != nil {
 		t.Fatalf("Failed to load sample bytes from File. Error: %s", err)
 	}
@@ -789,7 +756,8 @@ func loadConfigBytesFromFile(t *testing.T, filePath string) ([]byte, error) {
 
 func TestLoadConfigWithEmbeddedUsersWithPems(t *testing.T) {
 	// get a config file with embedded users
-	configBackend1, err := config.FromFile(configEmbeddedUsersTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configEmbeddedUsersTestFile)
+	configBackend1, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -814,7 +782,8 @@ func TestLoadConfigWithEmbeddedUsersWithPems(t *testing.T) {
 
 func TestLoadConfigWithEmbeddedUsersWithPaths(t *testing.T) {
 	// get a config file with embedded users
-	configBackend1, err := config.FromFile(configEmbeddedUsersTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configEmbeddedUsersTestFile)
+	configBackend1, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -840,7 +809,8 @@ func TestLoadConfigWithEmbeddedUsersWithPaths(t *testing.T) {
 
 func TestInitConfigFromRawWrongType(t *testing.T) {
 	// get a config byte for testing
-	cBytes, err := loadConfigBytesFromFile(t, configPemTestFilePath)
+	configPath := filepath.Join(getConfigPath(), configPemTestFile)
+	cBytes, err := loadConfigBytesFromFile(t, configPath)
 	if err != nil {
 		t.Fatalf("Failed to load sample bytes from File. Error: %s", err)
 	}
@@ -888,8 +858,8 @@ func TestTLSClientCertsFromFilesIncorrectPaths(t *testing.T) {
 	testlookup.UnmarshalKey("client", &configEntity.Client)
 
 	//Set client tls paths to empty strings
-	configEntity.Client.TLSCerts.Client.Cert.Path = "/test/fixtures/config/mutual_tls/client_sdk_go.pem"
-	configEntity.Client.TLSCerts.Client.Key.Path = "/test/fixtures/config/mutual_tls/client_sdk_go-key.pem"
+	configEntity.Client.TLSCerts.Client.Cert.Path = filepath.Clean("/pkg/config/testdata/certs/client_sdk_go.pem")
+	configEntity.Client.TLSCerts.Client.Key.Path = filepath.Clean("/pkg/config/testdata/certs/client_sdk_go-key.pem")
 	configEntity.Client.TLSCerts.Client.Cert.Pem = ""
 	configEntity.Client.TLSCerts.Client.Key.Pem = ""
 
@@ -960,22 +930,22 @@ func TestTLSClientCertFromPemAndKeyFromFile(t *testing.T) {
 	clientTLSOverride.Client.Key.Path = pathvar.Subst(keyPath)
 
 	clientTLSOverride.Client.Cert.Pem = `-----BEGIN CERTIFICATE-----
-MIIC5TCCAkegAwIBAgIUBzAG7MTjO4n9GFkYTkJBnvCInRIwCgYIKoZIzj0EAwQw
+MIIC5TCCAkagAwIBAgIUMYhiY5MS3jEmQ7Fz4X/e1Dx33J0wCgYIKoZIzj0EAwQw
 gYwxCzAJBgNVBAYTAkNBMRAwDgYDVQQIEwdPbnRhcmlvMRAwDgYDVQQHEwdUb3Jv
 bnRvMREwDwYDVQQKEwhsaW51eGN0bDEMMAoGA1UECxMDTGFiMTgwNgYDVQQDEy9s
 aW51eGN0bCBFQ0MgUm9vdCBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eSAoTGFiKTAe
-Fw0xNzA3MTkxOTUyMDBaFw0xODA3MTkxOTUyMDBaMGoxCzAJBgNVBAYTAkNBMRAw
+Fw0xNzEyMDEyMTEzMDBaFw0xODEyMDEyMTEzMDBaMGMxCzAJBgNVBAYTAkNBMRAw
 DgYDVQQIEwdPbnRhcmlvMRAwDgYDVQQHEwdUb3JvbnRvMREwDwYDVQQKEwhsaW51
-eGN0bDEMMAoGA1UECxMDTGFiMRYwFAYDVQQDDA1mYWJyaWNfY2xpZW50MHYwEAYH
-KoZIzj0CAQYFK4EEACIDYgAEyW+qHu26Zp7icI2DGkF+w9mENLyx5kVirEEp+u+M
-UCeTfKzBwAPw17aSDCiObrpaLdIyecRZKYpCxnfPurKEKfKXebZDKmQdGpxaFKbX
-aJvC44EbrOq5x218RqnCDeqAo4GKMIGHMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUE
-DDAKBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBRBA9pDyeovnjWP
-uvftCfEagM/wKjAfBgNVHSMEGDAWgBQUcJ+Hm9wjfMO4jh0E7LBIXBATDzASBgNV
-HREECzAJggd0ZXN0aW5nMAoGCCqGSM49BAMEA4GLADCBhwJCATMHAs0T6yZFDByA
-XNzhG5LwkITa+GcMJNR9qXlFBG18P+LM/2cdT6Y2+Fz9ZEvGjYMC+c+yg4nyRwu3
-rIYog3WBAkECntF217dk3VCZHXfl+rik6wm+ijzYk+k336UERiSJRu09YHHEh7x6
-NRCHI3uXUJ5/3zDZM3qtV8UYHou4KDS35Q==
+eGN0bDEMMAoGA1UECxMDTGFiMQ8wDQYDVQQDDAZzZGtfZ28wdjAQBgcqhkjOPQIB
+BgUrgQQAIgNiAAT6I1CGNrkchIAEmeJGo53XhDsoJwRiohBv2PotEEGuO6rMyaOu
+pulj2VOj+YtgWw4ZtU49g4Nv6rq1QlKwRYyMwwRJSAZHIUMhYZjcDi7YEOZ3Fs1h
+xKmIxR+TTR2vf9KjgZAwgY0wDgYDVR0PAQH/BAQDAgWgMBMGA1UdJQQMMAoGCCsG
+AQUFBwMCMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFDwS3xhpAWs81OVWvZt+iUNL
+z26DMB8GA1UdIwQYMBaAFLRasbknomawJKuQGiyKs/RzTCujMBgGA1UdEQQRMA+C
+DWZhYnJpY19zZGtfZ28wCgYIKoZIzj0EAwQDgYwAMIGIAkIAk1MxMogtMtNO0rM8
+gw2rrxqbW67ulwmMQzp6EJbm/28T2pIoYWWyIwpzrquypI7BOuf8is5b7Jcgn9oz
+7sdMTggCQgF7/8ZFl+wikAAPbciIL1I+LyCXKwXosdFL6KMT6/myYjsGNeeDeMbg
+3YkZ9DhdH1tN4U/h+YulG/CkKOtUATtQxg==
 -----END CERTIFICATE-----`
 
 	clientTLSOverride.Client.Key.Pem = ""
@@ -1001,10 +971,10 @@ func TestTLSClientCertFromFileAndKeyFromPem(t *testing.T) {
 	clientTLSOverride.Client.Key.Path = ""
 	clientTLSOverride.Client.Cert.Pem = ""
 	clientTLSOverride.Client.Key.Pem = `-----BEGIN EC PRIVATE KEY-----
-MIGkAgEBBDAeWRhdAl+olgpLiI9mXHwcgJ1g4NNgPrYFSkkukISeAGfvK348izwG
-0Aub948H5IygBwYFK4EEACKhZANiAATJb6oe7bpmnuJwjYMaQX7D2YQ0vLHmRWKs
-QSn674xQJ5N8rMHAA/DXtpIMKI5uulot0jJ5xFkpikLGd8+6soQp8pd5tkMqZB0a
-nFoUptdom8LjgRus6rnHbXxGqcIN6oA=
+MIGkAgEBBDByldj7VTpqTQESGgJpR9PFW9b6YTTde2WN6/IiBo2nW+CIDmwQgmAl
+c/EOc9wmgu+gBwYFK4EEACKhZANiAAT6I1CGNrkchIAEmeJGo53XhDsoJwRiohBv
+2PotEEGuO6rMyaOupulj2VOj+YtgWw4ZtU49g4Nv6rq1QlKwRYyMwwRJSAZHIUMh
+YZjcDi7YEOZ3Fs1hxKmIxR+TTR2vf9I=
 -----END EC PRIVATE KEY-----`
 
 	backends, err := overrideClientTLSInBackend(configBackend, &clientTLSOverride)
@@ -1025,8 +995,8 @@ func TestTLSClientCertsPemBeforeFiles(t *testing.T) {
 
 	clientTLSOverride := endpoint.MutualTLSConfig{}
 	// files have incorrect paths, but pems are loaded first
-	clientTLSOverride.Client.Cert.Path = "/test/fixtures/config/mutual_tls/client_sdk_go.pem"
-	clientTLSOverride.Client.Key.Path = "/test/fixtures/config/mutual_tls/client_sdk_go-key.pem"
+	clientTLSOverride.Client.Cert.Path = filepath.Clean("/pkg/config/testdata/certs/client_sdk_go.pem")
+	clientTLSOverride.Client.Key.Path = filepath.Clean("/pkg/config/testdata/certs/client_sdk_go-key.pem")
 
 	clientTLSOverride.Client.Cert.Pem = `-----BEGIN CERTIFICATE-----
 MIIC5TCCAkagAwIBAgIUMYhiY5MS3jEmQ7Fz4X/e1Dx33J0wCgYIKoZIzj0EAwQw
@@ -1122,15 +1092,28 @@ func TestPeerChannelConfig(t *testing.T) {
 	assert.NotNil(t, networkConfig)
 	//Test if channels config are working as expected, with time values parsed properly
 	assert.True(t, len(networkConfig.Channels) == 3)
-	assert.True(t, len(networkConfig.Channels["mychannel"].Peers) == 1)
-	assert.True(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MinResponses == 1)
-	assert.True(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MaxTargets == 1)
-	assert.True(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.RetryOpts.MaxBackoff.String() == (5*time.Second).String())
-	assert.True(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.RetryOpts.InitialBackoff.String() == (500*time.Millisecond).String())
-	assert.True(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.RetryOpts.BackoffFactor == 2.0)
+
+	channelConfig, ok := networkConfig.Channels["mychannel"]
+	require.True(t, ok)
+
+	assert.True(t, len(channelConfig.Peers) == 1)
+
+	qccPolicies := channelConfig.Policies.QueryChannelConfig
+	assert.True(t, qccPolicies.MinResponses == 1)
+	assert.True(t, qccPolicies.MaxTargets == 1)
+	assert.True(t, qccPolicies.RetryOpts.MaxBackoff.String() == (5*time.Second).String())
+	assert.True(t, qccPolicies.RetryOpts.InitialBackoff.String() == (500*time.Millisecond).String())
+	assert.True(t, qccPolicies.RetryOpts.BackoffFactor == 2.0)
+
+	eventPolicies := channelConfig.Policies.EventService
+	assert.Equalf(t, fab.MinBlockHeightStrategy, eventPolicies.ResolverStrategy, "Unexpected value for ResolverStrategy")
+	assert.Equal(t, fab.RoundRobin, eventPolicies.Balancer, "Unexpected value for Balancer")
+	assert.Equal(t, 4, eventPolicies.BlockHeightLagThreshold, "Unexpected value for BlockHeightLagThreshold")
+	assert.Equal(t, 8, eventPolicies.ReconnectBlockHeightLagThreshold, "Unexpected value for ReconnectBlockHeightLagThreshold")
+	assert.Equal(t, 6*time.Second, eventPolicies.PeerMonitorPeriod, "Unexpected value for PeerMonitorPeriod")
 
 	//Test if custom hook for (default=true) func is working
-	assert.True(t, len(networkConfig.Channels[orgChannelID].Peers) == 2)
+	assert.True(t, len(networkConfig.Channels[orgChannelID].Peers) == 3)
 	//test orgchannel peer1 (EndorsingPeer should be true as set, remaining should be default = true)
 	orgChannelPeer1 := networkConfig.Channels[orgChannelID].Peers["peer0.org1.example.com"]
 	assert.True(t, orgChannelPeer1.EndorsingPeer)
@@ -1138,18 +1121,25 @@ func TestPeerChannelConfig(t *testing.T) {
 	assert.True(t, orgChannelPeer1.EventSource)
 	assert.True(t, orgChannelPeer1.ChaincodeQuery)
 
-	//test orgchannel peer1 (EndorsingPeer should be false as set, remaining should be default = true)
+	//test orgchannel peer2 (EndorsingPeer should be false as set, remaining should be default = true)
 	orgChannelPeer2 := networkConfig.Channels[orgChannelID].Peers["peer0.org2.example.com"]
 	assert.False(t, orgChannelPeer2.EndorsingPeer)
 	assert.True(t, orgChannelPeer2.LedgerQuery)
 	assert.True(t, orgChannelPeer2.EventSource)
 	assert.True(t, orgChannelPeer2.ChaincodeQuery)
 
+	//test orgchannel peer3 (All should be true)
+	orgChannelPeer3 := networkConfig.Channels[orgChannelID].Peers["peer0.org3.example.com"]
+	assert.True(t, orgChannelPeer3.EndorsingPeer)
+	assert.True(t, orgChannelPeer3.LedgerQuery)
+	assert.True(t, orgChannelPeer3.EventSource)
+	assert.True(t, orgChannelPeer3.ChaincodeQuery)
 }
 
 func TestEndpointConfigWithMultipleBackends(t *testing.T) {
 
-	sampleViper := newViper(configTestEntityMatchersFilePath)
+	configPath := filepath.Join(getConfigPath(), configTestEntityMatchersFile)
+	sampleViper := newViper(configPath)
 
 	var backends []core.ConfigBackend
 	backendMap := make(map[string]interface{})
@@ -1187,7 +1177,7 @@ func TestEndpointConfigWithMultipleBackends(t *testing.T) {
 	assert.NotNil(t, networkConfig, "Invalid networkConfig")
 
 	//Channel
-	assert.Equal(t, len(networkConfig.Channels), 3)
+	assert.Equal(t, len(networkConfig.Channels), 5)
 	assert.Equal(t, len(networkConfig.Channels["mychannel"].Peers), 1)
 	assert.Equal(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MinResponses, 1)
 	assert.Equal(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MaxTargets, 1)
@@ -1196,26 +1186,27 @@ func TestEndpointConfigWithMultipleBackends(t *testing.T) {
 	assert.Equal(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.RetryOpts.BackoffFactor, 2.0)
 
 	//Organizations
-	assert.Equal(t, len(networkConfig.Organizations), 3)
+	assert.Equal(t, len(networkConfig.Organizations), 4)
 	assert.Equal(t, networkConfig.Organizations["org1"].MSPID, "Org1MSP")
 
 	//Orderer
-	assert.Equal(t, len(networkConfig.Orderers), 1)
+	assert.Equal(t, len(networkConfig.Orderers), 2)
 	assert.Equal(t, networkConfig.Orderers["local.orderer.example.com"].URL, "orderer.example.com:7050")
+	assert.Equal(t, networkConfig.Orderers["orderer1.example.com"].URL, "orderer1.example.com:7050")
 
 	//Peer
-	assert.Equal(t, len(networkConfig.Peers), 2)
+	assert.Equal(t, len(networkConfig.Peers), 3)
 	assert.Equal(t, networkConfig.Peers["local.peer0.org1.example.com"].URL, "peer0.org1.example.com:7051")
-	assert.Equal(t, networkConfig.Peers["local.peer0.org1.example.com"].EventURL, "peer0.org1.example.com:7053")
+	assert.Equal(t, networkConfig.Peers["peer0.org3.example.com"].URL, "peer0.org3.example.com:7051")
 
 	//EntityMatchers
 	endpointConfigImpl := endpointConfig.(*EndpointConfig)
 	assert.Equal(t, len(endpointConfigImpl.entityMatchers.matchers), 4)
-	assert.Equal(t, len(endpointConfigImpl.entityMatchers.matchers["peer"]), 8)
+	assert.Equal(t, len(endpointConfigImpl.entityMatchers.matchers["peer"]), 10)
 	assert.Equal(t, endpointConfigImpl.entityMatchers.matchers["peer"][0].MappedHost, "local.peer0.org1.example.com")
-	assert.Equal(t, len(endpointConfigImpl.entityMatchers.matchers["orderer"]), 4)
+	assert.Equal(t, len(endpointConfigImpl.entityMatchers.matchers["orderer"]), 6)
 	assert.Equal(t, endpointConfigImpl.entityMatchers.matchers["orderer"][0].MappedHost, "local.orderer.example.com")
-	assert.Equal(t, len(endpointConfigImpl.entityMatchers.matchers["certificateauthority"]), 2)
+	assert.Equal(t, len(endpointConfigImpl.entityMatchers.matchers["certificateauthority"]), 3)
 	assert.Equal(t, endpointConfigImpl.entityMatchers.matchers["certificateauthority"][0].MappedHost, "local.ca.org1.example.com")
 	assert.Equal(t, len(endpointConfigImpl.entityMatchers.matchers["channel"]), 1)
 	assert.Equal(t, endpointConfigImpl.entityMatchers.matchers["channel"][0].MappedName, "ch1")
@@ -1224,7 +1215,8 @@ func TestEndpointConfigWithMultipleBackends(t *testing.T) {
 
 func TestCAConfig(t *testing.T) {
 	//Test config
-	backend, err := config.FromFile(configTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configTestFile)
+	backend, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatal("Failed to get config backend")
 	}
@@ -1235,12 +1227,7 @@ func TestCAConfig(t *testing.T) {
 	}
 
 	//Test Crypto config path
-
-	val, ok := backend[0].Lookup("client.cryptoconfig.path")
-	if !ok || val == nil {
-		t.Fatal("expected valid value")
-	}
-
+	val, _ := backend[0].Lookup("client.cryptoconfig.path")
 	assert.True(t, pathvar.Subst(val.(string)) == endpointConfig.CryptoConfigPath(), "Incorrect crypto config path", t)
 
 	//Testing MSPID
@@ -1310,13 +1297,15 @@ func tamperPeerChannelConfig(backend *mocks.MockConfigBackend) {
 		"peers": map[string]interface{}{
 			"peer0.org1.example.com": map[string]interface{}{"endorsingpeer": true},
 			"peer0.org2.example.com": map[string]interface{}{"endorsingpeer": false},
+			"peer0.org3.example.com": nil,
 		},
 	}
 	(channelsMap.(map[string]interface{}))[orgChannelID] = orgChannel
 }
 
 func getMatcherConfig() core.ConfigBackend {
-	cfgBackend, err := config.FromFile(configTestEntityMatchersFilePath)()
+	configPath := filepath.Join(getConfigPath(), configTestEntityMatchersFile)
+	cfgBackend, err := config.FromFile(configPath)()
 	if err != nil {
 		panic(fmt.Sprintf("Unexpected error reading config: %s", err))
 	}
@@ -1344,6 +1333,7 @@ func overrideClientTLSInBackend(backend core.ConfigBackend, tlsCerts *endpoint.M
 	if err != nil {
 		return nil, err
 	}
+	endpointEntity.Client.TLSCerts.Client = tlsCerts.Client
 
 	backendOverride := mocks.MockConfigBackend{}
 	backendOverride.KeyValueMap = make(map[string]interface{})
@@ -1367,4 +1357,107 @@ func tlsCertByBytes(bytes []byte) (*x509.Certificate, error) {
 
 	//no cert found and there is no error
 	return nil, errors.New("empty byte")
+}
+
+func TestEntityMatchers(t *testing.T) {
+
+	endpointConfig, err := ConfigFromBackend(getMatcherConfig())
+	assert.Nil(t, err, "Failed to get endpoint config from backend")
+	assert.NotNil(t, endpointConfig, "expected valid endpointconfig")
+
+	endpointConfigImpl := endpointConfig.(*EndpointConfig)
+	assert.Equal(t, 10, len(endpointConfigImpl.peerMatchers), "preloading matchers isn't working as expected")
+	assert.Equal(t, 6, len(endpointConfigImpl.ordererMatchers), "preloading matchers isn't working as expected")
+	assert.Equal(t, 1, len(endpointConfigImpl.channelMatchers), "preloading matchers isn't working as expected")
+
+	peerConfig, ok := endpointConfig.PeerConfig("xyz.org1.example.com")
+	assert.True(t, ok, "supposed to find peer config")
+	assert.NotNil(t, peerConfig, "supposed to find peer config")
+
+	ordererConfig, ok := endpointConfig.OrdererConfig("xyz.org1.example.com")
+	assert.True(t, ok, "supposed to find orderer config")
+	assert.NotNil(t, ordererConfig, "supposed to find orderer config")
+
+	channelConfig := endpointConfig.ChannelConfig("samplexyzchannel")
+	assert.NotNil(t, channelConfig, "supposed to find channel config")
+}
+
+func TestDefaultGRPCOpts(t *testing.T) {
+
+	endpointConfig, err := ConfigFromBackend(getMatcherConfig())
+	assert.Nil(t, err, "Failed to get endpoint config from backend")
+	assert.NotNil(t, endpointConfig, "expected valid endpointconfig")
+
+	peerConfig, ok := endpointConfig.PeerConfig("xyz.org1.example.com")
+	assert.True(t, ok, "supposed to find peer config")
+	assert.NotNil(t, peerConfig, "supposed to find peer config")
+	assert.NotEmpty(t, peerConfig.GRPCOptions)
+	assert.Equal(t, 6, len(peerConfig.GRPCOptions))
+	assert.Equal(t, "0s", peerConfig.GRPCOptions["keep-alive-time"])
+	assert.Equal(t, "peer0.org1.example.com", peerConfig.GRPCOptions["ssl-target-name-override"])
+	assert.Equal(t, "20s", peerConfig.GRPCOptions["keep-alive-timeout"])
+	assert.Equal(t, false, peerConfig.GRPCOptions["keep-alive-permit"])
+	assert.Equal(t, false, peerConfig.GRPCOptions["fail-fast"])
+	assert.Equal(t, false, peerConfig.GRPCOptions["allow-insecure"])
+
+	//make sure map has all the expected grpc opts keys
+	_, ok = peerConfig.GRPCOptions["keep-alive-time"]
+	assert.True(t, ok)
+	_, ok = peerConfig.GRPCOptions["ssl-target-name-override"]
+	assert.True(t, ok)
+	_, ok = peerConfig.GRPCOptions["keep-alive-timeout"]
+	assert.True(t, ok)
+	_, ok = peerConfig.GRPCOptions["keep-alive-permit"]
+	assert.True(t, ok)
+	_, ok = peerConfig.GRPCOptions["fail-fast"]
+	assert.True(t, ok)
+	_, ok = peerConfig.GRPCOptions["allow-insecure"]
+	assert.True(t, ok)
+
+	ordererConfig, ok := endpointConfig.OrdererConfig("xyz.org1.example.com")
+	assert.True(t, ok, "supposed to find orderer config")
+	assert.NotNil(t, ordererConfig, "supposed to find orderer config")
+	assert.NotEmpty(t, ordererConfig.GRPCOptions)
+	assert.Equal(t, 6, len(ordererConfig.GRPCOptions))
+	assert.Equal(t, "0s", ordererConfig.GRPCOptions["keep-alive-time"])
+	assert.Equal(t, "orderer.example.com", ordererConfig.GRPCOptions["ssl-target-name-override"])
+	assert.Equal(t, "20s", ordererConfig.GRPCOptions["keep-alive-timeout"])
+	assert.Equal(t, false, ordererConfig.GRPCOptions["keep-alive-permit"])
+	assert.Equal(t, false, ordererConfig.GRPCOptions["fail-fast"])
+	assert.Equal(t, false, ordererConfig.GRPCOptions["allow-insecure"])
+
+	//make sure map has all the expected grpc opts keys
+	_, ok = ordererConfig.GRPCOptions["keep-alive-time"]
+	assert.True(t, ok)
+	_, ok = ordererConfig.GRPCOptions["ssl-target-name-override"]
+	assert.True(t, ok)
+	_, ok = ordererConfig.GRPCOptions["keep-alive-timeout"]
+	assert.True(t, ok)
+	_, ok = ordererConfig.GRPCOptions["keep-alive-permit"]
+	assert.True(t, ok)
+	_, ok = ordererConfig.GRPCOptions["fail-fast"]
+	assert.True(t, ok)
+	_, ok = ordererConfig.GRPCOptions["allow-insecure"]
+	assert.True(t, ok)
+}
+
+func TestSetDefault(t *testing.T) {
+	dataMap := make(map[string]interface{})
+	key1 := "key1"
+	key2 := "key2"
+	key3 := "key3"
+	defaultVal1 := true
+	defaultVal2 := false
+	key3Val := true
+
+	setDefault(dataMap, key1, defaultVal1)
+	assert.Equal(t, defaultVal1, dataMap[key1])
+
+	setDefault(dataMap, key2, defaultVal2)
+	assert.Equal(t, defaultVal2, dataMap[key2])
+
+	// setDefault makes no effects
+	dataMap[key3] = key3Val
+	setDefault(dataMap, key3, !key3Val)
+	assert.Equal(t, key3Val, dataMap[key3])
 }

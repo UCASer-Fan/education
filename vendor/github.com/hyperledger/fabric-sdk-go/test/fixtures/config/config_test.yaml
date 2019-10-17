@@ -39,10 +39,7 @@ client:
 #        # to prevent re-selecting them in subsequent retries.
 #        # This interval will define how long a peer is greylisted
 #        greylistExpiry: 10s
-#  eventService:
-#    # Event service type (optional). If not specified then the type is automatically
-#    # determined from channel capabilities.
-#    type: (deliver|eventhub)
+
     # the below timeouts are commented out to use the default values that are found in
     # "pkg/fab/endpointconfig.go"
     # the client is free to override the default values by uncommenting and resetting
@@ -69,7 +66,7 @@ client:
 
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
-    path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}
+    path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}
 
   # Some SDKs support pluggable KV stores, the properties under "credentialStore"
   # are implementation specific
@@ -84,7 +81,7 @@ client:
       # Specific to the underlying KeyValueStore that backs the crypto key store.
       path: /tmp/msp
 
-   # BCCSP config for the client. Used by GO SDK.
+  # [Optional] BCCSP config for the client. Used by GO SDK.
   BCCSP:
     security:
      enabled: true
@@ -101,9 +98,9 @@ client:
     # [Optional]. Client key and cert for TLS handshake with peers and orderers
     client:
       key:
-        path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/mutual_tls/client_sdk_go-key.pem
+        path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key
       cert:
-        path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/mutual_tls/client_sdk_go.pem
+        path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt
 
 #
 # [Optional]. But most apps would have this section so that channel objects can be constructed
@@ -111,17 +108,15 @@ client:
 # section.
 #
 channels:
-  # name of the channel
-  mychannel:
-    # Required. list of orderers designated by the application to use for transactions on this
-    # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
-    # operational decisions to share loads from applications among the orderers.  The values must
-    # be "names" of orgs defined under "organizations/peers"
-    # deprecated: not recommended, to override any orderer configuration items, entity matchers should be used.
-#    orderers:
-#      - orderer.example.com
 
-    # Required. list of peers from participating orgs
+  # Default channel is used if channel configuration is missing or if defined channel configuration is missing info
+  # If channel doesn't define peers then peers from default channel will be used
+  # If channel doesn't define orderes then orderes from default channel will be used
+  # If channel doesn't define policies then policies from default channel will be used.
+  # Also, if channel defines policies and some policy info is missing than that missing info will be filled from default channel.
+  _default:
+
+    # [Optional]. list of peers from participating orgs
     peers:
       peer0.org1.example.com:
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
@@ -146,6 +141,32 @@ channels:
     # [Optional]. The application can use these options to perform channel operations like retrieving channel
     # config etc.
     policies:
+      #[Optional] options for retrieving discovery info
+      discovery:
+        #[Optional] discovery info will be retrieved for these number of random targets
+        maxTargets: 2
+        #[Optional] retry options for retriving discovery info
+        retryOpts:
+          #[Optional] number of retry attempts
+          attempts: 4
+          #[Optional] the back off interval for the first retry attempt
+          initialBackoff: 500ms
+          #[Optional] the maximum back off interval for any retry attempt
+          maxBackoff: 5s
+          #[Optional] he factor by which the initial back off period is exponentially incremented
+          backoffFactor: 2.0
+      #[Optional] options for selection service
+      selection:
+        #[Optional] endorser selection sorting strategy. Possible values: [BlockHeightPriority,Balanced]
+        SortingStrategy: BlockHeightPriority
+        #[Optional] load-balancer type. Possible values: [RoundRobin,Random]
+        Balancer: RoundRobin
+        #[Optional] the number of blocks from the highest block number of a group of peers that a peer
+        #can lag behind and still be considered to be up-to-date. These peers will be sorted using the
+        #given Balancer. If a peer's block height falls behind this threshold then it will be demoted
+        #to a lower priority list of peers which will be sorted according to block height.
+        #Note: This property only applies to BlockHeightPriority sorter.
+        BlockHeightLagThreshold: 5
       #[Optional] options for retrieving channel configuration blocks
       queryChannelConfig:
         #[Optional] min number of success responses (from targets/peers)
@@ -162,6 +183,57 @@ channels:
           maxBackoff: 5s
           #[Optional] he factor by which the initial back off period is exponentially incremented
           backoffFactor: 2.0
+
+      #[Optional] options for the event service
+      eventService:
+        # [Optional] resolverStrategy specifies the peer resolver strategy to use when connecting to a peer
+        # Possible values: [PreferOrg (default), MinBlockHeight, Balanced]
+        #
+        # PreferOrg:
+        #   Determines which peers are suitable based on block height lag threshold, although will prefer the peers in the
+        #   current org (as long as their block height is above a configured threshold). If none of the peers from the current org
+        #   are suitable then a peer from another org is chosen.
+        # MinBlockHeight:
+        #   Chooses the best peer according to a block height lag threshold. The maximum block height of all peers is
+        #   determined and the peers whose block heights are under the maximum height but above a provided "lag" threshold are load
+        #   balanced. The other peers are not considered.
+        # Balanced:
+        #   Chooses peers using the configured balancer.
+        resolverStrategy: PreferOrg
+
+        # [Optional] balancer is the balancer to use when choosing a peer to connect to
+        # Possible values: [Random (default), RoundRobin]
+        balancer: RoundRobin
+
+        # [Optional] blockHeightLagThreshold sets the block height lag threshold. This value is used for choosing a peer
+        # to connect to. If a peer is lagging behind the most up-to-date peer by more than the given number of
+        # blocks then it will be excluded from selection.
+        # Note that this parameter is applicable only when minBlockHeightResolverMode is set to ResolveByThreshold.
+        # Default: 5
+        blockHeightLagThreshold: 2
+
+        # [Optional] reconnectBlockHeightLagThreshold - the event client will disconnect from the peer if the peer's
+        # block height falls behind the specified number of blocks and will reconnect to a better performing peer.
+        # Note that this parameter is only applicable if peerMonitor is set to Enabled (default).
+        # Default: 10
+        # NOTES:
+        #   - Setting this value too low may cause the event client to disconnect/reconnect too frequently, thereby
+        #     affecting performance.
+        reconnectBlockHeightLagThreshold: 5
+
+        # [Optional] peerMonitorPeriod is the period in which the connected peer is monitored to see if
+        # the event client should disconnect from it and reconnect to another peer.
+        # Default: 0 (disabled) for Balanced resolverStrategy; 5s for PreferOrg and MinBlockHeight strategy
+        peerMonitorPeriod: 3s
+
+  # Mychannel overrides initialBackoff for discovery
+  mychannel:
+    policies:
+      discovery:
+        retryOpts:
+          #[Required for override] number of retry attempts
+          attempts: 4
+          initialBackoff: 1s
 
   # multi-org test channel
   orgchannel:
@@ -188,26 +260,6 @@ channels:
         ledgerQuery: true
         eventSource: true
 
-    # [Optional]. The application can use these options to perform channel operations like retrieving channel
-    # config etc.
-    policies:
-      #[Optional] options for retrieving channel configuration blocks
-      queryChannelConfig:
-        #[Optional] min number of success responses (from targets/peers)
-        minResponses: 1
-        #[Optional] channel config will be retrieved for these number of random targets
-        maxTargets: 1
-        #[Optional] retry options for query config block
-        retryOpts:
-          #[Optional] number of retry attempts
-          attempts: 5
-          #[Optional] the back off interval for the first retry attempt
-          initialBackoff: 500ms
-          #[Optional] the maximum back off interval for any retry attempt
-          maxBackoff: 5s
-          #[Optional] he factor by which the initial back off period is exponentially incremented
-          backoffFactor: 2.0
-
 #
 # list of participating organizations in this network
 #
@@ -229,6 +281,7 @@ organizations:
     # Fabric-CA servers.
     certificateAuthorities:
       - ca.org1.example.com
+      - tlsca.org1.example.com
 
   # the profile will contain public information about organizations other than the one it belongs to.
   # These are necessary information to make transaction lifecycles work, including MSP IDs and
@@ -243,6 +296,7 @@ organizations:
 
     peers:
       - peer0.org2.example.com
+      - peer1.org2.example.com
 
     certificateAuthorities:
       - ca.org2.example.com
@@ -250,7 +304,7 @@ organizations:
   # Orderer Org name
   ordererorg:
       # Membership Service Provider ID for this organization
-      mspID: "OrdererOrg"
+      mspID: OrdererMSP
 
       # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
       cryptoPath: ordererOrganizations/example.com/users/{username}@example.com/msp
@@ -262,13 +316,11 @@ organizations:
 # SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
 #
 orderers:
-  orderer.example.com:
-    url: orderer.example.com:7050
-
+  _default:
+    # common orderer config items between all the orderers in  config
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
     grpcOptions:
-      ssl-target-name-override: orderer.example.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -279,23 +331,36 @@ orderers:
       # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
       allow-insecure: false
 
+  orderer.example.com:
+    # [Optional] Default: Infer from hostname
+    url: orderer.example.com:7050
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+      #ssl-target-name-override: orderer.example.com
+      # These parameters should be set in coordination with the keepalive policy on the server,
+      # as incompatible settings can result in closing of connection.
+      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+      #keep-alive-time: 0s
+      #keep-alive-timeout: 20s
+      #keep-alive-permit: false
+      #fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      #allow-insecure: false
+
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.org1.example.com:
-    # this URL is used to send endorsement and query requests
-    url: peer0.org1.example.com:7051
-    # eventUrl is only needed when using eventhub (default is delivery service)
-    eventUrl: peer0.org1.example.com:7053
-
+  _default:
+    #common grpc options between all the peers
     grpcOptions:
-      ssl-target-name-override: peer0.org1.example.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -306,50 +371,44 @@ peers:
       # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
       allow-insecure: false
 
+  peer0.org1.example.com:
+    # this URL is used to send endorsement and query requests
+    # [Optional] Default: Infer from hostname
+    url: peer0.org1.example.com:7051
+
+    #grpcOptions:
+    #  ssl-target-name-override: peer0.org1.example.com
+
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
 
   peer1.org1.example.com:
     # this URL is used to send endorsement and query requests
     url: peer1.org1.example.com:7151
-    # eventUrl is only needed when using eventhub (default is delivery service)
-    eventUrl: peer1.org1.example.com:7153
 
-    grpcOptions:
-      ssl-target-name-override: peer1.org1.example.com
-      # These parameters should be set in coordination with the keepalive policy on the server,
-      # as incompatible settings can result in closing of connection.
-      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
-      keep-alive-time: 0s
-      keep-alive-timeout: 20s
-      keep-alive-permit: false
-      fail-fast: false
-      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
-      allow-insecure: false
+    #grpcOptions:
+    #  ssl-target-name-override: peer1.org1.example.com
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
 
   peer0.org2.example.com:
     url: peer0.org2.example.com:8051
-    # eventUrl is only needed when using eventhub (default is delivery service)
-    eventUrl: peer0.org2.example.com:8053
-    grpcOptions:
-      ssl-target-name-override: peer0.org2.example.com
-      # These parameters should be set in coordination with the keepalive policy on the server,
-      # as incompatible settings can result in closing of connection.
-      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
-      keep-alive-time: 0s
-      keep-alive-timeout: 20s
-      keep-alive-permit: false
-      fail-fast: false
-      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
-      allow-insecure: false
+    #grpcOptions:
+    #  ssl-target-name-override: peer0.org2.example.com
 
     tlsCACerts:
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
+
+  peer1.org2.example.com:
+    url: peer1.org2.example.com:9051
+    #grpcOptions:
+    #  ssl-target-name-override: peer1.org2.example.com
+
+    tlsCACerts:
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
 
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
@@ -358,16 +417,20 @@ peers:
 #
 certificateAuthorities:
   ca.org1.example.com:
+    # [Optional] Default: Infer from hostname
     url: https://ca.org1.example.com:7054
+    # [Optional] The optional server name for target override
+    #grpcOptions:
+    #  ssl-target-name-override: ca.org1.example.com
     tlsCACerts:
       # Comma-Separated list of paths
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/ca_root.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
       # Client key and cert for SSL handshake with Fabric CA
       client:
         key:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key
         cert:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -376,17 +439,40 @@ certificateAuthorities:
       enrollSecret: adminpw
     # [Optional] The optional name of the CA.
     caName: ca.org1.example.com
-  ca.org2.example.com:
-    url: https://ca.org2.example.com:8054
+  tlsca.org1.example.com:
+    # [Optional] Default: Infer from hostname
+    url: https://ca.org1.example.com:7154
     tlsCACerts:
       # Comma-Separated list of paths
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/ca_root.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
       # Client key and cert for SSL handshake with Fabric CA
       client:
         key:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key
         cert:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      enrollId: admin2
+      enrollSecret: adminpw2
+    # [Optional] The optional name of the CA.
+    caName: tlsca.org1.example.com
+  ca.org2.example.com:
+    url: https://ca.org2.example.com:8054
+    # [Optional] The optional server name for target override
+    #grpcOptions:
+    #  ssl-target-name-override: ca.org2.example.com
+    tlsCACerts:
+      # Comma-Separated list of paths
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
+      # Client key and cert for SSL handshake with Fabric CA
+      client:
+        key:
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key
+        cert:
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt
 
      # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
      # needed to enroll and invoke new users.
@@ -400,45 +486,41 @@ certificateAuthorities:
  # so that properties can be mapped. Regex can be used for this purpose
 # UrlSubstitutionExp can be empty which means the same network hostname will be used
 # UrlSubstitutionExp can be given same as mapped peer url, so that mapped peer url can be used
-# UrlSubstitutionExp can have golang regex matchers like $1.local.example.$2:$3 for pattern
+# UrlSubstitutionExp can have golang regex matchers like ${1}.local.example.${2}:${3} for pattern
  # like peer0.org1.example.com:1234 which converts peer0.org1.example.com to peer0.org1.local.example.com:1234
-# EventUrlSubstitutionExp and sslTargetOverrideUrlSubstitutionExp follow in the same lines as
- # SubstitutionExp for the fields eventUrl and gprcOptions.ssl-target-name-override respectively
+# sslTargetOverrideUrlSubstitutionExp follow in the same lines as
+ # SubstitutionExp for the fields gprcOptions.ssl-target-name-override respectively
 # In any case mappedHost's config will be used, so mapped host cannot be empty, if entityMatchers are used
 #entityMatchers:
 #entityMatchers:
 #  peer:
 #    - pattern: (\w+).org1.example.com:(\d+)
-#      urlSubstitutionExp: $1.org1.example.com:$2
-#      sslTargetOverrideUrlSubstitutionExp: $1.org1.example.com
+#      urlSubstitutionExp: ${1}.org1.example.com:${2}
+#      sslTargetOverrideUrlSubstitutionExp: ${1}.org1.example.com
 #      mappedHost: peer0.org1.example.com
 #
 #    - pattern: (\w+).org2.example.com:(\d+)
-#      urlSubstitutionExp: $1.org2.example.com:$2
-#      sslTargetOverrideUrlSubstitutionExp: $1.org2.example.com
+#      urlSubstitutionExp: ${1}.org2.example.com:${2}
+#      sslTargetOverrideUrlSubstitutionExp: ${1}.org2.example.com
 #      mappedHost: peer0.org2.example.com
 
 #    - pattern: (\w+).org1.example.(\w+)
 #      urlSubstitutionExp: peer0.org1.example.com:7051
-#      eventUrlSubstitutionExp: peer0.org1.example.com:7053
 #      sslTargetOverrideUrlSubstitutionExp: peer0.org1.example.com
 #      mappedHost: peer0.org1.example.com
 #
 #    - pattern: (\w+).org2.example.(\w+)
 #      urlSubstitutionExp: peer0.org2.example.com:8051
-#      eventUrlSubstitutionExp: peer0.org2.example.com:8053
 #      sslTargetOverrideUrlSubstitutionExp: peer0.org2.example.com
 #      mappedHost: peer0.org2.example.com
 #
 #    - pattern: (\w+).example1.(\w+):(\d+)
-#      urlSubstitutionExp: $1.org1.example.$2:$3
-#      eventUrlSubstitutionExp: $1.org1.example.$2:7053
-#      sslTargetOverrideUrlSubstitutionExp: $1.org1.example.$2
+#      urlSubstitutionExp: ${1}.org1.example.${2}:${3}
+#      sslTargetOverrideUrlSubstitutionExp: ${1}.org1.example.${2}
 #      mappedHost: peer0.org1.example.com
 #
 #    - pattern: (\w+).org1.example.(\w+):(\d+)
 #      urlSubstitutionExp: peer0.org1.example.com:7051
-#      eventUrlSubstitutionExp: peer0.org1.example.com:7053
 #      sslTargetOverrideUrlSubstitutionExp: peer0.org1.example.com
 #      mappedHost: peer0.org1.example.com
 #
@@ -459,15 +541,71 @@ certificateAuthorities:
 #      mappedHost: orderer.example.com
 #
 #    - pattern: (\w+).example4.(\w+):(\d+)
-#      urlSubstitutionExp: $1.example.$2:$3
-#      sslTargetOverrideUrlSubstitutionExp: $1.example.$2
+#      urlSubstitutionExp: ${1}.example.${2}:${3}
+#      sslTargetOverrideUrlSubstitutionExp: ${1}.example.${2}
 #      mappedHost: orderer.example.com
 #
 #  certificateAuthority:
 #    - pattern: (\w+).org1.example.(\w+)
 #      urlSubstitutionExp:
+#      sslTargetOverrideUrlSubstitutionExp: ca.example.com
 #      mappedHost: ca.org1.example.com
 #
 #    - pattern: (\w+).org2.example.(\w+)
 #      urlSubstitutionExp:
+#      sslTargetOverrideUrlSubstitutionExp: ca.example.com
 #      mappedHost: ca.org2.example.com
+
+###############################################################################
+#
+#    Operations section
+#    copied from Fabric's core.yaml
+###############################################################################
+operations:
+  # host and port for the operations server
+  listenAddress: 127.0.0.1:8080
+
+  # TLS configuration for the operations endpoint
+  tls:
+    # TLS enabled
+    enabled: false
+
+    # TODO replace cert.file, key.file and clientRootCAs.files to tlsCACerts as used elsewhere in this config file
+    # path to PEM encoded server certificate for the operations server
+    cert:
+      file:
+
+    # path to PEM encoded server key for the operations server
+    key:
+      file:
+
+    # require client certificate authentication to access all resources
+    clientAuthRequired: false
+
+    # paths to PEM encoded ca certificates to trust for client authentication
+    clientRootCAs:
+      files: []
+
+###############################################################################
+#
+#    Metrics section
+#    copied from Fabric's core.yaml
+###############################################################################
+metrics:
+  # metrics provider is one of statsd, prometheus, or disabled
+  provider: prometheus
+
+  # statsd configuration
+  statsd:
+    # network type: tcp or udp
+    network: udp
+
+    # statsd server address
+    address: 127.0.0.1:8125
+
+    # the interval at which locally cached counters and gauges are pushed
+    # to statsd; timings are pushed immediately
+    writeInterval: 10s
+
+    # prefix is prepended to all emitted statsd metrics
+    prefix:

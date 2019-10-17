@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/options"
+	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/events/api"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/seek"
 )
@@ -24,7 +25,6 @@ type params struct {
 func defaultParams() *params {
 	return &params{
 		connProvider: deliverFilteredProvider,
-		seekType:     seek.Newest,
 		respTimeout:  5 * time.Second,
 	}
 }
@@ -74,10 +74,24 @@ func (p *params) SetFromBlock(value uint64) {
 
 func (p *params) SetSeekType(value seek.Type) {
 	logger.Debugf("SeekType: %s", value)
-	p.seekType = value
+	if value != "" {
+		p.seekType = value
+	}
 }
 
 func (p *params) SetResponseTimeout(value time.Duration) {
 	logger.Debugf("ResponseTimeout: %s", value)
 	p.respTimeout = value
+}
+
+func (p *params) SetSnapshot(value fab.EventSnapshot) error {
+	logger.Debugf("EventSnapshot.LastBlockReceived: %d", value.LastBlockReceived)
+	p.SetSeekType(seek.FromBlock)
+	// Set 'from block' as the last block received. We may get a duplicate block but, if we
+	// ask for the next block and there are no more blocks on the channel, then we'll get an
+	// error from the deliver service.
+	// TODO: The client should be enhanced to handle this situation more gracefully. It should first
+	// try LastBlockReceived+1 and then LastBlockReceived (if an error is received from the deliver server).
+	p.SetFromBlock(value.LastBlockReceived())
+	return nil
 }

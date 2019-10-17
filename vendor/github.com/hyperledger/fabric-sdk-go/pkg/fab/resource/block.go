@@ -11,13 +11,13 @@ import (
 	reqContext "context"
 
 	"github.com/golang/protobuf/proto"
-	ab "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/orderer"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	contextImpl "github.com/hyperledger/fabric-sdk-go/pkg/context"
 	ccomm "github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/txn"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common"
+	ab "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/orderer"
 	"github.com/pkg/errors"
 )
 
@@ -32,10 +32,16 @@ func retrieveBlock(reqCtx reqContext.Context, orderers []fab.Orderer, channel st
 		return nil, errors.Wrap(err, "generating TX ID failed")
 	}
 
+	hash, err := ccomm.TLSCertHash(ctx.EndpointConfig())
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to get tls cert hash")
+	}
+
 	channelHeaderOpts := txn.ChannelHeaderOpts{
 		TxnHeader:   th,
-		TLSCertHash: ccomm.TLSCertHash(ctx.EndpointConfig()),
+		TLSCertHash: hash,
 	}
+
 	seekInfoHeader, err := txn.CreateChannelHeader(common.HeaderType_DELIVER_SEEK_INFO, channelHeaderOpts)
 	if err != nil {
 		return nil, errors.Wrap(err, "CreateChannelHeader failed")

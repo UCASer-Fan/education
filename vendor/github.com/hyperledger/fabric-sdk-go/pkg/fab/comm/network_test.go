@@ -7,20 +7,29 @@ SPDX-License-Identifier: Apache-2.0
 package comm
 
 import (
+	"path/filepath"
 	"testing"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
 	fabImpl "github.com/hyperledger/fabric-sdk-go/pkg/fab"
+	"github.com/hyperledger/fabric-sdk-go/test/metadata"
 	"github.com/stretchr/testify/assert"
 )
 
-const configTestFilePath = "../../core/config/testdata/config_test.yaml"
-const entityMatcherTestFilePath = "../../core/config/testdata/config_test_entity_matchers.yaml"
-const localOverrideEntityMatcher = "../../../test/fixtures/config/overrides/local_entity_matchers.yaml"
+const (
+	configTestFile                 = "config_test.yaml"
+	entityMatcherTestFile          = "config_test.yaml"
+	localOverrideEntityMatcherFile = "local_entity_matchers.yaml"
+)
+
+func getConfigPath() string {
+	return filepath.Join(metadata.GetProjectPath(), "pkg", "core", "config", "testdata")
+}
 
 func TestNetworkPeerConfigFromURL(t *testing.T) {
-	configBackend, err := config.FromFile(configTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configTestFile)
+	configBackend, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatalf("Unexpected error reading config backend: %s", err)
 	}
@@ -45,12 +54,14 @@ func TestNetworkPeerConfigFromURL(t *testing.T) {
 }
 
 func TestSearchPeerConfigFromURL(t *testing.T) {
-	configBackend1, err := config.FromFile(localOverrideEntityMatcher)()
+	matcherPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, "overrides", localOverrideEntityMatcherFile)
+	configBackend1, err := config.FromFile(matcherPath)()
 	if err != nil {
 		t.Fatalf("Unexpected error reading config backend: %s", err)
 	}
 
-	configBackend2, err := config.FromFile(entityMatcherTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), entityMatcherTestFile)
+	configBackend2, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatalf("Unexpected error reading config backend: %s", err)
 	}
@@ -64,7 +75,7 @@ func TestSearchPeerConfigFromURL(t *testing.T) {
 		t.Fatalf("Unexpected error reading config: %s", err)
 	}
 
-	peer0Org1, ok := sampleConfig.PeerConfig("peer0.org1.example.com")
+	_, ok := sampleConfig.PeerConfig("peer0.org1.example.com")
 	assert.True(t, ok, "peerconfig search was expected to be successful")
 
 	//Positive scenario,
@@ -75,7 +86,6 @@ func TestSearchPeerConfigFromURL(t *testing.T) {
 	assert.NotNil(t, peerConfig, "supposed to get valid peerConfig by url :%s", testURL)
 	assert.Equal(t, testURL, peerConfig.URL)
 	assert.Nil(t, err, "supposed to get no error")
-	assert.Equal(t, peer0Org1.EventURL, peerConfig.EventURL)
 
 	// peerconfig should be found using actual URL
 	testURL2 := "peer0.org1.example.com:7051"
@@ -85,12 +95,11 @@ func TestSearchPeerConfigFromURL(t *testing.T) {
 	assert.NotNil(t, peerConfig, "supposed to get valid peerConfig by url :%s", testURL2)
 	assert.Equal(t, testURL, peerConfig.URL)
 	assert.Nil(t, err, "supposed to get no error")
-	assert.Equal(t, peer0Org1.EventURL, peerConfig.EventURL)
-
 }
 
 func TestMSPID(t *testing.T) {
-	configBackend, err := config.FromFile(configTestFilePath)()
+	configPath := filepath.Join(getConfigPath(), configTestFile)
+	configBackend, err := config.FromFile(configPath)()
 	if err != nil {
 		t.Fatalf("Unexpected error reading config backend: %s", err)
 	}

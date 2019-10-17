@@ -7,7 +7,6 @@ SPDX-License-Identifier: Apache-2.0
 package dispatcher
 
 import (
-	ab "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/orderer"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/logging"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/options"
 	fabcontext "github.com/hyperledger/fabric-sdk-go/pkg/common/providers/context"
@@ -17,6 +16,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection"
 	esdispatcher "github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher"
 	cb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common"
+	ab "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/orderer"
 	pb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer"
 	"github.com/pkg/errors"
 )
@@ -33,13 +33,13 @@ type dsConnection interface {
 // in order to avoid any race conditions and to ensure that events are processed in the order that they are received.
 // This also avoids the need for synchronization.
 type Dispatcher struct {
-	clientdisp.Dispatcher
+	*clientdisp.Dispatcher
 }
 
 // New returns a new deliver dispatcher
 func New(context fabcontext.Client, chConfig fab.ChannelCfg, discoveryService fab.DiscoveryService, connectionProvider api.ConnectionProvider, opts ...options.Opt) *Dispatcher {
 	return &Dispatcher{
-		Dispatcher: *clientdisp.New(context, chConfig, discoveryService, connectionProvider, opts...),
+		Dispatcher: clientdisp.New(context, chConfig, discoveryService, connectionProvider, opts...),
 	}
 }
 
@@ -104,12 +104,19 @@ func (ed *Dispatcher) handleDeliverResponseStatus(evt *pb.DeliverResponse_Status
 		logger.Warnf("Error disconnecting: %s", err)
 	}
 
-	ed.Dispatcher.HandleDisconnectedEvent(&clientdisp.DisconnectedEvent{
-		Err: errors.Errorf("got error status from deliver server: %s", evt.Status),
-	})
+	ed.Dispatcher.HandleDisconnectedEvent(disconnectedEventFromStatus(evt.Status))
 }
 
 func (ed *Dispatcher) registerHandlers() {
 	ed.RegisterHandler(&SeekEvent{}, ed.handleSeekEvent)
 	ed.RegisterHandler(&connection.Event{}, ed.handleEvent)
+}
+
+func disconnectedEventFromStatus(status cb.Status) *clientdisp.DisconnectedEvent {
+	err := errors.Errorf("got error status from deliver server: %s", status)
+
+	if status == cb.Status_FORBIDDEN {
+		return clientdisp.NewFatalDisconnectedEvent(err)
+	}
+	return clientdisp.NewDisconnectedEvent(err)
 }

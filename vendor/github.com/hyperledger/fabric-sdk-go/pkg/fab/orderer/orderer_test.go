@@ -10,6 +10,7 @@ import (
 	reqContext "context"
 	"crypto/x509"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -19,12 +20,12 @@ import (
 	grpccodes "google.golang.org/grpc/codes"
 
 	"github.com/golang/mock/gomock"
-	ab "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protos/orderer"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/test/mockfab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common"
+	ab "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/orderer"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
@@ -129,7 +130,7 @@ func TestSendDeliverConnFailed(t *testing.T) {
 }
 
 func TestNewOrdererWithTLS(t *testing.T) {
-	tlsConfig := endpoint.TLSConfig{Path: "../../../test/fixtures/fabricca/tls/ca/ca_root.pem"}
+	tlsConfig := endpoint.TLSConfig{Path: filepath.Join("testdata", "ca.crt")}
 	err := tlsConfig.LoadBytes()
 	if err != nil {
 		t.Fatalf("tlsConfig.LoadBytes() failed, cause [%s]", err)
@@ -155,7 +156,7 @@ func TestNewOrdererWithTLS(t *testing.T) {
 
 func TestNewOrdererWithMutualTLS(t *testing.T) {
 	//Positive Test case
-	tlsConfig := endpoint.TLSConfig{Path: "../../../test/fixtures/fabricca/tls/ca/ca_root.pem"}
+	tlsConfig := endpoint.TLSConfig{Path: filepath.Join("testdata", "ca.crt")}
 	err := tlsConfig.LoadBytes()
 	if err != nil {
 		t.Fatalf("tlsConfig.LoadBytes() failed, cause [%s]", err)

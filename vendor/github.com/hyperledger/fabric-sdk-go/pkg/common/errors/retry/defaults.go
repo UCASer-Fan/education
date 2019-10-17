@@ -72,6 +72,7 @@ var DefaultRetryableCodes = map[status.Group][]status.Code{
 		status.EndorsementMismatch,
 		status.PrematureChaincodeExecution,
 		status.ChaincodeAlreadyLaunching,
+		status.ChaincodeNameNotFound,
 	},
 	status.EndorserServerStatus: {
 		status.Code(common.Status_SERVICE_UNAVAILABLE),
@@ -101,6 +102,7 @@ var ResMgmtDefaultRetryableCodes = map[status.Group][]status.Code{
 		status.EndorsementMismatch,
 		status.PrematureChaincodeExecution,
 		status.ChaincodeAlreadyLaunching,
+		status.ChaincodeNameNotFound,
 	},
 	status.EndorserServerStatus: {
 		status.Code(common.Status_SERVICE_UNAVAILABLE),
@@ -123,9 +125,6 @@ var ResMgmtDefaultRetryableCodes = map[status.Group][]status.Code{
 	status.GRPCTransportStatus: {
 		status.Code(grpcCodes.Unavailable),
 	},
-	status.DiscoveryServerStatus: {
-		status.QueryEndorsers,
-	},
 }
 
 // ChannelClientRetryableCodes are the suggested codes that should be treated as
@@ -134,7 +133,9 @@ var ChannelClientRetryableCodes = map[status.Group][]status.Code{
 	status.EndorserClientStatus: {
 		status.ConnectionFailed, status.EndorsementMismatch,
 		status.PrematureChaincodeExecution,
+		status.Code(pb.TxValidationCode_MVCC_READ_CONFLICT),
 		status.ChaincodeAlreadyLaunching,
+		status.ChaincodeNameNotFound,
 	},
 	status.EndorserServerStatus: {
 		status.Code(common.Status_SERVICE_UNAVAILABLE),
@@ -163,4 +164,65 @@ var ChannelClientRetryableCodes = map[status.Group][]status.Code{
 // ChannelConfigRetryableCodes error codes to be taken into account for query channel config retry
 var ChannelConfigRetryableCodes = map[status.Group][]status.Code{
 	status.EndorserClientStatus: {status.EndorsementMismatch},
+}
+
+// TestRetryableCodes are used by tests to determine error situations that can be retried.
+var TestRetryableCodes = map[status.Group][]status.Code{
+	status.TestStatus: {
+		status.GenericTransient,
+	},
+	status.DiscoveryServerStatus: {
+		status.QueryEndorsers,
+		status.Code(pb.TxValidationCode_MVCC_READ_CONFLICT),
+	},
+	status.EndorserClientStatus: {
+		status.ConnectionFailed, status.EndorsementMismatch,
+		status.PrematureChaincodeExecution,
+		status.ChaincodeAlreadyLaunching,
+		status.ChaincodeNameNotFound,
+		status.Code(pb.TxValidationCode_MVCC_READ_CONFLICT),
+	},
+	status.EndorserServerStatus: {
+		status.Code(common.Status_SERVICE_UNAVAILABLE),
+		status.Code(common.Status_INTERNAL_SERVER_ERROR),
+		status.Code(pb.TxValidationCode_MVCC_READ_CONFLICT),
+	},
+	status.OrdererClientStatus: {
+		status.ConnectionFailed,
+	},
+	status.OrdererServerStatus: {
+		status.Code(common.Status_SERVICE_UNAVAILABLE),
+		status.Code(common.Status_INTERNAL_SERVER_ERROR),
+	},
+	status.EventServerStatus: {
+		status.Code(pb.TxValidationCode_DUPLICATE_TXID),
+		status.Code(pb.TxValidationCode_ENDORSEMENT_POLICY_FAILURE),
+		status.Code(pb.TxValidationCode_MVCC_READ_CONFLICT),
+		status.Code(pb.TxValidationCode_PHANTOM_READ_CONFLICT),
+	},
+	// TODO: gRPC introduced retries in v1.8.0. This can be replaced with the
+	// gRPC fail fast option, once available
+	status.GRPCTransportStatus: {
+		status.Code(grpcCodes.Unavailable),
+	},
+}
+
+const (
+	// TestAttempts number of retry attempts made by default
+	TestAttempts = 10
+	// TestInitialBackoff default initial backoff
+	TestInitialBackoff = 200 * time.Millisecond
+	// TestMaxBackoff default maximum backoff
+	TestMaxBackoff = 50 * time.Second
+	// TestBackoffFactor default backoff factor
+	TestBackoffFactor = 1.75
+)
+
+// TestRetryOpts are used by tests to determine retry parameters.
+var TestRetryOpts = Opts{
+	Attempts:       TestAttempts,
+	InitialBackoff: TestInitialBackoff,
+	MaxBackoff:     TestMaxBackoff,
+	BackoffFactor:  TestBackoffFactor,
+	RetryableCodes: TestRetryableCodes,
 }

@@ -15,13 +15,13 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/pkg/errors"
 
+	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/core/common/ccprovider"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/logging"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/context"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	contextImpl "github.com/hyperledger/fabric-sdk-go/pkg/context"
-	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/core/common/ccprovider"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common"
 )
 
@@ -83,7 +83,7 @@ func (dp *ccPolicyProvider) GetChaincodePolicy(chaincodeID string) (*common.Sign
 
 	response, err := dp.queryChaincode(ccDataProviderSCC, ccDataProviderfunction, [][]byte{[]byte(dp.channelID), []byte(chaincodeID)})
 	if err != nil {
-		return nil, errors.WithMessage(err, fmt.Sprintf("error querying chaincode data for chaincode [%s] on channel [%s]", chaincodeID, dp.channelID))
+		return nil, errors.WithMessagef(err, "error querying chaincode data for chaincode [%s] on channel [%s]", chaincodeID, dp.channelID)
 	}
 
 	ccData = &ccprovider.ChaincodeData{}
@@ -138,6 +138,7 @@ func (dp *ccPolicyProvider) queryChaincode(ccID string, ccFcn string, ccArgs [][
 
 		resp, err := client.Query(request, channel.WithTargets(peer))
 		if err != nil {
+			logger.Debugf("query peer '%s' returned error for ccID %s, Fcn %s: %s", peer.URL(), ccID, ccFcn, err)
 			queryErrors = append(queryErrors, err.Error())
 			continue
 		} else {
@@ -146,7 +147,7 @@ func (dp *ccPolicyProvider) queryChaincode(ccID string, ccFcn string, ccArgs [][
 			break
 		}
 	}
-	logger.Debugf("queryErrors: %v", queryErrors)
+	logger.Debugf("queryErrors found %d error(s) from %d peers: %+v", len(queryErrors), len(targetPeers), queryErrors)
 
 	// If all queries failed, return error
 	if len(queryErrors) == len(targetPeers) {

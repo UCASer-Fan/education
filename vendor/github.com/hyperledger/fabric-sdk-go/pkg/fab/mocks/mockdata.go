@@ -7,20 +7,22 @@ SPDX-License-Identifier: Apache-2.0
 package mocks
 
 import (
+	"crypto/sha256"
+
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes/timestamp"
 
 	cutil "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/util"
+	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protoutil"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common"
 	mb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/msp"
 	ab "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/orderer"
 	pp "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer"
-	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/utils"
 
 	"time"
 
 	channelConfig "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/channelconfig"
-	ledger_util "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/core/ledger/util"
+	ledger_util "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/core/ledger/util"
 	"github.com/pkg/errors"
 )
 
@@ -511,7 +513,7 @@ func CreateBlockWithCCEventAndTxStatus(events *pp.ChaincodeEvent, txID string,
 		},
 		ChannelId: channelID,
 		TxId:      txID}
-	hdr := &common.Header{ChannelHeader: utils.MarshalOrPanic(chdr)}
+	hdr := &common.Header{ChannelHeader: protoutil.MarshalOrPanic(chdr)}
 	payload := &common.Payload{Header: hdr}
 	cea := &pp.ChaincodeEndorsedAction{}
 	ccaPayload := &pp.ChaincodeActionPayload{Action: cea}
@@ -524,27 +526,27 @@ func CreateBlockWithCCEventAndTxStatus(events *pp.ChaincodeEvent, txID string,
 	pHashBytes := []byte("proposal_hash")
 	pResponse := &pp.Response{Status: 200}
 	results := []byte("results")
-	eventBytes, err := utils.GetBytesChaincodeEvent(events)
+	eventBytes, err := protoutil.GetBytesChaincodeEvent(events)
 	if err != nil {
 		return nil, err
 	}
-	ccaPayload.Action.ProposalResponsePayload, err = utils.GetBytesProposalResponsePayload(pHashBytes, pResponse, results, eventBytes, nil)
+	ccaPayload.Action.ProposalResponsePayload, err = protoutil.GetBytesProposalResponsePayload(pHashBytes, pResponse, results, eventBytes, nil)
 	if err != nil {
 		return nil, err
 	}
-	tx.Actions[0].Payload, err = utils.GetBytesChaincodeActionPayload(ccaPayload)
+	tx.Actions[0].Payload, err = protoutil.GetBytesChaincodeActionPayload(ccaPayload)
 	if err != nil {
 		return nil, err
 	}
-	payload.Data, err = utils.GetBytesTransaction(tx)
+	payload.Data, err = protoutil.GetBytesTransaction(tx)
 	if err != nil {
 		return nil, err
 	}
-	env.Payload, err = utils.GetBytesPayload(payload)
+	env.Payload, err = protoutil.GetBytesPayload(payload)
 	if err != nil {
 		return nil, err
 	}
-	ebytes, err := utils.GetBytesEnvelope(env)
+	ebytes, err := protoutil.GetBytesEnvelope(env)
 	if err != nil {
 		return nil, err
 	}
@@ -553,7 +555,7 @@ func CreateBlockWithCCEventAndTxStatus(events *pp.ChaincodeEvent, txID string,
 	block.Data.Data = append(block.Data.Data, ebytes)
 
 	blockbytes := cutil.ConcatenateBytes(block.Data.Data...)
-	block.Header.DataHash = cutil.ComputeSHA256(blockbytes)
+	block.Header.DataHash = computeSHA256(blockbytes)
 
 	txsfltr := ledger_util.NewTxValidationFlags(len(block.Data.Data))
 	for i := 0; i < len(block.Data.Data); i++ {
@@ -580,4 +582,13 @@ func newBlock(seqNum uint64, previousHash []byte) *common.Block {
 	block.Metadata = &common.BlockMetadata{Metadata: metadataContents}
 
 	return block
+}
+
+func computeSHA256(data []byte) (hash []byte) {
+	h := sha256.New()
+	_, err := h.Write(data)
+	if err != nil {
+		panic("unable to create digest")
+	}
+	return h.Sum(nil)
 }

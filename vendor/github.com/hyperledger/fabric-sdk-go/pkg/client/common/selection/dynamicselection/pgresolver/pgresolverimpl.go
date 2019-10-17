@@ -60,7 +60,7 @@ func (c *peerGroupResolver) Resolve(peers []fab.Peer) (PeerGroup, error) {
 	peerRetriever := func(mspID string) []fab.Peer {
 		var mspPeers []fab.Peer
 		for _, peer := range peers {
-			if peer.MSPID() == mspID {
+			if mspID == "" || peer.MSPID() == mspID {
 				mspPeers = append(mspPeers, peer)
 			}
 		}
@@ -75,16 +75,16 @@ func (c *peerGroupResolver) Resolve(peers []fab.Peer) (PeerGroup, error) {
 	if logging.IsEnabledFor(loggerModule, logging.DEBUG) {
 		var s string
 		if len(peerGroups) == 0 {
-			s = "\n\n***** No Available Peer Groups\n"
+			s = "  ***** No Available Peer Groups "
 		} else {
-			s = "\n\n***** Available Peer Groups:\n"
+			s = "  ***** Available Peer Groups: "
 			for i, grp := range peerGroups {
 				s += fmt.Sprintf("%d - %+v", i, grp)
 				if i+1 < len(peerGroups) {
-					s += fmt.Sprintf(" OR\n")
+					s += fmt.Sprintf(" OR ")
 				}
 			}
-			s += fmt.Sprintf("\n")
+			s += fmt.Sprintf(" ")
 		}
 		logger.Debugf(s)
 	}
@@ -103,14 +103,14 @@ func (c *peerGroupResolver) getPeerGroups(peerRetriever MSPPeerRetriever) ([]Pee
 	mspGroups := groupHierarchy.Reduce()
 
 	if logging.IsEnabledFor(loggerModule, logging.DEBUG) {
-		s := "\n***** Org Groups:\n"
+		s := " ***** Org Groups: "
 		for i, g := range mspGroups {
 			s += fmt.Sprintf("%+v", g)
 			if i+1 < len(mspGroups) {
-				s += fmt.Sprintf("  OR\n")
+				s += fmt.Sprintf("  OR ")
 			}
 		}
-		s += fmt.Sprintf("\n")
+		s += fmt.Sprintf(" ")
 		logger.Debugf(s)
 	}
 
@@ -188,40 +188,55 @@ func (c *signaturePolicyCompiler) compile(sigPolicy *common.SignaturePolicy, ide
 	}
 
 	switch t := sigPolicy.Type.(type) {
+
 	case *common.SignaturePolicy_SignedBy:
+
 		return signaturePolicySignedBy(t, identities)
+
 	case *common.SignaturePolicy_NOutOf_:
-		nOutOfPolicy := t.NOutOf
-		var pfuncs []GroupRetriever
-		for _, policy := range nOutOfPolicy.Rules {
-			f, err := c.compile(policy, identities)
-			if err != nil {
-				return nil, err
-			}
-			pfuncs = append(pfuncs, f)
-		}
-		return func(peerRetriever MSPPeerRetriever) (GroupOfGroups, error) {
-			var groups []Group
-			for _, f := range pfuncs {
-				grps, err := f(peerRetriever)
-				if err != nil {
-					return nil, err
-				}
-				groups = append(groups, grps)
-			}
 
-			itemGroups, err := NewGroupOfGroups(groups).Nof(nOutOfPolicy.N)
-			if err != nil {
-				return nil, err
-			}
-
-			return itemGroups, nil
-		}, nil
+		return c.signaturePolicyNOutOf(t, identities)
 
 	default:
 		errMsg := fmt.Sprintf("unsupported signature policy type: %v", t)
 		return nil, errors.New(errMsg)
+
 	}
+}
+
+func (c *signaturePolicyCompiler) signaturePolicyNOutOf(t *common.SignaturePolicy_NOutOf_, identities []*mb.MSPPrincipal) (GroupRetriever, error) {
+
+	nOutOfPolicy := t.NOutOf
+	if nOutOfPolicy.N == 0 {
+		return signaturePolicySignedByAny()
+	}
+
+	var pfuncs []GroupRetriever
+	for _, policy := range nOutOfPolicy.Rules {
+		f, err := c.compile(policy, identities)
+		if err != nil {
+			return nil, err
+		}
+		pfuncs = append(pfuncs, f)
+	}
+
+	return func(peerRetriever MSPPeerRetriever) (GroupOfGroups, error) {
+		var groups []Group
+		for _, f := range pfuncs {
+			grps, err := f(peerRetriever)
+			if err != nil {
+				return nil, err
+			}
+			groups = append(groups, grps)
+		}
+
+		itemGroups, err := NewGroupOfGroups(groups).Nof(nOutOfPolicy.N)
+		if err != nil {
+			return nil, err
+		}
+
+		return itemGroups, nil
+	}, nil
 }
 
 func signaturePolicySignedBy(t *common.SignaturePolicy_SignedBy, identities []*mb.MSPPrincipal) (GroupRetriever, error) {
@@ -231,6 +246,12 @@ func signaturePolicySignedBy(t *common.SignaturePolicy_SignedBy, identities []*m
 			return nil, errors.WithMessage(err, "error getting MSP ID from MSP principal")
 		}
 		return NewGroupOfGroups([]Group{NewMSPPeerGroup(mspID, peerRetriever)}), nil
+	}, nil
+}
+
+func signaturePolicySignedByAny() (GroupRetriever, error) {
+	return func(peerRetriever MSPPeerRetriever) (GroupOfGroups, error) {
+		return NewGroupOfGroups([]Group{NewMSPPeerGroup("", peerRetriever)}), nil
 	}, nil
 }
 

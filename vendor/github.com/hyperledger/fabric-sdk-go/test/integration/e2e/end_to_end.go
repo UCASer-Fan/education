@@ -7,7 +7,6 @@ SPDX-License-Identifier: Apache-2.0
 package e2e
 
 import (
-	"path"
 	"strconv"
 	"testing"
 	"time"
@@ -15,18 +14,16 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
+	"github.com/hyperledger/fabric-sdk-go/test/metadata"
 	"github.com/stretchr/testify/require"
 
 	"github.com/hyperledger/fabric-sdk-go/test/integration"
-	"github.com/hyperledger/fabric-sdk-go/test/metadata"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/cauthdsl"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
 
 	mspclient "github.com/hyperledger/fabric-sdk-go/pkg/client/msp"
-
-	"strings"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 	packager "github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager"
@@ -37,27 +34,32 @@ const (
 	channelID      = "mychannel"
 	orgName        = "Org1"
 	orgAdmin       = "Admin"
-	ordererOrgName = "ordererorg"
-	ccID           = "e2eExampleCC"
+	ordererOrgName = "OrdererOrg"
+)
+
+var (
+	ccID = "example_cc_e2e" + metadata.TestRunID
 )
 
 // Run enables testing an end-to-end scenario against the supplied SDK options
 func Run(t *testing.T, configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) {
-	setupAndRun(t, true, configOpt, sdkOpts...)
+	setupAndRun(t, true, configOpt, e2eTest, sdkOpts...)
 }
 
 // RunWithoutSetup will execute the same way as Run but without creating a new channel and registering a new CC
 func RunWithoutSetup(t *testing.T, configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) {
-	setupAndRun(t, false, configOpt, sdkOpts...)
+	setupAndRun(t, false, configOpt, e2eTest, sdkOpts...)
 }
 
-// setupAndRun enables testing an end-to-end scenario against the supplied SDK options
-// the doSetup flag will be used to either create a channel and the example CC or not(ie run the tests with existing ch and CC)
-func setupAndRun(t *testing.T, doSetup bool, configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) {
+type testSDKFunc func(t *testing.T, sdk *fabsdk.FabricSDK)
 
-	if integration.IsLocal() && doSetup {
+// setupAndRun enables testing an end-to-end scenario against the supplied SDK options
+// the createChannel flag will be used to either create a channel and the example CC or not(ie run the tests with existing ch and CC)
+func setupAndRun(t *testing.T, createChannel bool, configOpt core.ConfigProvider, test testSDKFunc, sdkOpts ...fabsdk.Option) {
+
+	if integration.IsLocal() {
 		//If it is a local test then add entity mapping to config backend to parse URLs
-		configOpt = integration.AddLocalEntityMapping(configOpt, integration.LocalOrdererPeersCAsConfig)
+		configOpt = integration.AddLocalEntityMapping(configOpt)
 	}
 
 	sdk, err := fabsdk.New(configOpt, sdkOpts...)
@@ -71,12 +73,14 @@ func setupAndRun(t *testing.T, doSetup bool, configOpt core.ConfigProvider, sdkO
 	integration.CleanupUserData(t, sdk)
 	defer integration.CleanupUserData(t, sdk)
 
-	if doSetup {
+	if createChannel {
 		createChannelAndCC(t, sdk)
 	}
 
-	// ************ Test setup complete ************** //
+	test(t, sdk)
+}
 
+func e2eTest(t *testing.T, sdk *fabsdk.FabricSDK) {
 	//prepare channel client context using client context
 	clientChannelContext := sdk.ChannelContext(channelID, fabsdk.WithUser("User1"), fabsdk.WithOrg(orgName))
 	// Channel client is used to query and execute transactions (Org1 is default org)
@@ -85,31 +89,11 @@ func setupAndRun(t *testing.T, doSetup bool, configOpt core.ConfigProvider, sdkO
 		t.Fatalf("Failed to create new channel client: %s", err)
 	}
 
-	value := queryCC(client, t)
-
-	eventID := "test([a-zA-Z]+)"
-
-	// Register chaincode event (pass in channel which receives event details when the event is complete)
-	reg, notifier, err := client.RegisterChaincodeEvent(ccID, eventID)
-	if err != nil {
-		t.Fatalf("Failed to register cc event: %s", err)
-	}
-	defer client.UnregisterChaincodeEvent(reg)
-
-	// Move funds
-	executeCC(client, t)
-
-	var ccEvent *fab.CCEvent
-	select {
-	case ccEvent = <-notifier:
-		t.Logf("Received CC event: %#v\n", ccEvent)
-	case <-time.After(time.Second * 20):
-		t.Fatalf("Did NOT receive CC event for eventId(%s)\n", eventID)
-	}
+	existingValue := queryCC(t, client)
+	ccEvent := moveFunds(t, client)
 
 	// Verify move funds transaction result on the same peer where the event came from.
-	verifyFundsIsMoved(client, t, value, ccEvent)
-
+	verifyFundsIsMoved(t, client, existingValue, ccEvent)
 }
 
 func createChannelAndCC(t *testing.T, sdk *fabsdk.FabricSDK) {
@@ -124,10 +108,7 @@ func createChannelAndCC(t *testing.T, sdk *fabsdk.FabricSDK) {
 	}
 
 	// Create channel
-
-	// Org admin user is signing user for creating channel
-
-	createChannel(sdk, t, resMgmtClient)
+	createChannel(t, sdk, resMgmtClient)
 
 	//prepare context
 	adminContext := sdk.Context(fabsdk.WithUser(orgAdmin), fabsdk.WithOrg(orgName))
@@ -147,15 +128,34 @@ func createChannelAndCC(t *testing.T, sdk *fabsdk.FabricSDK) {
 	createCC(t, orgResMgmt)
 }
 
-func verifyFundsIsMoved(client *channel.Client, t *testing.T, value []byte, ccevent *fab.CCEvent) {
+func moveFunds(t *testing.T, client *channel.Client) *fab.CCEvent {
 
-	//Fix for issue prev in release test, where 'ccEvent.SourceURL' has event URL
-	if !integration.IsLocal() {
-		portIndex := strings.Index(ccevent.SourceURL, ":")
-		ccevent.SourceURL = ccevent.SourceURL[0:portIndex]
+	eventID := "test([a-zA-Z]+)"
+
+	// Register chaincode event (pass in channel which receives event details when the event is complete)
+	reg, notifier, err := client.RegisterChaincodeEvent(ccID, eventID)
+	if err != nil {
+		t.Fatalf("Failed to register cc event: %s", err)
+	}
+	defer client.UnregisterChaincodeEvent(reg)
+
+	// Move funds
+	executeCC(t, client)
+
+	var ccEvent *fab.CCEvent
+	select {
+	case ccEvent = <-notifier:
+		t.Logf("Received CC event: %#v\n", ccEvent)
+	case <-time.After(time.Second * 20):
+		t.Fatalf("Did NOT receive CC event for eventId(%s)\n", eventID)
 	}
 
-	newValue := queryCC(client, t, ccevent.SourceURL)
+	return ccEvent
+}
+
+func verifyFundsIsMoved(t *testing.T, client *channel.Client, value []byte, ccEvent *fab.CCEvent) {
+
+	newValue := queryCC(t, client, ccEvent.SourceURL)
 	valueInt, err := strconv.Atoi(string(value))
 	if err != nil {
 		t.Fatal(err.Error())
@@ -169,16 +169,16 @@ func verifyFundsIsMoved(client *channel.Client, t *testing.T, value []byte, ccev
 	}
 }
 
-func executeCC(client *channel.Client, t *testing.T) {
-	_, err := client.Execute(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: integration.ExampleCCTxArgs()},
+func executeCC(t *testing.T, client *channel.Client) {
+	_, err := client.Execute(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: integration.ExampleCCDefaultTxArgs()},
 		channel.WithRetry(retry.DefaultChannelOpts))
 	if err != nil {
 		t.Fatalf("Failed to move funds: %s", err)
 	}
 }
 
-func queryCC(client *channel.Client, t *testing.T, targetEndpoints ...string) []byte {
-	response, err := client.Query(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: integration.ExampleCCQueryArgs()},
+func queryCC(t *testing.T, client *channel.Client, targetEndpoints ...string) []byte {
+	response, err := client.Query(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: integration.ExampleCCDefaultQueryArgs()},
 		channel.WithRetry(retry.DefaultChannelOpts),
 		channel.WithTargetEndpoints(targetEndpoints...),
 	)
@@ -189,7 +189,7 @@ func queryCC(client *channel.Client, t *testing.T, targetEndpoints ...string) []
 }
 
 func createCC(t *testing.T, orgResMgmt *resmgmt.Client) {
-	ccPkg, err := packager.NewCCPackage("github.com/example_cc", "../../fixtures/testdata")
+	ccPkg, err := packager.NewCCPackage("github.com/example_cc", integration.GetDeployPath())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -211,7 +211,7 @@ func createCC(t *testing.T, orgResMgmt *resmgmt.Client) {
 	require.NotEmpty(t, resp, "transaction response should be populated")
 }
 
-func createChannel(sdk *fabsdk.FabricSDK, t *testing.T, resMgmtClient *resmgmt.Client) {
+func createChannel(t *testing.T, sdk *fabsdk.FabricSDK, resMgmtClient *resmgmt.Client) {
 	mspClient, err := mspclient.New(sdk.Context(), mspclient.WithOrg(orgName))
 	if err != nil {
 		t.Fatal(err)
@@ -221,7 +221,7 @@ func createChannel(sdk *fabsdk.FabricSDK, t *testing.T, resMgmtClient *resmgmt.C
 		t.Fatal(err)
 	}
 	req := resmgmt.SaveChannelRequest{ChannelID: channelID,
-		ChannelConfigPath: path.Join("../../../", metadata.ChannelConfigPath, "mychannel.tx"),
+		ChannelConfigPath: integration.GetChannelConfigPath(channelID + ".tx"),
 		SigningIdentities: []msp.SigningIdentity{adminIdentity}}
 	txID, err := resMgmtClient.SaveChannel(req, resmgmt.WithRetry(retry.DefaultResMgmtOpts), resmgmt.WithOrdererEndpoint("orderer.example.com"))
 	require.Nil(t, err, "error should be nil")

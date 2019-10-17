@@ -13,13 +13,13 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/pkg/errors"
 
+	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/protoutil"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/multi"
 	contextApi "github.com/hyperledger/fabric-sdk-go/pkg/common/providers/context"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/context"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/common"
 	pb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer"
-	protos_utils "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/utils"
 )
 
 // CreateChaincodeInvokeProposal creates a proposal for transaction.
@@ -44,7 +44,7 @@ func CreateChaincodeInvokeProposal(txh fab.TransactionHeader, request fab.Chainc
 		Type: pb.ChaincodeSpec_GOLANG, ChaincodeId: &pb.ChaincodeID{Name: request.ChaincodeID},
 		Input: &pb.ChaincodeInput{Args: argsArray}}}
 
-	proposal, _, err := protos_utils.CreateChaincodeProposalWithTxIDNonceAndTransient(string(txh.TransactionID()), common.HeaderType_ENDORSER_TRANSACTION, txh.ChannelID(), ccis, txh.Nonce(), txh.Creator(), request.TransientMap)
+	proposal, _, err := protoutil.CreateChaincodeProposalWithTxIDNonceAndTransient(string(txh.TransactionID()), common.HeaderType_ENDORSER_TRANSACTION, txh.ChannelID(), ccis, txh.Nonce(), txh.Creator(), request.TransientMap)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create chaincode proposal")
 	}
@@ -94,6 +94,8 @@ func SendProposal(reqCtx reqContext.Context, proposal *fab.TransactionProposal, 
 		}
 	}
 
+	targets = getTargetsWithoutDuplicates(targets)
+
 	ctx, ok := context.RequestClientContext(reqCtx)
 	if !ok {
 		return nil, errors.New("failed get client context from reqContext for signProposal")
@@ -134,4 +136,28 @@ func SendProposal(reqCtx reqContext.Context, proposal *fab.TransactionProposal, 
 	wg.Wait()
 
 	return transactionProposalResponses, errs.ToError()
+}
+
+// getTargetsWithoutDuplicates returns a list of targets without duplicates
+func getTargetsWithoutDuplicates(targets []fab.ProposalProcessor) []fab.ProposalProcessor {
+	peerUrlsToTargets := map[string]fab.ProposalProcessor{}
+	var uniqueTargets []fab.ProposalProcessor
+
+	for i := range targets {
+		peer, ok := targets[i].(fab.Peer)
+		if !ok {
+			// ProposalProcessor is not a fab.Peer... cannot remove duplicates
+			return targets
+		}
+		if _, present := peerUrlsToTargets[peer.URL()]; !present {
+			uniqueTargets = append(uniqueTargets, targets[i])
+			peerUrlsToTargets[peer.URL()] = targets[i]
+		}
+	}
+
+	if len(uniqueTargets) != len(targets) {
+		logger.Warn("Duplicate target peers in configuration")
+	}
+
+	return uniqueTargets
 }

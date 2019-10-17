@@ -1,3 +1,5 @@
+// +build testing
+
 /*
 Copyright SecureKey Technologies Inc. All Rights Reserved.
 
@@ -8,26 +10,43 @@ package fabsdk
 
 import (
 	"os"
+	"path/filepath"
 	"reflect"
+	"sync"
 	"testing"
+	"time"
 
 	"github.com/golang/mock/gomock"
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery"
+	clientmocks "github.com/hyperledger/fabric-sdk-go/pkg/client/common/mocks"
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
+	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/context"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
+	context2 "github.com/hyperledger/fabric-sdk-go/pkg/context"
+	contextImpl "github.com/hyperledger/fabric-sdk-go/pkg/context"
 	configImpl "github.com/hyperledger/fabric-sdk-go/pkg/core/config"
+	discmocks "github.com/hyperledger/fabric-sdk-go/pkg/fab/discovery/mocks"
+	"github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks"
+	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defsvc"
+	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/provider/chpvdr"
 	mockapisdk "github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/test/mocksdkapi"
 	"github.com/hyperledger/fabric-sdk-go/pkg/msp"
+	"github.com/hyperledger/fabric-sdk-go/test/metadata"
 	"github.com/pkg/errors"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
-	sdkConfigFile      = "../../test/fixtures/config/config_test.yaml"
+	sdkConfigFile      = "config_test.yaml"
 	sdkValidClientUser = "User1"
 	sdkValidClientOrg1 = "org1"
 )
 
 func TestNewGoodOpt(t *testing.T) {
-	sdk, err := New(configImpl.FromFile(sdkConfigFile),
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	sdk, err := New(configImpl.FromFile(configPath),
 		goodOpt())
 	if err != nil {
 		t.Fatalf("Expected no error from New, but got %s", err)
@@ -42,7 +61,8 @@ func goodOpt() Option {
 }
 
 func TestNewBadOpt(t *testing.T) {
-	_, err := New(configImpl.FromFile(sdkConfigFile),
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	_, err := New(configImpl.FromFile(configPath),
 		badOpt())
 	if err == nil {
 		t.Fatal("Expected error from New")
@@ -56,7 +76,8 @@ func badOpt() Option {
 }
 
 func TestDoubleClose(t *testing.T) {
-	sdk, err := New(configImpl.FromFile(sdkConfigFile),
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	sdk, err := New(configImpl.FromFile(configPath),
 		goodOpt())
 	if err != nil {
 		t.Fatalf("Expected no error from New, but got %s", err)
@@ -67,7 +88,8 @@ func TestDoubleClose(t *testing.T) {
 
 func TestWithCorePkg(t *testing.T) {
 	// Test New SDK with valid config file
-	c := configImpl.FromFile(sdkConfigFile)
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := configImpl.FromFile(configPath)
 	sdk, err := New(c)
 	if err != nil {
 		t.Fatalf("Error initializing SDK: %s", err)
@@ -90,7 +112,8 @@ func TestWithCorePkg(t *testing.T) {
 
 func TestWithMSPPkg(t *testing.T) {
 	// Test New SDK with valid config file
-	c := configImpl.FromFile(sdkConfigFile)
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := configImpl.FromFile(configPath)
 
 	sdk, err := New(c)
 	if err != nil {
@@ -113,7 +136,8 @@ func TestWithMSPPkg(t *testing.T) {
 
 func TestWithServicePkg(t *testing.T) {
 	// Test New SDK with valid config file
-	c := configImpl.FromFile(sdkConfigFile)
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := configImpl.FromFile(configPath)
 
 	sdk, err := New(c)
 	if err != nil {
@@ -136,7 +160,8 @@ func TestWithServicePkg(t *testing.T) {
 
 func TestWithSessionPkg(t *testing.T) {
 	// Test New SDK with valid config file
-	c := configImpl.FromFile(sdkConfigFile)
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := configImpl.FromFile(configPath)
 
 	core, err := newMockCorePkg(c)
 	if err != nil {
@@ -167,7 +192,8 @@ func TestWithSessionPkg(t *testing.T) {
 func TestErrPkgSuite(t *testing.T) {
 	ps := mockPkgSuite{}
 
-	c := configImpl.FromFile(sdkConfigFile)
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := configImpl.FromFile(configPath)
 
 	_, err := fromPkgSuite(c, &ps)
 	if err != nil {
@@ -197,7 +223,8 @@ func TestErrPkgSuite(t *testing.T) {
 }
 
 func TestNewDefaultSDKFromByte(t *testing.T) {
-	cBytes, err := loadConfigBytesFromFile(t, sdkConfigFile)
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	cBytes, err := loadConfigBytesFromFile(t, configPath)
 	if err != nil {
 		t.Fatalf("Failed to load sample bytes from File. Error: %s", err)
 	}
@@ -237,7 +264,8 @@ func loadConfigBytesFromFile(t *testing.T, filePath string) ([]byte, error) {
 }
 
 func TestWithConfigSuccess(t *testing.T) {
-	sdk, err := New(configImpl.FromFile(sdkConfigFile))
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	sdk, err := New(configImpl.FromFile(configPath))
 	if err != nil {
 		t.Fatalf("Error initializing SDK: %s", err)
 	}
@@ -266,21 +294,20 @@ func TestWithConfigFailure(t *testing.T) {
 	}
 }
 
-func TestBadConfigFile(t *testing.T) {
-	_, err := New(configImpl.FromFile("../../pkg/core/config/testdata/viper-test.yaml"))
-	if err == nil {
-		t.Fatal("Expected error from New with bad config file")
-	}
+func TestEmptyConfigFile(t *testing.T) {
+	configPath := filepath.Join(metadata.GetProjectPath(), "pkg", "core", "config", "testdata", "viper-test.yaml")
+	_, err := New(configImpl.FromFile(configPath))
+	assert.Nil(t, err, "New with empty config file should not have failed")
 }
 
 func TestWithConfigEndpoint(t *testing.T) {
 	// Test New SDK with valid config file
-	c := configImpl.FromFile(sdkConfigFile)
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := configImpl.FromFile(configPath)
 
 	np := &MockNetworkPeers{}
-	co := &MockChannelOrderers{}
 	// override EndpointConfig's NetworkConfig() function with np's and co's instances
-	sdk, err := New(c, WithEndpointConfig(np, co))
+	sdk, err := New(c, WithEndpointConfig(np))
 	if err != nil {
 		t.Fatalf("Error inializing sdk WithEndpointConfig: %s", err)
 	}
@@ -310,23 +337,11 @@ func TestWithConfigEndpoint(t *testing.T) {
 	if !reflect.DeepEqual(network, expectedNetwork) {
 		t.Fatalf("Expected NetworkPeer was not returned by the sdk's config. Expected: %v, Received: %v", expectedNetwork, network)
 	}
-
-	channelOrderers, ok := endpointConfig.ChannelOrderers("")
-	if !ok {
-		t.Fatal("Error getting ChannelOrderers from config")
-	}
-	expectedChannelOrderers, ok := co.ChannelOrderers("")
-	if !ok {
-		t.Fatal("Error getting extecd ChannelOrderers from direct config")
-	}
-	if !reflect.DeepEqual(channelOrderers, expectedChannelOrderers) {
-		t.Fatalf("Expected ChannelOrderers was not returned by the sdk's config. Expected: %v, Received: %v", expectedChannelOrderers, channelOrderers)
-	}
-
 }
 
 func TestWithConfigEndpointAndBadOpt(t *testing.T) {
-	c := configImpl.FromFile(sdkConfigFile)
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := configImpl.FromFile(configPath)
 
 	np := &MockNetworkPeers{}
 	co := &MockChannelOrderers{}
@@ -339,14 +354,277 @@ func TestWithConfigEndpointAndBadOpt(t *testing.T) {
 	}
 }
 
+func TestCloseContext(t *testing.T) {
+	const channelID = "orgchannel"
+
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := configImpl.FromFile(configPath)
+
+	core, err := newMockCorePkg(c)
+	require.NoError(t, err)
+
+	sdk, err := New(c,
+		WithCorePkg(core),
+		WithServicePkg(&dynamicDiscoveryProviderFactory{}),
+		WithProviderOpts(
+			dynamicdiscovery.WithRefreshInterval(3*time.Millisecond),
+		),
+	)
+	require.NoError(t, err)
+	defer sdk.Close()
+
+	chCfg := mocks.NewMockChannelCfg(channelID)
+	chCfg.MockCapabilities[fab.ApplicationGroupKey][fab.V1_2Capability] = true
+	chpvdr.SetChannelConfig(chCfg)
+
+	discClient := clientmocks.NewMockDiscoveryClient()
+	dynamicdiscovery.SetClientProvider(
+		func(ctx context.Client) (dynamicdiscovery.DiscoveryClient, error) {
+			return discClient, nil
+		},
+	)
+
+	getDiscovery := func(orgID, userID string) (context.Channel, fab.DiscoveryService) {
+		chCtxtProvider := sdk.ChannelContext(channelID, WithUser(userID), WithOrg(orgID))
+		require.NotNil(t, chCtxtProvider)
+
+		chCtxt, err := chCtxtProvider()
+		require.NoError(t, err)
+		require.NotNil(t, chCtxt)
+
+		chService := chCtxt.ChannelService()
+		require.NotNil(t, chService)
+
+		discovery, err := chService.Discovery()
+		require.NoError(t, err)
+
+		return chCtxt, discovery
+	}
+
+	chCtxt1, discovery1 := getDiscovery(sdkValidClientOrg1, sdkValidClientUser)
+	_, discovery2 := getDiscovery(sdkValidClientOrg2, sdkValidClientUser)
+
+	discClient.SetResponses(
+		&clientmocks.MockDiscoverEndpointResponse{
+			PeerEndpoints: []*discmocks.MockDiscoveryPeerEndpoint{},
+		},
+	)
+
+	_, err = discovery1.GetPeers()
+	assert.NoError(t, err)
+
+	_, err = discovery2.GetPeers()
+	assert.NoError(t, err)
+
+	// Close the first client context
+	sdk.CloseContext(chCtxt1)
+
+	// Wait for the cache to refresh
+	time.Sleep(10 * time.Millisecond)
+
+	// Subsequent calls on the first service should fail since the service is closed
+	_, err = discovery1.GetPeers()
+	assert.Error(t, err)
+	assert.EqualError(t, err, "Discovery client has been closed")
+
+	// Get the ChannelService from the second context; this one should still be valid
+	_, err = discovery2.GetPeers()
+	assert.NoError(t, err)
+}
+
+func TestErrorHandler(t *testing.T) {
+	configPath := filepath.Join(metadata.GetProjectPath(), metadata.SDKConfigPath, sdkConfigFile)
+	c := configImpl.FromFile(configPath)
+
+	core, err := newMockCorePkg(c)
+	require.NoError(t, err)
+
+	discClient := clientmocks.NewMockDiscoveryClient()
+	dynamicdiscovery.SetClientProvider(func(ctx context.Client) (dynamicdiscovery.DiscoveryClient, error) {
+		return discClient, nil
+	})
+	fabricselection.SetClientProvider(func(ctx context.Client) (fabricselection.DiscoveryClient, error) {
+		return discClient, nil
+	})
+
+	var sdk *FabricSDK
+	var chService fab.ChannelService
+	var localCtxt context.Local
+	var mutex sync.RWMutex
+
+	newContext := func(user, org string) {
+		getClientCtxt := sdk.Context(WithUser(user), WithOrg(org))
+		require.NotNil(t, getClientCtxt)
+
+		chCtxt, err := contextImpl.NewChannel(getClientCtxt, "orgchannel")
+		require.NoError(t, err)
+		require.NotNil(t, chCtxt)
+
+		s := chCtxt.ChannelService()
+		require.NotNil(t, s)
+
+		lc, err := context2.NewLocal(getClientCtxt)
+		require.NoError(t, err)
+
+		mutex.Lock()
+		defer mutex.Unlock()
+
+		chService = s
+		localCtxt = lc
+	}
+
+	getChannelService := func() fab.ChannelService {
+		mutex.Lock()
+		defer mutex.Unlock()
+		return chService
+	}
+
+	getLocalCtxt := func() context.Local {
+		mutex.Lock()
+		defer mutex.Unlock()
+		return localCtxt
+	}
+
+	errHandler := func(ctxt fab.ClientContext, channelID string, err error) {
+		// Analyse the error to see if it needs handling
+		if err.Error() != dynamicdiscovery.AccessDenied {
+			// Transient error; no handling necessary
+			return
+		}
+
+		// Need to spawn a new Go routine or else deadlock results when calling CloseContext
+		go func() {
+			sdk.CloseContext(ctxt)
+
+			// Reset the successful response
+			discClient.SetResponses(
+				&clientmocks.MockDiscoverEndpointResponse{
+					PeerEndpoints: []*discmocks.MockDiscoveryPeerEndpoint{},
+				},
+			)
+
+			newContext(sdkValidClientUser, sdkValidClientOrg2)
+		}()
+	}
+
+	sdk, err = New(c,
+		WithCorePkg(core),
+		WithServicePkg(&dynamicDiscoveryProviderFactory{}),
+		WithErrorHandler(errHandler),
+		WithProviderOpts(
+			dynamicdiscovery.WithRefreshInterval(3*time.Millisecond),
+			fabricselection.WithRefreshInterval(3*time.Millisecond),
+		),
+	)
+	require.NoError(t, err)
+	defer sdk.Close()
+
+	chCfg := mocks.NewMockChannelCfg("orgchannel")
+	chCfg.MockCapabilities[fab.ApplicationGroupKey][fab.V1_2Capability] = true
+	chpvdr.SetChannelConfig(chCfg)
+
+	newContext(sdkValidClientUser, sdkValidClientOrg1)
+
+	localDiscovery := getLocalCtxt().LocalDiscoveryService()
+	require.NotNil(t, localDiscovery)
+
+	discovery, err := getChannelService().Discovery()
+	require.NoError(t, err)
+
+	selection, err := getChannelService().Selection()
+	require.NoError(t, err)
+
+	// First set a successful response
+	discClient.SetResponses(
+		&clientmocks.MockDiscoverEndpointResponse{
+			PeerEndpoints: []*discmocks.MockDiscoveryPeerEndpoint{},
+		},
+	)
+
+	_, err = localDiscovery.GetPeers()
+	assert.NoError(t, err)
+
+	_, err = discovery.GetPeers()
+	assert.NoError(t, err)
+
+	_, err = selection.GetEndorsersForChaincode([]*fab.ChaincodeCall{{ID: "cc1"}})
+	require.NoError(t, err)
+
+	// Simulate a transient error
+	discClient.SetResponses(
+		&clientmocks.MockDiscoverEndpointResponse{
+			Error: errors.New("some transient error"),
+		},
+	)
+
+	time.Sleep(10 * time.Millisecond)
+
+	_, err = localDiscovery.GetPeers()
+	assert.NoError(t, err)
+
+	_, err = discovery.GetPeers()
+	assert.NoError(t, err)
+
+	_, err = selection.GetEndorsersForChaincode([]*fab.ChaincodeCall{{ID: "cc1"}})
+	require.NoError(t, err)
+
+	// Simulate an access-denied (could be due to a user being revoked)
+	discClient.SetResponses(
+		&clientmocks.MockDiscoverEndpointResponse{
+			Error: errors.New(dynamicdiscovery.AccessDenied),
+		},
+	)
+
+	time.Sleep(10 * time.Millisecond)
+
+	// Subsequent calls on the old services should fail since the service is closed
+	_, err = localDiscovery.GetPeers()
+	assert.EqualError(t, err, "Discovery client has been closed")
+
+	_, err = discovery.GetPeers()
+	assert.EqualError(t, err, "Discovery client has been closed")
+
+	_, err = selection.GetEndorsersForChaincode([]*fab.ChaincodeCall{{ID: "cc1"}})
+	assert.EqualError(t, err, "Selection service has been closed")
+
+	// Refresh the services with the new context
+
+	localDiscovery = getLocalCtxt().LocalDiscoveryService()
+	require.NotNil(t, localDiscovery)
+
+	_, err = localDiscovery.GetPeers()
+	assert.NoError(t, err)
+
+	discovery, err = getChannelService().Discovery()
+	require.NoError(t, err)
+
+	_, err = discovery.GetPeers()
+	assert.NoError(t, err)
+
+	selection, err = getChannelService().Selection()
+	require.NoError(t, err)
+
+	_, err = selection.GetEndorsersForChaincode([]*fab.ChaincodeCall{{ID: "cc1"}})
+	require.NoError(t, err)
+}
+
 type MockNetworkPeers struct{}
 
 func (M *MockNetworkPeers) NetworkPeers() []fab.NetworkPeer {
-	return []fab.NetworkPeer{{PeerConfig: fab.PeerConfig{URL: "p.com", EventURL: "event.p.com"}, MSPID: ""}}
+	return []fab.NetworkPeer{{PeerConfig: fab.PeerConfig{URL: "p.com"}, MSPID: ""}}
 }
 
 type MockChannelOrderers struct{}
 
-func (M *MockChannelOrderers) ChannelOrderers(name string) ([]fab.OrdererConfig, bool) {
-	return []fab.OrdererConfig{}, true
+func (M *MockChannelOrderers) ChannelOrderers(name string) []fab.OrdererConfig {
+	return []fab.OrdererConfig{}
+}
+
+type dynamicDiscoveryProviderFactory struct {
+	defsvc.ProviderFactory
+}
+
+// CreateLocalDiscoveryProvider returns a new local dynamic discovery provider
+func (f *dynamicDiscoveryProviderFactory) CreateLocalDiscoveryProvider(config fab.EndpointConfig) (fab.LocalDiscoveryProvider, error) {
+	return dynamicdiscovery.NewLocalProvider(config), nil
 }

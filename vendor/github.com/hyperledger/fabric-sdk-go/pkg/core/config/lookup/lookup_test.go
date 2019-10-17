@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package lookup
 
 import (
+	"path/filepath"
 	"testing"
 
 	"os"
@@ -26,7 +27,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var sampleConfigFile = "../testdata/config_test_entity_matchers.yaml"
+var sampleConfigFile = filepath.Join("..", "testdata", "config_test_entity_matchers.yaml")
 
 const orgChannelID = "orgchannel"
 
@@ -56,7 +57,6 @@ type MatchConfig struct {
 
 	// these are used for hostname mapping
 	URLSubstitutionExp                  string
-	EventURLSubstitutionExp             string
 	SSLTargetOverrideURLSubstitutionExp string
 	MappedHost                          string
 
@@ -212,7 +212,7 @@ func TestUnmarshal(t *testing.T) {
 	networkConfig := networkConfig{}
 	testLookup.UnmarshalKey("channels", &networkConfig.Channels)
 
-	assert.Equal(t, len(networkConfig.Channels), 3)
+	assert.Equal(t, len(networkConfig.Channels), 6)
 	assert.Equal(t, len(networkConfig.Channels["mychannel"].Peers), 1)
 	assert.Equal(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MinResponses, 1)
 	assert.Equal(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MaxTargets, 1)
@@ -220,6 +220,9 @@ func TestUnmarshal(t *testing.T) {
 	assert.Equal(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.RetryOpts.InitialBackoff.String(), (500 * time.Millisecond).String())
 	assert.Equal(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.RetryOpts.BackoffFactor, 2.0)
 
+	assert.Equal(t, fab.BlockHeightPriority, networkConfig.Channels["mychannel"].Policies.Selection.SortingStrategy)
+	assert.Equal(t, fab.RoundRobin, networkConfig.Channels["mychannel"].Policies.Selection.Balancer)
+	assert.Equal(t, 5, networkConfig.Channels["mychannel"].Policies.Selection.BlockHeightLagThreshold)
 }
 
 func TestUnmarshalWithMultipleBackend(t *testing.T) {
@@ -274,7 +277,7 @@ func TestUnmarshalWithMultipleBackend(t *testing.T) {
 	assert.True(t, networkConfig.Client.Organization == "org1")
 
 	//Channel
-	assert.Equal(t, len(networkConfig.Channels), 3)
+	assert.Equal(t, len(networkConfig.Channels), 6)
 	assert.Equal(t, len(networkConfig.Channels["mychannel"].Peers), 1)
 	assert.Equal(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MinResponses, 1)
 	assert.Equal(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MaxTargets, 1)
@@ -289,27 +292,26 @@ func TestUnmarshalWithMultipleBackend(t *testing.T) {
 
 	//EntityMatchers
 	assert.Equal(t, len(entityMatchers.matchers), 4)
-	assert.Equal(t, len(entityMatchers.matchers["peer"]), 8)
+	assert.Equal(t, len(entityMatchers.matchers["peer"]), 10)
 	assert.Equal(t, entityMatchers.matchers["peer"][0].MappedHost, "local.peer0.org1.example.com")
-	assert.Equal(t, len(entityMatchers.matchers["orderer"]), 4)
+	assert.Equal(t, len(entityMatchers.matchers["orderer"]), 6)
 	assert.Equal(t, entityMatchers.matchers["orderer"][0].MappedHost, "local.orderer.example.com")
-	assert.Equal(t, len(entityMatchers.matchers["certificateauthority"]), 2)
+	assert.Equal(t, len(entityMatchers.matchers["certificateauthority"]), 3)
 	assert.Equal(t, entityMatchers.matchers["certificateauthority"][0].MappedHost, "local.ca.org1.example.com")
 	assert.Equal(t, len(entityMatchers.matchers["channel"]), 1)
 	assert.Equal(t, entityMatchers.matchers["channel"][0].MappedName, "ch1")
 
 	//Organizations
-	assert.Equal(t, len(networkConfig.Organizations), 3)
+	assert.Equal(t, len(networkConfig.Organizations), 4)
 	assert.Equal(t, networkConfig.Organizations["org1"].MSPID, "Org1MSP")
 
 	//Orderer
-	assert.Equal(t, len(networkConfig.Orderers), 1)
+	assert.Equal(t, len(networkConfig.Orderers), 3)
 	assert.Equal(t, networkConfig.Orderers["local.orderer.example.com"].URL, "orderer.example.com:7050")
 
 	//Peer
-	assert.Equal(t, len(networkConfig.Peers), 2)
+	assert.Equal(t, len(networkConfig.Peers), 4)
 	assert.Equal(t, networkConfig.Peers["local.peer0.org1.example.com"].URL, "peer0.org1.example.com:7051")
-	assert.Equal(t, networkConfig.Peers["local.peer0.org1.example.com"].EventURL, "peer0.org1.example.com:7053")
 
 }
 
@@ -487,7 +489,7 @@ func TestUnmarshalWithHookFunc(t *testing.T) {
 	testLookup.UnmarshalKey("channels", &networkConfig.Channels, WithUnmarshalHookFunction(setTrueDefaultForPeerChannelConfig()))
 
 	//Test if mandatory hook func is working as expected
-	assert.True(t, len(networkConfig.Channels) == 3)
+	assert.True(t, len(networkConfig.Channels) == 6)
 	assert.True(t, len(networkConfig.Channels["mychannel"].Peers) == 1)
 	assert.True(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MinResponses == 1)
 	assert.True(t, networkConfig.Channels["mychannel"].Policies.QueryChannelConfig.MaxTargets == 1)

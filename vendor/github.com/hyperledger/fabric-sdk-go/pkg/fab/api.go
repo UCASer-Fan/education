@@ -7,6 +7,8 @@ SPDX-License-Identifier: Apache-2.0
 package fab
 
 import (
+	"time"
+
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config/endpoint"
 )
@@ -33,7 +35,6 @@ type OrdererConfig struct {
 // PeerConfig defines a peer configuration
 type PeerConfig struct {
 	URL         string
-	EventURL    string
 	GRPCOptions map[string]interface{}
 	TLSCACerts  endpoint.TLSConfig
 }
@@ -62,6 +63,12 @@ type ChannelEndpointConfig struct {
 type ChannelPolicies struct {
 	//Policy for querying channel block
 	QueryChannelConfig QueryChannelConfigPolicy
+	//Policy for querying discovery
+	Discovery DiscoveryPolicy
+	//Policy for endorser selection
+	Selection SelectionPolicy
+	//Policy for event service
+	EventService EventServicePolicy
 }
 
 //QueryChannelConfigPolicy defines opts for channelConfigBlock
@@ -69,6 +76,63 @@ type QueryChannelConfigPolicy struct {
 	MinResponses int
 	MaxTargets   int
 	RetryOpts    retry.Opts
+}
+
+//DiscoveryPolicy defines policy for discovery
+type DiscoveryPolicy struct {
+	MinResponses int
+	MaxTargets   int
+	RetryOpts    retry.Opts
+}
+
+// SelectionSortingStrategy is the endorser selection sorting strategy
+type SelectionSortingStrategy string
+
+const (
+	// BlockHeightPriority (default) is a load-balancing selection sorting strategy
+	// which also prioritizes peers at a block height that is above a certain "lag" threshold.
+	BlockHeightPriority SelectionSortingStrategy = "BlockHeightPriority"
+
+	// Balanced is a load-balancing selection sorting strategy
+	Balanced SelectionSortingStrategy = "Balanced"
+)
+
+// BalancerType is the load-balancer type
+type BalancerType string
+
+const (
+	// RoundRobin (default) chooses endorsers in a round-robin fashion
+	RoundRobin BalancerType = "RoundRobin"
+
+	// Random chooses endorsers randomly
+	Random BalancerType = "Random"
+)
+
+//SelectionPolicy defines policy for selection
+type SelectionPolicy struct {
+	// SortingStrategy is the endorser sorting strategy to use
+	SortingStrategy SelectionSortingStrategy
+
+	// BalancerType is the balancer to use in order to load-balance calls to endorsers
+	Balancer BalancerType
+
+	// BlockHeightLagThreshold is the number of blocks from the highest block number of a group of peers
+	// that a peer can lag behind and still be considered to be up-to-date. These peers will be sorted
+	// using the given Balancer. If a peer's block height falls behind this threshold then it will be
+	// demoted to a lower priority list of peers which will be sorted according to block height.
+	// Note: This property only applies to BlockHeightPriority sorter
+	BlockHeightLagThreshold int
+}
+
+// EventServicePolicy specifies the policy for the event service
+type EventServicePolicy struct {
+	ResolverStrategy                 string
+	MinBlockHeightResolverMode       string
+	Balancer                         BalancerType
+	BlockHeightLagThreshold          int
+	PeerMonitor                      string
+	ReconnectBlockHeightLagThreshold int
+	PeerMonitorPeriod                time.Duration
 }
 
 // PeerChannelConfig defines the peer capabilities
@@ -86,10 +150,12 @@ type MatchConfig struct {
 
 	// these are used for hostname mapping
 	URLSubstitutionExp                  string
-	EventURLSubstitutionExp             string
 	SSLTargetOverrideURLSubstitutionExp string
 	MappedHost                          string
 
 	// this is used for Name mapping instead of hostname mappings
 	MappedName string
+
+	//IgnoreEndpoint option to exclude given entity from any kind of search or from entity list
+	IgnoreEndpoint bool
 }

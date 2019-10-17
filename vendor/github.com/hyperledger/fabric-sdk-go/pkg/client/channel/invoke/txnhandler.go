@@ -21,9 +21,14 @@ import (
 	pb "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/protos/peer"
 )
 
+// TxnHeaderOptsProvider provides transaction header options which allow
+// the provider to specify a custom creator and/or nonce.
+type TxnHeaderOptsProvider func() []fab.TxnHeaderOpt
+
 //EndorsementHandler for handling endorse transactions
 type EndorsementHandler struct {
-	next Handler
+	next               Handler
+	headerOptsProvider TxnHeaderOptsProvider
 }
 
 //Handle for endorsing transactions
@@ -35,7 +40,17 @@ func (e *EndorsementHandler) Handle(requestContext *RequestContext, clientContex
 	}
 
 	// Endorse Tx
-	transactionProposalResponses, proposal, err := createAndSendTransactionProposal(clientContext.Transactor, &requestContext.Request, peer.PeersToTxnProcessors(requestContext.Opts.Targets))
+	var TxnHeaderOpts []fab.TxnHeaderOpt
+	if e.headerOptsProvider != nil {
+		TxnHeaderOpts = e.headerOptsProvider()
+	}
+
+	transactionProposalResponses, proposal, err := createAndSendTransactionProposal(
+		clientContext.Transactor,
+		&requestContext.Request,
+		peer.PeersToTxnProcessors(requestContext.Opts.Targets),
+		TxnHeaderOpts...,
+	)
 
 	requestContext.Response.Proposal = proposal
 	requestContext.Response.TransactionID = proposal.TxnID // TODO: still needed?
@@ -70,8 +85,11 @@ func (h *ProposalProcessorHandler) Handle(requestContext *RequestContext, client
 		if requestContext.SelectionFilter != nil {
 			selectionOpts = append(selectionOpts, selectopts.WithPeerFilter(requestContext.SelectionFilter))
 		}
+		if requestContext.PeerSorter != nil {
+			selectionOpts = append(selectionOpts, selectopts.WithPeerSorter(requestContext.PeerSorter))
+		}
 
-		endorsers, err := clientContext.Selection.GetEndorsersForChaincode(newChaincodeCalls(requestContext.Request), selectionOpts...)
+		endorsers, err := clientContext.Selection.GetEndorsersForChaincode(newInvocationChain(requestContext), selectionOpts...)
 		if err != nil {
 			requestContext.Error = errors.WithMessage(err, "Failed to get endorsing peers")
 			return
@@ -85,16 +103,16 @@ func (h *ProposalProcessorHandler) Handle(requestContext *RequestContext, client
 	}
 }
 
-func newChaincodeCalls(request Request) []*fab.ChaincodeCall {
-	chaincodes := []*fab.ChaincodeCall{{ID: request.ChaincodeID}}
-	for _, ccCall := range request.InvocationChain {
-		if ccCall.ID == chaincodes[0].ID {
-			chaincodes[0].Collections = ccCall.Collections
+func newInvocationChain(requestContext *RequestContext) []*fab.ChaincodeCall {
+	invocChain := []*fab.ChaincodeCall{{ID: requestContext.Request.ChaincodeID}}
+	for _, ccCall := range requestContext.Request.InvocationChain {
+		if ccCall.ID == invocChain[0].ID {
+			invocChain[0].Collections = ccCall.Collections
 		} else {
-			chaincodes = append(chaincodes, ccCall)
+			invocChain = append(invocChain, ccCall)
 		}
 	}
-	return chaincodes
+	return invocChain
 }
 
 //EndorsementValidationHandler for transaction proposal response filtering
@@ -121,7 +139,8 @@ func (f *EndorsementValidationHandler) Handle(requestContext *RequestContext, cl
 func (f *EndorsementValidationHandler) validate(txProposalResponse []*fab.TransactionProposalResponse) error {
 	var a1 *pb.ProposalResponse
 	for n, r := range txProposalResponse {
-		if r.ProposalResponse.GetResponse().Status != int32(common.Status_SUCCESS) {
+		response := r.ProposalResponse.GetResponse()
+		if response.Status < int32(common.Status_SUCCESS) || response.Status >= int32(common.Status_BAD_REQUEST) {
 			return status.NewFromProposalResponse(r.ProposalResponse, r.Endorser)
 		}
 		if n == 0 {
@@ -130,7 +149,7 @@ func (f *EndorsementValidationHandler) validate(txProposalResponse []*fab.Transa
 		}
 
 		if !bytes.Equal(a1.Payload, r.ProposalResponse.Payload) ||
-			!bytes.Equal(a1.GetResponse().Payload, r.ProposalResponse.GetResponse().Payload) {
+			!bytes.Equal(a1.GetResponse().Payload, response.Payload) {
 			return status.New(status.EndorserClientStatus, status.EndorsementMismatch.ToInt32(),
 				"ProposalResponsePayloads do not match", nil)
 		}
@@ -183,7 +202,7 @@ func (c *CommitTxHandler) Handle(requestContext *RequestContext, clientContext *
 	}
 }
 
-//NewQueryHandler returns query handler with EndorseTxHandler & EndorsementValidationHandler Chained
+//NewQueryHandler returns query handler with chain of ProposalProcessorHandler, EndorsementHandler, EndorsementValidationHandler and SignatureValidationHandler
 func NewQueryHandler(next ...Handler) Handler {
 	return NewProposalProcessorHandler(
 		NewEndorsementHandler(
@@ -194,13 +213,11 @@ func NewQueryHandler(next ...Handler) Handler {
 	)
 }
 
-//NewExecuteHandler returns query handler with EndorseTxHandler, EndorsementValidationHandler & CommitTxHandler Chained
+//NewExecuteHandler returns execute handler with chain of SelectAndEndorseHandler, EndorsementValidationHandler, SignatureValidationHandler and CommitHandler
 func NewExecuteHandler(next ...Handler) Handler {
-	return NewProposalProcessorHandler(
-		NewEndorsementHandler(
-			NewEndorsementValidationHandler(
-				NewSignatureValidationHandler(NewCommitHandler(next...)),
-			),
+	return NewSelectAndEndorseHandler(
+		NewEndorsementValidationHandler(
+			NewSignatureValidationHandler(NewCommitHandler(next...)),
 		),
 	)
 }
@@ -213,6 +230,11 @@ func NewProposalProcessorHandler(next ...Handler) *ProposalProcessorHandler {
 //NewEndorsementHandler returns a handler that endorses a transaction proposal
 func NewEndorsementHandler(next ...Handler) *EndorsementHandler {
 	return &EndorsementHandler{next: getNext(next)}
+}
+
+//NewEndorsementHandlerWithOpts returns a handler that endorses a transaction proposal
+func NewEndorsementHandlerWithOpts(next Handler, provider TxnHeaderOptsProvider) *EndorsementHandler {
+	return &EndorsementHandler{next: next, headerOptsProvider: provider}
 }
 
 //NewEndorsementValidationHandler returns a handler that validates an endorsement
@@ -253,7 +275,7 @@ func createAndSendTransaction(sender fab.Sender, proposal *fab.TransactionPropos
 	return transactionResponse, nil
 }
 
-func createAndSendTransactionProposal(transactor fab.ProposalSender, chrequest *Request, targets []fab.ProposalProcessor) ([]*fab.TransactionProposalResponse, *fab.TransactionProposal, error) {
+func createAndSendTransactionProposal(transactor fab.ProposalSender, chrequest *Request, targets []fab.ProposalProcessor, opts ...fab.TxnHeaderOpt) ([]*fab.TransactionProposalResponse, *fab.TransactionProposal, error) {
 	request := fab.ChaincodeInvokeRequest{
 		ChaincodeID:  chrequest.ChaincodeID,
 		Fcn:          chrequest.Fcn,
@@ -261,7 +283,7 @@ func createAndSendTransactionProposal(transactor fab.ProposalSender, chrequest *
 		TransientMap: chrequest.TransientMap,
 	}
 
-	txh, err := transactor.CreateTransactionHeader()
+	txh, err := transactor.CreateTransactionHeader(opts...)
 	if err != nil {
 		return nil, nil, errors.WithMessage(err, "creating transaction header failed")
 	}

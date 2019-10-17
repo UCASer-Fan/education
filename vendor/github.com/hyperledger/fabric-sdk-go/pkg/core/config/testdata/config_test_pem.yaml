@@ -27,14 +27,9 @@ client:
   logging:
     level: info
 
-  # eventService:
-  #   # Event service type (optional). If not specified then the type is automatically
-  #   # determined from channel capabilities.
-  #   type: (deliver|eventhub)
-
   # Needed to load users crypto keys and certs.
   cryptoconfig:
-    path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}
+    path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}
 
   # Some SDKs support pluggable KV stores, the properties under "credentialStore"
   # are implementation specific
@@ -186,7 +181,7 @@ organizations:
   # Orderer Org name
   ordererorg:
       # Membership Service Provider ID for this organization
-      mspID: "OrdererOrg"
+      mspID: OrdererMSP
 
       # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
       cryptoPath: ordererOrganizations/example.com/users/{username}@example.com/msp
@@ -226,7 +221,7 @@ orderers:
         -----END CERTIFICATE-----
       # Certificate location absolute path
       path:
-      #path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+      #path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
@@ -236,9 +231,6 @@ peers:
   peer0.org1.example.com:
     # this URL is used to send endorsement and query requests
     url: grpcs://peer0.org1.example.com:7051
-
-    # this URL is used to connect the EventHub and registering event listeners
-    eventUrl: grpcs://peer0.org1.example.com:7053
 
     grpcOptions:
       ssl-target-name-override: peer0.org1.example.com
@@ -263,11 +255,10 @@ peers:
         -----END CERTIFICATE-----
       # Certificate location absolute path
       path:
-      #path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+      #path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
 
   peer0.org2.example.com:
     url: grpcs://peer0.org2.example.com:7051
-    eventUrl: grpcs://peer0.org2.example.com:7053
     grpcOptions:
       ssl-target-name-override: peer0.org2.example.com
       allow-insecure: false
@@ -289,7 +280,7 @@ peers:
         SQtE5YgdxkUCIHReNWh/pluHTxeGu2jNCH1eh6o2ajSGeeizoapvdJbN
         -----END CERTIFICATE-----
       path:
-      #path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
+      #path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
 
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
@@ -299,6 +290,9 @@ peers:
 certificateAuthorities:
   ca.org1.example.com:
     url: https://ca_peerOrg1:7054
+    # [Optional] The optional server name for target override
+    grpcOptions:
+      ssl-target-name-override: ca_peerOrg1
     tlsCACerts:
       pem:
         - |
@@ -322,7 +316,6 @@ certificateAuthorities:
           -----END CERTIFICATE-----
       # Comma-Separated list of paths
       path:
-      #path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/ca_root.pem
       # Client key and cert for SSL handshake with Fabric CA
       client:
         key:
@@ -333,7 +326,6 @@ certificateAuthorities:
             QSn674xQJ5N8rMHAA/DXtpIMKI5uulot0jJ5xFkpikLGd8+6soQp8pd5tkMqZB0a
             nFoUptdom8LjgRus6rnHbXxGqcIN6oA=
             -----END EC PRIVATE KEY-----
-#          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem
         cert:
           pem: |
             -----BEGIN CERTIFICATE-----
@@ -354,7 +346,6 @@ certificateAuthorities:
             rIYog3WBAkECntF217dk3VCZHXfl+rik6wm+ijzYk+k336UERiSJRu09YHHEh7x6
             NRCHI3uXUJ5/3zDZM3qtV8UYHou4KDS35Q==
             -----END CERTIFICATE-----
-#          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -365,15 +356,18 @@ certificateAuthorities:
     caName: ca.org1.example.com
   ca.org2.example.com:
     url: https://ca_peerOrg2:7054
+    # [Optional] The optional server name for target override
+    grpcOptions:
+      ssl-target-name-override: ca_peerOrg2
     tlsCACerts:
       # Comma-Separated list of paths
-      path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/ca_root.pem
+      path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/ca.crt
       # Client key and cert for SSL handshake with Fabric CA
       client:
         key:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client-key.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go-key.pem
         cert:
-          path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/test/fixtures/fabricca/tls/certs/client/client_fabric_client.pem
+          path: ${FABRIC_SDK_GO_PROJECT_PATH}/pkg/core/config/testdata/certs/client_sdk_go.pem
 
      # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
      # needed to enroll and invoke new users.

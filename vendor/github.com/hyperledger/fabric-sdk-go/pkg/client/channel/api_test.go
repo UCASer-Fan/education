@@ -84,7 +84,7 @@ func TestTimeoutOptions(t *testing.T) {
 
 	options := []RequestOption{WithTimeout(fab.PeerResponse, 20*time.Second),
 		WithTimeout(fab.ResMgmt, 25*time.Second), WithTimeout(fab.OrdererResponse, 30*time.Second),
-		WithTimeout(fab.EventHubConnection, 35*time.Second), WithTimeout(fab.Execute, 40*time.Second),
+		WithTimeout(fab.PeerConnection, 35*time.Second), WithTimeout(fab.Execute, 40*time.Second),
 		WithTimeout(fab.Query, 45*time.Second)}
 
 	for _, option := range options {
@@ -94,8 +94,26 @@ func TestTimeoutOptions(t *testing.T) {
 	assert.True(t, opts.Timeouts[fab.PeerResponse] == 20*time.Second, "timeout value by type didn't match with one supplied")
 	assert.True(t, opts.Timeouts[fab.ResMgmt] == 25*time.Second, "timeout value by type didn't match with one supplied")
 	assert.True(t, opts.Timeouts[fab.OrdererResponse] == 30*time.Second, "timeout value by type didn't match with one supplied")
-	assert.True(t, opts.Timeouts[fab.EventHubConnection] == 35*time.Second, "timeout value by type didn't match with one supplied")
+	assert.True(t, opts.Timeouts[fab.PeerConnection] == 35*time.Second, "timeout value by type didn't match with one supplied")
 	assert.True(t, opts.Timeouts[fab.Execute] == 40*time.Second, "timeout value by type didn't match with one supplied")
 	assert.True(t, opts.Timeouts[fab.Query] == 45*time.Second, "timeout value by type didn't match with one supplied")
 
+}
+
+type mockPeerSorter struct{}
+
+func (s *mockPeerSorter) Sort(peers []fab.Peer) []fab.Peer {
+	return nil
+}
+
+func TestWithPeerSorter(t *testing.T) {
+
+	sorter := mockPeerSorter{}
+
+	opts := requestOptions{}
+	sopt := WithTargetSorter(&sorter)
+	err := sopt(nil, &opts)
+
+	assert.NoError(t, err, "WithPeerSorter should not return error")
+	assert.Equal(t, opts.TargetSorter, &sorter, "sorter option should have been set")
 }

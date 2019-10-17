@@ -21,25 +21,23 @@ package sw
 
 import (
 	"bytes"
-	"io/ioutil"
-	"os"
-	"sync"
-
-	"errors"
-	"strings"
-
 	"crypto/ecdsa"
 	"crypto/rsa"
 	"encoding/hex"
+	"errors"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"path/filepath"
+	"strings"
+	"sync"
 
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp"
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils"
 )
 
 // NewFileBasedKeyStore instantiated a file-based key store at a given position.
-// The key store can be encrypted if a non-empty password is specifiec.
+// The key store can be encrypted if a non-empty password is specified.
 // It can be also be set as read only. In this case, any store operation
 // will be forbidden
 func NewFileBasedKeyStore(pwd []byte, path string, readOnly bool) (bccsp.KeyStore, error) {
@@ -116,7 +114,7 @@ func (ks *fileBasedKeyStore) ReadOnly() bool {
 }
 
 // GetKey returns a key object whose SKI is the one passed.
-func (ks *fileBasedKeyStore) GetKey(ski []byte) (k bccsp.Key, err error) {
+func (ks *fileBasedKeyStore) GetKey(ski []byte) (bccsp.Key, error) {
 	// Validate arguments
 	if len(ski) == 0 {
 		return nil, errors.New("Invalid SKI. Cannot be of zero length.")
@@ -140,11 +138,11 @@ func (ks *fileBasedKeyStore) GetKey(ski []byte) (k bccsp.Key, err error) {
 			return nil, fmt.Errorf("Failed loading secret key [%x] [%s]", ski, err)
 		}
 
-		switch key.(type) {
+		switch k := key.(type) {
 		case *ecdsa.PrivateKey:
-			return &ecdsaPrivateKey{key.(*ecdsa.PrivateKey)}, nil
+			return &ecdsaPrivateKey{k}, nil
 		case *rsa.PrivateKey:
-			return &rsaPrivateKey{key.(*rsa.PrivateKey)}, nil
+			return &rsaPrivateKey{k}, nil
 		default:
 			return nil, errors.New("Secret key type not recognized")
 		}
@@ -155,11 +153,11 @@ func (ks *fileBasedKeyStore) GetKey(ski []byte) (k bccsp.Key, err error) {
 			return nil, fmt.Errorf("Failed loading public key [%x] [%s]", ski, err)
 		}
 
-		switch key.(type) {
+		switch k := key.(type) {
 		case *ecdsa.PublicKey:
-			return &ecdsaPublicKey{key.(*ecdsa.PublicKey)}, nil
+			return &ecdsaPublicKey{k}, nil
 		case *rsa.PublicKey:
-			return &rsaPublicKey{key.(*rsa.PublicKey)}, nil
+			return &rsaPublicKey{k}, nil
 		default:
 			return nil, errors.New("Public key type not recognized")
 		}
@@ -178,42 +176,32 @@ func (ks *fileBasedKeyStore) StoreKey(k bccsp.Key) (err error) {
 	if k == nil {
 		return errors.New("Invalid key. It must be different from nil.")
 	}
-	switch k.(type) {
+	switch kk := k.(type) {
 	case *ecdsaPrivateKey:
-		kk := k.(*ecdsaPrivateKey)
-
 		err = ks.storePrivateKey(hex.EncodeToString(k.SKI()), kk.privKey)
 		if err != nil {
 			return fmt.Errorf("Failed storing ECDSA private key [%s]", err)
 		}
 
 	case *ecdsaPublicKey:
-		kk := k.(*ecdsaPublicKey)
-
 		err = ks.storePublicKey(hex.EncodeToString(k.SKI()), kk.pubKey)
 		if err != nil {
 			return fmt.Errorf("Failed storing ECDSA public key [%s]", err)
 		}
 
 	case *rsaPrivateKey:
-		kk := k.(*rsaPrivateKey)
-
 		err = ks.storePrivateKey(hex.EncodeToString(k.SKI()), kk.privKey)
 		if err != nil {
 			return fmt.Errorf("Failed storing RSA private key [%s]", err)
 		}
 
 	case *rsaPublicKey:
-		kk := k.(*rsaPublicKey)
-
 		err = ks.storePublicKey(hex.EncodeToString(k.SKI()), kk.pubKey)
 		if err != nil {
 			return fmt.Errorf("Failed storing RSA public key [%s]", err)
 		}
 
 	case *aesPrivateKey:
-		kk := k.(*aesPrivateKey)
-
 		err = ks.storeKey(hex.EncodeToString(k.SKI()), kk.privKey)
 		if err != nil {
 			return fmt.Errorf("Failed storing AES key [%s]", err)
@@ -248,11 +236,11 @@ func (ks *fileBasedKeyStore) searchKeystoreForSKI(ski []byte) (k bccsp.Key, err 
 			continue
 		}
 
-		switch key.(type) {
+		switch kk := key.(type) {
 		case *ecdsa.PrivateKey:
-			k = &ecdsaPrivateKey{key.(*ecdsa.PrivateKey)}
+			k = &ecdsaPrivateKey{kk}
 		case *rsa.PrivateKey:
-			k = &rsaPrivateKey{key.(*rsa.PrivateKey)}
+			k = &rsaPrivateKey{kk}
 		default:
 			continue
 		}
@@ -429,7 +417,7 @@ func (ks *fileBasedKeyStore) openKeyStore() error {
 	if ks.isOpen {
 		return nil
 	}
-
+	ks.isOpen = true
 	logger.Debugf("KeyStore opened at [%s]...done", ks.path)
 
 	return nil
