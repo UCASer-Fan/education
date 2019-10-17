@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f43aa9a1-3d48-4bfd-bf14-0028ce9c1ad9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixtures/artifacts/channel.tx.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixtures/artifacts/genesis.block.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/education" beforeDir="false" afterPath="$PROJECT_DIR$/education" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/artifacts/Org1MSPanchors.tx" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/Org1MSPanchors.tx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/artifacts/channel.tx" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/channel.tx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/artifacts/genesis.block" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/genesis.block" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/ca/01d5bc1d55520dc548d6954c298f05e8cbebc4b7e4aa5c9b390d006e705d2eb1_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/ca/ca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/ca/ca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/keystore/ecb1a1840154b2d1e152bc6cd3aab1f13b732eba76bb89bf20540fe68ce201ef_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/signcerts/orderer.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/signcerts/orderer.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/server.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/server.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/server.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/server.key" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/tlsca/fecd1ab4fbd904091cb1bf5f8f03a73c9ea93ec58fd42b859577c105ef8ce90d_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/tlsca/tlsca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/tlsca/tlsca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/keystore/98a085acc79852c9c0a7ae0e5cc24974bbae3dc485d282c502ee8ade93206dc7_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/signcerts/Admin@kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/signcerts/Admin@kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/client.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/client.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/client.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/client.key" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/727e69ed4a01a204cd53bf4a97c2c1cb947419504f82851f6ae563c3c96dea3a_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/keystore/60ff53f6d811a06a3b43220f3684085ef0172d441ab4e76526ec6fe5f6b10f0f_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/signcerts/peer0.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/signcerts/peer0.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/server.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/server.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/server.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/server.key" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/keystore/562d34c695d8a2f90544f1fff877e3b3a2c78a5089730011b60b49eb889a0a93_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/signcerts/peer1.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/signcerts/peer1.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/server.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/server.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/server.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/server.key" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/cfdb63f827da4393e7e0a8ac5cebfafa09318a98570e266b11778780d99804b6_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/keystore/c24c159c6de601f2703c4e4273682b08cda54ebdaf4ca1c4aa4b3f80b8a91964_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/signcerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/signcerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/client.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/client.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/client.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/client.key" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/admincerts/User1@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/admincerts/User1@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/keystore/e1b7247f27c18165fa9cd726fff0083f8316143c2ada6f1800978a71292a46be_sk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/signcerts/User1@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/signcerts/User1@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/client.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/client.crt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/client.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/client.key" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/scripts/check_forked.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/scripts/check_forked.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/scripts/check_license.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/scripts/check_license.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/scripts/presubmit.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/scripts/presubmit.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_hammer_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_hammer_test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_integration_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_integration_test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_killall.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/ct_killall.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/integration_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/google/certificate-transparency-go/trillian/integration/integration_test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/discovery/dynamicdiscovery/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/fabricselection/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/options/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/selection/options/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/eventservice.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/eventservice.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_embedded_pems.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_embedded_pems.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_entity_matchers.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_entity_matchers.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_pem.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test_pem.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/template/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/template/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/discovery/mocks/mockdiscoveryserver.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/discovery/mocks/mockdiscoveryserver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/client_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/dispatcher_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/events.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/registrations.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/dispatcher/registrations.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/mockconnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/mockconnection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/numevents.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/mocks/numevents.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/client/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/connection/connection_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/deliverclient_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/dispatcher_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/dispatcher/events.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockconnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockconnection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockevents.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/mocks/mockevents.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/connection/connection_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/dispatcher_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/dispatcher/events.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/eventhubclient_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockconnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockconnection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockevents.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/mocks/mockevents.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/eventhubclient/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockdelserver.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockdelserver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockehserver.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/mocks/mockehserver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/acceptanyfilter.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/acceptanyfilter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/blockfilter/headertypefilter/headertypefilter_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/dispatcher_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/events.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/registrations.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/dispatcher/registrations.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockproducer.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockproducer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockwrapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/blockwrapper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/fblockwrapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/fblockwrapper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockevents.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockevents.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockledger.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockledger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockproducer.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/mocks/mockproducer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/service/service_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/changelog.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/changelog.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_header_notice.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_header_notice.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_import_patching.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/apply_import_patching.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/insert_header_notice.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/common/insert_header_notice.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_fabric_ca_client_utils.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_fabric_ca_client_utils.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_upstream.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric-ca/apply_upstream.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_client_utils.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_client_utils.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_external_utils.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_external_utils.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos_internal.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_fabric_protos_internal.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_upstream.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/scripts/third_party_pins/fabric/apply_upstream.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_pkcs11_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_pkcs11_test.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_crypto_bccsp.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_crypto_bccsp.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_endpoints.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_endpoints.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_multiorg_bootstrap.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_multiorg_bootstrap.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_no_orderer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/config_test_no_orderer.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_entity_matchers.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_entity_matchers.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers_ca.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/config/overrides/local_orderers_peers_ca.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/prerelease-env.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/fixtures/dockerenv/prerelease-env.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_license.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_license.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_lint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_lint.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_status.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/check_status.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/clean_integration.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/clean_integration.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/dependencies.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/dependencies.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredorderer.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredorderer.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredpeer.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/expiredpeer.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/fabric_test_commitlevel.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/fabric_test_commitlevel.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/generate_channeltx.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/generate_channeltx.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/integration.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/integration.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/revoked.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/revoked.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit-pkcs11.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit-pkcs11.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit.sh" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/test/scripts/unit.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/webServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/webServer.go" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fixtures/configtx.yaml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-128">
+              <caret line="120" column="18" selection-start-line="120" selection-start-column="18" selection-end-line="120" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fixtures/pull_images.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="55">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fixtures/docker-compose.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="15" column="42" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fixtures/artifacts/channel.tx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fixtures/artifacts/channel.tx.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="12" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
+              <folding>
+                <element signature="n#!!block;n#values#0;n#!!block;n#read_set#0;n#!!block;n#config_update#0;n#!!block;n#data#0;n#!!block;n#payload#0;n#!!top" />
+                <element signature="n#!!block;n#groups#0;n#!!block;n#write_set#0;n#!!block;n#config_update#0;n#!!block;n#data#0;n#!!block;n#payload#0;n#!!top" />
+                <element signature="n#!!block;n#header#0;n#!!block;n#payload#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fixtures/configtx.yamlt">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-470">
+              <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+              <folding>
+                <element signature="e#39#392#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Makefile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fixtures/artifacts/Org1MSPanchor.tx.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1185">
+              <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>docker-compose-e2e</find>
+      <find>e2e-orderer-syschan</find>
+      <find>testchainid</find>
+      <find>ca</find>
+      <find>channel</find>
+      <find>name</find>
+      <find>test</find>
+      <find>id</find>
+      <find>the identity is a member of a different MSP</find>
+    </findStrings>
+  </component>
+  <component name="GOROOT" path="/usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/main_test.go" />
+        <option value="$PROJECT_DIR$/../../../codelm/interface/sorter.go" />
+        <option value="$PROJECT_DIR$/service/domain.go" />
+        <option value="$PROJECT_DIR$/main.go" />
+        <option value="$PROJECT_DIR$/fixtures/artifacts/genesis.block" />
+        <option value="$PROJECT_DIR$/fixtures/crypto-config.yaml" />
+        <option value="$PROJECT_DIR$/fixtures/cryptoArtifacts.sh" />
+        <option value="$PROJECT_DIR$/fixtures/artifacts/genesis.block.json" />
+        <option value="$APPLICATION_CONFIG_DIR$/goland.vmoptions" />
+        <option value="$PROJECT_DIR$/web/webServer.go" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/fixtures/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/fixtures/configtx.yaml" />
+        <option value="$PROJECT_DIR$/Makefile" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/education.iml" />
+        <option value="$PROJECT_DIR$/.idea/misc.xml" />
+        <option value="$PROJECT_DIR$/.idea/modules.xml" />
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="150" />
+    <option name="y" value="23" />
+    <option name="width" value="1277" />
+    <option name="height" value="813" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="education" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="education" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="education" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="education" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="github.com" type="462c0819:PsiDirectoryNode" />
+              <item name="hyperledger" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="education" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.gopath.indexing.explicitly.defined" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.vendoring.notification.had.been.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/fixtures" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Console Font" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/fixtures" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Go Build.go build main.go">
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="education" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="github.com/kongyixueyuan.com/education" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestOs in github.com/kongyixueyuan.com/education" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="education" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/kongyixueyuan.com/education" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestOs$" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f43aa9a1-3d48-4bfd-bf14-0028ce9c1ad9" name="Default Changelist" comment="" />
+      <created>1566994785690</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1566994785690</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="TestOs_in_github_com_kongyixueyuan_com_education - 2019.08.06 at 12h 15m 34s.xml">
+      <configuration name="TestOs in github.com/kongyixueyuan.com/education" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestOs_in_github_com_kongyixueyuan_com_education - 2019.08.08 at 14h 38m 22s.xml">
+      <configuration name="TestOs in github.com/kongyixueyuan.com/education" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="150" y="23" width="1277" height="813" extended-state="0" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27449393" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.21067415" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4984375" weight="0.43820226" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32732317" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4985694" visible="true" weight="0.28294036" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50143063" side_tool="true" weight="0.12530121" />
+      <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="GoApplicationRunConfiguration">
+        <watch expression="*(*&quot;github.com/kongyixueyuan.com/education/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defcore.ProviderFactory&quot;)(86287352)" />
+        <watch expression="*(*&quot;strings.Replacer&quot;)(824634825408)" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/config.yaml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/go/src/runtime/panic.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7755">
+          <caret line="521" selection-start-line="521" selection-end-line="521" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/chclient.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4095">
+          <caret line="286" selection-start-line="286" selection-end-line="286" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/util/utils.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="840">
+          <caret line="62" column="32" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/eduService.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#49#142#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sdkInit/start.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="55" column="32" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/artifacts/genesis.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1121">
+          <caret line="192" column="24" selection-start-line="192" selection-start-column="24" selection-end-line="192" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/fabsdk.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="287" selection-start-line="287" selection-end-line="287" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimpl.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="434" column="53" selection-start-line="434" selection-start-column="21" selection-end-line="434" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sdkInit/fabricInitInfo.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+          <folding>
+            <element signature="e#42#111#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt/resmgmt_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9765">
+          <caret line="682" column="21" selection-start-line="682" selection-start-column="21" selection-end-line="682" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/golang.org/x/crypto/xtea/cipher.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/golang.org/x/crypto/chacha20poly1305/chacha20poly1305.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#381#437#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/golang.org/x/crypto/cryptobyte/asn1/asn1.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/golang.org/x/crypto/cryptobyte/asn1.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/golang.org/x/crypto/cryptobyte/asn1_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="145" selection-start-line="145" selection-end-line="145" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/static/css/query.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/static/css/login.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/static/css/addEdu.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/static/fonts/glyphicons-halflings-regular.svg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/static/js/bootstrap.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gopkg.toml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gopkg.lock">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6660">
+          <caret line="444" column="50" selection-start-line="444" selection-start-column="50" selection-end-line="444" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/goland.vmoptions">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/cryptoArtifacts.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1026">
+          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/crypto-config.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/artifacts/genesis.block.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="101">
+          <caret line="524" selection-start-line="524" selection-end-line="524" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/727e69ed4a01a204cd53bf4a97c2c1cb947419504f82851f6ae563c3c96dea3a_sk">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/controller/controllerHandler.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1365">
+          <caret line="96" column="37" selection-start-line="96" selection-start-column="37" selection-end-line="96" selection-end-column="37" />
+          <folding>
+            <element signature="e#154#250#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/controller/controllerResponse.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/webServer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="42" column="52" selection-start-line="42" selection-start-column="52" selection-end-line="42" selection-end-column="52" />
+          <folding>
+            <element signature="e#45#131#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="69" column="16" selection-start-line="69" selection-start-column="16" selection-end-line="69" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/controller/userInfo.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/controller/upload.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="31" column="25" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="30">
+            <caret line="2" selection-start-line="2" selection-end-line="2" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chaincode/eduStruct.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-223" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/domain.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+          <folding>
+            <element signature="e#48#197#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chaincode/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
+          <folding>
+            <element signature="e#46#161#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/artifacts/channel.tx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/artifacts/Org1MSPanchor.tx.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1185">
+          <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/artifacts/channel.tx.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="12" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
+          <folding>
+            <element signature="n#!!block;n#values#0;n#!!block;n#read_set#0;n#!!block;n#config_update#0;n#!!block;n#data#0;n#!!block;n#payload#0;n#!!top" />
+            <element signature="n#!!block;n#groups#0;n#!!block;n#write_set#0;n#!!block;n#config_update#0;n#!!block;n#data#0;n#!!block;n#payload#0;n#!!top" />
+            <element signature="n#!!block;n#header#0;n#!!block;n#payload#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/configtx.yamlt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/configtx.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-128">
+          <caret line="120" column="18" selection-start-line="120" selection-start-column="18" selection-end-line="120" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/pull_images.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="15" column="42" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-470">
+          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+          <folding>
+            <element signature="e#39#392#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Makefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
