@@ -31,8 +31,8 @@ func sdkStart() (*fabsdk.FabricSDK, *channel.Client) {
 	initInfo := &sdkInit.InitInfo{
 
 		ChannelID:     "kevinkongyixueyuan",
-		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/kongyixueyuan.com/education/fixtures/artifacts/channel.tx",
-
+		//ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/kongyixueyuan.com/education/fixtures/artifacts/channel.tx",
+		ChannelConfig:  "/Users/luoming/go/src/github.com/kongyixueyuan.com/education/fixtures/artifacts/channel.tx",
 		OrgAdmin:       "Admin",
 		OrgName:        "Org1",
 		OrdererOrgName: "orderer.kevin.kongyixueyuan.com",
