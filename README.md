@@ -8,7 +8,7 @@ liuyi1231:
 
 1.拉取fabric-sdk-go包：
 
-mkdir -p hyperledger
+mkdir -p vendor/github.com/hyperledger
 
 cd vendor/github.com/hyperledger
 
