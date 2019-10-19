@@ -2,157 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f43aa9a1-3d48-4bfd-bf14-0028ce9c1ad9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/education" beforeDir="false" afterPath="$PROJECT_DIR$/education" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/artifacts/Org1MSPanchors.tx" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/Org1MSPanchors.tx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/artifacts/channel.tx" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/channel.tx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/artifacts/channel.tx.json" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/channel.tx.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/artifacts/genesis.block" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/genesis.block" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/artifacts/genesis.block.json" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/artifacts/genesis.block.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/cert.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/configtxgen" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/configtxgen" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/ca/1ca001b07f272b68f95ea2da32b0db7c517b3696765f49385624e01fd6967795_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/ca/ca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/ca/ca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/keystore/5810196ba201ee82b8ec6b0d8b5530a1e770bce75a91f067da3a549ececdf77e_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/signcerts/orderer.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/signcerts/orderer.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/server.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/server.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/server.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls/server.key" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/tlsca/27365fca74b011d635dbfd0f69a07216ed544919b1c6ecb2f117eb8b977d37b3_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/tlsca/tlsca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/tlsca/tlsca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/admincerts/Admin@kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/cacerts/ca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/keystore/6fd6c580b673aa74de1af51450117d7308728ff678cf1e88d8cfc76856e70be4_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/signcerts/Admin@kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/signcerts/Admin@kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/client.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/client.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/client.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/users/Admin@kevin.kongyixueyuan.com/tls/client.key" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/29e84ecdf4ebf21e7667673cf2b5b4f6172c7b617397556c4f6512293f56d1fe_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/keystore/f04f9a25a53391ab67d13e8422b579cb3ed38471af1efbdd72d52c5aa178c715_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/signcerts/peer0.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/signcerts/peer0.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/server.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/server.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/server.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls/server.key" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/keystore/e0e6eef3045c7b7f67e34b251211c22c068bfb5fcf28bf8b66a53a8b3caa2cdd_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/signcerts/peer1.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/signcerts/peer1.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/server.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/server.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/server.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls/server.key" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/234882410e09fda891fc063f95280ff028e4275391b8d2391ceb560bdc70c1b0_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/admincerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/keystore/fb65790bd7255156ecad6f4dd6a9b4492d8c7789a9093b357cd845e774a7d90b_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/signcerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/signcerts/Admin@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/client.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/client.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/client.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/Admin@org1.kevin.kongyixueyuan.com/tls/client.key" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/admincerts/User1@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/admincerts/User1@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/keystore/1c402edc76e62b574a38c087878eb16392937f65b2bfc679978fdb85697f69e4_sk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/signcerts/User1@org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/signcerts/User1@org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/msp/tlscacerts/tlsca.org1.kevin.kongyixueyuan.com-cert.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/ca.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/ca.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/client.crt" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/client.crt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/client.key" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/users/User1@org1.kevin.kongyixueyuan.com/tls/client.key" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/cryptogen" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/cryptogen" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/client/credential/x509/signer.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/lib/client/credential/x509/signer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/sdkpatch/cryptosuitebridge/cryptosuitebridge.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/sdkpatch/cryptosuitebridge/cryptosuitebridge.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/util/csp.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/util/csp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/util/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/util/util.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/hashopts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/hashopts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/opts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/certhelper.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/conf.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/dummyks.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/dummyks.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/ecdsakey.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/ecdsakey.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/fileks.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/fileks.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/hash.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/hash.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/impl.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/internals.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/internals.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/keyderiv.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/keyderiv.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/keygen.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/keygen.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/keyimport.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/keyimport.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/sm2.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/sm2.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/sm2key.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/sm2key.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/sm4.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/sm4.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/sm4key.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/gm/sm4key.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/aes.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/aeskey.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/conf.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/ecdsa.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/ecdsa.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/dummyks.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/dummyks.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/ecdsa.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/ecdsakey.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/ecdsakey.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/fileks.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/fileks.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/hash.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/hash.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/impl.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/inmemoryks.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/internals.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/internals.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/keyderiv.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/keyderiv.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/keygen.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/keygen.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/keyimport.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/keyimport.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/new.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/new.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/ecdsa.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/ecdsa.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/keys.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils/keys.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/core/comm/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/core/comm/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/cert.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/cert.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/identities.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/identities.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimpl.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimpl.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimplsetup.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimplsetup.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimplvalidate.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimplvalidate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/sdkpatch/cryptosuitebridge/cryptosuitebridge.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/sdkpatch/cryptosuitebridge/cryptosuitebridge.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/verifier/signature.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/common/verifier/signature.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/network.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/network.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab/provider.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/test/mockfab/mockconfig.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/test/mockfab/mockconfig.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/comm.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/comm.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/tls/certpool.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/tls/certpool.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/cryptoutil/cryptoutils.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/cryptoutil/cryptoutils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/endpoint/endpoint.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/endpoint/endpoint.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/config/testdata/config_test.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/multisuite/cryptosuiteimpl.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/multisuite/cryptosuiteimpl.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptoconfig.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptoconfig.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptoconfig_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptoconfig_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptosuite.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptosuite.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptosuite_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/cryptosuite_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/membership/membership.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/channel/membership/membership.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connectionopts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/connectionopts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/comm/streamconnection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/endpointconfig.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/endpointconfig.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/endpoint/endpoint.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/events/endpoint/endpoint.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockconfig.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/mocks/mockconfig.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/opts.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/opts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/orderer/orderer.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/orderer/orderer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/peer/peer.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/peer/peer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/peer/peerendorser.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fab/peer/peerendorser.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defcore/corefactory.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defcore/corefactory.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/blowfish/cipher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/blowfish/cipher.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/cryptobyte/asn1.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/cryptobyte/asn1.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/cryptobyte/builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/cryptobyte/builder.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/curve25519/curve25519.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/curve25519/curve25519.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/curve25519/ladderstep_amd64.s" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/curve25519/ladderstep_amd64.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/curve25519/mul_amd64.s" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/curve25519/mul_amd64.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/curve25519/square_amd64.s" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/curve25519/square_amd64.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/internal/chacha20/chacha_generic.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/internal/chacha20/chacha_generic.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ocsp/ocsp.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ocsp/ocsp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/pkcs12/pkcs12.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/pkcs12/pkcs12.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/poly1305/poly1305.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/poly1305/poly1305.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/poly1305/sum_amd64.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/poly1305/sum_amd64.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/poly1305/sum_amd64.s" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/poly1305/sum_amd64.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/sha3/doc.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/sha3/doc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/sha3/hashes.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/sha3/hashes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/sha3/shake.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/sha3/shake.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/certs.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/certs.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/cipher.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/cipher.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/client_auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/client_auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/common.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/handshake.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/handshake.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/kex.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/kex.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/keys.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/keys.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/messages.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/messages.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/streamlocal.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/streamlocal.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/tcpip.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/tcpip.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/transport.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/vendor/golang.org/x/crypto/ssh/transport.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/new.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/rsa.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/rsakey.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/sm2.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/sm2.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/sm2key.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/sm2key.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/sm4.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/sm4.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/sm4key.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/sw/sm4key.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -174,8 +59,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sdkInit/fabricInitInfo.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="197">
+              <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
               <folding>
                 <element signature="e#42#111#0" expanded="true" />
               </folding>
@@ -183,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-64">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="253">
+              <caret line="45" selection-start-line="45" selection-end-line="45" />
               <folding>
                 <element signature="e#39#392#0" expanded="true" />
               </folding>
@@ -195,11 +80,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/chclient.go">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/factory/sw/swfactory.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="296" selection-start-line="296" selection-end-line="296" />
+            <state relative-caret-position="153">
+              <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+              <folding>
+                <element signature="e#739#947#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -217,21 +105,9 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/service/eduService.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
-              <folding>
-                <element signature="e#49#142#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sdkInit/start.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
+            <state relative-caret-position="121">
               <caret line="37" selection-start-line="37" selection-end-line="37" />
               <folding>
                 <element signature="e#42#652#0" expanded="true" />
@@ -241,15 +117,8 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/chaincode/main.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="93">
-              <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
-              <folding>
-                <element signature="e#46#161#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/main_test.go">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -264,8 +133,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/fabsdk.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="56">
-              <caret line="333" selection-start-line="333" selection-end-line="333" />
+            <state relative-caret-position="89">
+              <caret line="38" column="29" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core/cryptosuite.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="67">
+              <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -330,7 +208,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="38" />
+    <option name="x" value="18" />
     <option name="y" value="23" />
     <option name="width" value="1274" />
     <option name="height" value="813" />
@@ -350,16 +228,6 @@
             <path>
               <item name="education" type="b2602c69:ProjectViewProjectNode" />
               <item name="education" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="education" type="b2602c69:ProjectViewProjectNode" />
-              <item name="education" type="462c0819:PsiDirectoryNode" />
-              <item name="fixtures" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="education" type="b2602c69:ProjectViewProjectNode" />
-              <item name="education" type="462c0819:PsiDirectoryNode" />
-              <item name="sdkInit" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="education" type="b2602c69:ProjectViewProjectNode" />
@@ -457,7 +325,8 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="38" y="23" width="1274" height="813" extended-state="0" />
+    <frame x="18" y="23" width="1274" height="813" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3181818" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -465,14 +334,14 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.21067415" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.6780488" visible="true" weight="0.40221915" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.6780488" weight="0.35644937" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32732317" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49756098" weight="0.1886269" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49756098" visible="true" weight="0.2773925" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.502439" side_tool="true" weight="0.40083218" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -490,62 +359,58 @@
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/sdkInit/start.go</url>
           <line>84</line>
-          <properties />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/sdkInit/start.go</url>
           <line>34</line>
-          <properties />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/sdkInit/start.go</url>
           <line>27</line>
-          <properties />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/sdkInit/start.go</url>
           <line>45</line>
-          <properties />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/sdkInit/start.go</url>
           <line>97</line>
-          <properties />
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/main.go</url>
           <line>45</line>
-          <properties />
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/main.go</url>
           <line>53</line>
-          <properties />
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/main.go</url>
           <line>59</line>
-          <properties />
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/sdkInit/start.go</url>
           <line>31</line>
-          <properties />
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/sdkInit/start.go</url>
           <line>37</line>
-          <properties />
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/main.go</url>
+          <line>42</line>
+          <properties />
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -553,24 +418,20 @@
       <configuration name="GoApplicationRunConfiguration">
         <watch expression="*(*&quot;github.com/kongyixueyuan.com/education/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/factory/defcore.ProviderFactory&quot;)(86287352)" />
         <watch expression="*(*&quot;strings.Replacer&quot;)(824634825408)" />
+        <watch expression="*(*&quot;reflect.nameOff&quot;)(80139176)" language="go" />
       </configuration>
     </watches-manager>
   </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>*(*&quot;reflect.nameOff&quot;)(80139176)</expression-string>
+        <language-id>go</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/util/utils.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="62" column="32" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fixtures/artifacts/genesis.block">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1121">
-          <caret line="192" column="24" selection-start-line="192" selection-start-column="24" selection-end-line="192" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/msp/mspimpl.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="118">
@@ -678,9 +539,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/727e69ed4a01a204cd53bf4a97c2c1cb947419504f82851f6ae563c3c96dea3a_sk">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/727e69ed4a01a204cd53bf4a97c2c1cb947419504f82851f6ae563c3c96dea3a_sk" />
     <entry file="file://$PROJECT_DIR$/web/controller/controllerHandler.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1365">
@@ -828,8 +687,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/fabsdk.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="333" selection-start-line="333" selection-end-line="333" />
+        <state relative-caret-position="89">
+          <caret line="38" column="29" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -842,8 +701,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sdkInit/fabricInitInfo.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="197">
+          <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
           <folding>
             <element signature="e#42#111#0" expanded="true" />
           </folding>
@@ -870,16 +729,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sdkInit/start.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="37" selection-start-line="37" selection-end-line="37" />
-          <folding>
-            <element signature="e#42#652#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel/chclient.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="142">
@@ -887,12 +736,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/sdkInit/start.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+          <folding>
+            <element signature="e#42#652#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-64">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="253">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
           <folding>
             <element signature="e#39#392#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/go/src/runtime/proc.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="199" selection-start-line="199" selection-end-line="199" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/factory/sw/swfactory.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+          <folding>
+            <element signature="e#739#947#0" expanded="true" />
           </folding>
         </state>
       </provider>
