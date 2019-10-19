@@ -8,7 +8,7 @@ package peer
 
 import (
 	reqContext "context"
-	"crypto/x509"
+	"github.com/ldstyle8/gmsm/sm2"
 	"strconv"
 	"strings"
 	"time"
@@ -16,7 +16,8 @@ import (
 	"github.com/pkg/errors"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+	//"google.golang.org/grpc/credentials"
+	credentials "github.com/ldstyle8/gmtls/gmcredentials"
 	"google.golang.org/grpc/keepalive"
 	grpcstatus "google.golang.org/grpc/status"
 
@@ -48,7 +49,7 @@ type peerEndorser struct {
 
 type peerEndorserRequest struct {
 	target             string
-	certificate        *x509.Certificate
+	certificate        *sm2.Certificate
 	serverHostOverride string
 	config             fab.EndpointConfig
 	kap                keepalive.ClientParameters
@@ -75,7 +76,7 @@ func newPeerEndorser(endorseReq *peerEndorserRequest) (*peerEndorser, error) {
 			return nil, err
 		}
 		//verify if certificate was expired or not yet valid
-		tlsConfig.VerifyPeerCertificate = func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
+		tlsConfig.VerifyPeerCertificate = func(rawCerts [][]byte, verifiedChains [][]*sm2.Certificate) error {
 			return verifier.VerifyPeerCertificate(rawCerts, verifiedChains)
 		}
 		grpcOpts = append(grpcOpts, grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig)))

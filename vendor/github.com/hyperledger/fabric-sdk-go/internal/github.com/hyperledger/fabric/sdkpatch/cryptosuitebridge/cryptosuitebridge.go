@@ -45,6 +45,9 @@ const (
 	SHA3_256         = bccsp.SHA3_256
 	SHA3_384         = bccsp.SHA3_384
 	X509Certificate  = bccsp.X509Certificate
+	GMSM3            = bccsp.GMSM3
+	GMSM4            = bccsp.GMSM4
+	GMSM2            = bccsp.GMSM2
 )
 
 // NewCspSigner is a bridge for bccsp signer.New call
@@ -77,6 +80,11 @@ func GetSHA256Opts() core.HashOpts {
 	return &bccsp.SHA256Opts{}
 }
 
+// GMSM3
+func GetSM3Opts() core.HashOpts {
+	return &bccsp.GMSM3Opts{}
+}
+
 //GetSHA3256Opts returns options relating to SHA-256.
 func GetSHA3256Opts() core.HashOpts {
 	return &bccsp.SHA3_256Opts{}
@@ -102,6 +110,11 @@ func GetECDSAKeyGenOpts(ephemeral bool) core.KeyGenOpts {
 	return &bccsp.ECDSAKeyGenOpts{Temporary: ephemeral}
 }
 
+// GMSM2
+func GetSM2KeyGenOpts(ephemeral bool) core.KeyGenOpts {
+	return &bccsp.GMSM2KeyGenOpts{Temporary: ephemeral}
+}
+
 //GetECDSAP256KeyGenOpts returns options for ECDSA key generation with curve P-256.
 func GetECDSAP256KeyGenOpts(ephemeral bool) core.KeyGenOpts {
 	return &bccsp.ECDSAP256KeyGenOpts{Temporary: ephemeral}
@@ -121,4 +134,9 @@ func GetX509PublicKeyImportOpts(ephemeral bool) core.KeyImportOpts {
 // or PKCS#8 format.
 func GetECDSAPrivateKeyImportOpts(ephemeral bool) core.KeyImportOpts {
 	return &bccsp.ECDSAPrivateKeyImportOpts{Temporary: ephemeral}
+}
+
+// sm2 privatekey
+func GetSM2PrivateKeyImportOpts(ephemeral bool) core.KeyImportOpts {
+	return &bccsp.GMSM2PrivateKeyImportOpts{Temporary: ephemeral}
 }

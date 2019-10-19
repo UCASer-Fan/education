@@ -33,10 +33,10 @@ func TestEmptyTestFile(t *testing.T) {
 
 	// Test for defaults
 	assert.Equal(t, true, cryptoConfig.IsSecurityEnabled())
-	assert.Equal(t, "SHA2", cryptoConfig.SecurityAlgorithm())
+	assert.Equal(t, "GMSM3", cryptoConfig.SecurityAlgorithm())
 	assert.Equal(t, 256, cryptoConfig.SecurityLevel())
 	// Note that we transform to lower case in SecurityProvider()
-	assert.Equal(t, "sw", cryptoConfig.SecurityProvider())
+	assert.Equal(t, "gm", cryptoConfig.SecurityProvider())
 	assert.Equal(t, true, cryptoConfig.SoftVerify())
 }
 

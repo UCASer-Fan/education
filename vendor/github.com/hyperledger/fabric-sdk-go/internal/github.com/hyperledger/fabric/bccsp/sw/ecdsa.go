@@ -66,6 +66,7 @@ func (s *ecdsaSigner) Sign(k bccsp.Key, digest []byte, opts bccsp.SignerOpts) ([
 	return signECDSA(k.(*ecdsaPrivateKey).privKey, digest, opts)
 }
 
+/*
 type ecdsaPrivateKeyVerifier struct{}
 
 func (v *ecdsaPrivateKeyVerifier) Verify(k bccsp.Key, signature, digest []byte, opts bccsp.SignerOpts) (bool, error) {
@@ -77,3 +78,4 @@ type ecdsaPublicKeyKeyVerifier struct{}
 func (v *ecdsaPublicKeyKeyVerifier) Verify(k bccsp.Key, signature, digest []byte, opts bccsp.SignerOpts) (bool, error) {
 	return verifyECDSA(k.(*ecdsaPublicKey).pubKey, signature, digest, opts)
 }
+*/

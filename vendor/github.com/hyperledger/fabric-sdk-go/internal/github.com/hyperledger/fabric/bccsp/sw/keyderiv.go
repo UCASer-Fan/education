@@ -30,6 +30,14 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp"
 )
 
+type smPublicKeyKeyDeriver struct{}
+
+func (kd *smPublicKeyKeyDeriver) KeyDeriv(k bccsp.Key, opts bccsp.KeyDerivOpts) (dk bccsp.Key, err error) {
+
+	return nil, errors.New("Not implemented")
+
+}
+
 type ecdsaPublicKeyKeyDeriver struct{}
 
 func (kd *ecdsaPublicKeyKeyDeriver) KeyDeriv(key bccsp.Key, opts bccsp.KeyDerivOpts) (bccsp.Key, error) {

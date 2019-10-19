@@ -6,7 +6,7 @@ networks:
 services:
 
   orderer.kevin.kongyixueyuan.com:
-    image: hyperledger/fabric-orderer:1.4.3
+    image: hyperledger/fabric-orderer
     container_name: orderer.kevin.kongyixueyuan.com
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
@@ -36,7 +36,7 @@ services:
 
 
   peer0.org1.kevin.kongyixueyuan.com:
-    image: hyperledger/fabric-peer:1.4.3
+    image: hyperledger/fabric-peer
     container_name: peer0.org1.kevin.kongyixueyuan.com
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -80,7 +80,7 @@ services:
           - peer0.org1.kevin.kongyixueyuan.com
 
   peer1.org1.kevin.kongyixueyuan.com:
-    image: hyperledger/fabric-peer:1.4.3
+    image: hyperledger/fabric-peer
     container_name: peer1.org1.kevin.kongyixueyuan.com
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock

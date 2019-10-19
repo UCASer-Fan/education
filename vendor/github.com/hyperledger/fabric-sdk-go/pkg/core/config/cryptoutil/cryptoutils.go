@@ -10,13 +10,13 @@ import (
 	"crypto"
 	"crypto/ecdsa"
 	"crypto/rsa"
-	"crypto/tls"
-	"crypto/x509"
 	"encoding/pem"
+	"github.com/ldstyle8/gmsm/sm2"
 	"io"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/logging"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
+	tls "github.com/ldstyle8/gmtls"
 	"github.com/pkg/errors"
 
 	factory "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/sdkpatch/cryptosuitebridge"
@@ -58,13 +58,14 @@ func GetPublicKeyFromCert(cert []byte, cs core.CryptoSuite) (core.Key, error) {
 		return nil, errors.Errorf("Unable to decode cert bytes [%v]", cert)
 	}
 
-	x509Cert, err := x509.ParseCertificate(dcert.Bytes)
+	//x509Cert, err := x509.ParseCertificate(dcert.Bytes)
+	sm2Cert, err := sm2.ParseCertificate(dcert.Bytes)
 	if err != nil {
 		return nil, errors.Errorf("Unable to parse cert from decoded bytes: %s", err)
 	}
 
 	// get the public key in the right format
-	key, err := cs.KeyImport(x509Cert, factory.GetX509PublicKeyImportOpts(true))
+	key, err := cs.KeyImport(sm2Cert, factory.GetX509PublicKeyImportOpts(true))
 	if err != nil {
 		return nil, errors.WithMessage(err, "Failed to import certificate's public key")
 	}
@@ -96,16 +97,19 @@ func X509KeyPair(certPEMBlock []byte, pk core.Key, cs core.CryptoSuite) (tls.Cer
 	}
 
 	// We are parsing public key for TLS to find its type
-	x509Cert, err := x509.ParseCertificate(cert.Certificate[0])
+	//x509Cert, err := x509.ParseCertificate(cert.Certificate[0])
+	sm2Cert, err := sm2.ParseCertificate(cert.Certificate[0])
 	if err != nil {
 		return fail(err)
 	}
 
-	switch x509Cert.PublicKey.(type) {
+	switch sm2Cert.PublicKey.(type) {
 	case *rsa.PublicKey:
 		cert.PrivateKey = &PrivateKey{cs, pk, &rsa.PublicKey{}}
 	case *ecdsa.PublicKey:
 		cert.PrivateKey = &PrivateKey{cs, pk, &ecdsa.PublicKey{}}
+	case *sm2.PublicKey:
+		cert.PrivateKey = &PrivateKey{cs, pk, &sm2.PublicKey{}}
 	default:
 		return fail(errors.New("tls: unknown public key algorithm"))
 	}

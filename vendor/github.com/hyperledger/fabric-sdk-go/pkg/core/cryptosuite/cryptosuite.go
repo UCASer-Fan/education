@@ -16,7 +16,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/logging"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
-	"github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/sw"
+	"github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite/bccsp/gm"
 )
 
 var logger = logging.NewLogger("fabsdk/core")
@@ -42,10 +42,10 @@ func GetDefault() core.CryptoSuite {
 		return defaultCryptoSuite
 	}
 	//Set default suite
-	logger.Info("No default cryptosuite found, using default SW implementation")
+	logger.Info("No default cryptosuite found, using default GM implementation")
 
 	// Use SW as the default cryptosuite when not initialized properly - should be for testing only
-	s, err := sw.GetSuiteWithDefaultEphemeral()
+	s, err := gm.GetSuiteWithDefaultEphemeral()
 	if err != nil {
 		logger.Panicf("Could not initialize default cryptosuite: %s", err)
 	}
@@ -78,6 +78,11 @@ func GetSHA256Opts() core.HashOpts {
 	return &bccsp.SHA256Opts{}
 }
 
+//GetGMSM3Opts returns options relating to SM3-256.
+func GetGMSM3Opts() core.HashOpts {
+	return &bccsp.GMSM3Opts{}
+}
+
 //GetSHAOpts returns options for computing SHA.
 func GetSHAOpts() core.HashOpts {
 	return &bccsp.SHAOpts{}
@@ -86,4 +91,9 @@ func GetSHAOpts() core.HashOpts {
 //GetECDSAP256KeyGenOpts returns options for ECDSA key generation with curve P-256.
 func GetECDSAP256KeyGenOpts(ephemeral bool) core.KeyGenOpts {
 	return &bccsp.ECDSAP256KeyGenOpts{Temporary: ephemeral}
+}
+
+//GetGMSM2KeyGenOpts returns options for SM2 key generation with curve P-Sm256.
+func GetGMSM2KeyGenOpts(ephemeral bool) core.KeyGenOpts {
+	return &bccsp.GMSM2KeyGenOpts{Temporary: ephemeral}
 }

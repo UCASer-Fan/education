@@ -7,8 +7,8 @@ SPDX-License-Identifier: Apache-2.0
 package fab
 
 import (
-	"crypto/tls"
-	"crypto/x509"
+	"github.com/ldstyle8/gmsm/sm2"
+	tls "github.com/ldstyle8/gmtls"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -1685,8 +1685,8 @@ func (c *EndpointConfig) verifyPeerConfig(p *fab.PeerConfig, peerName string, tl
 	return nil
 }
 
-func (c *EndpointConfig) loadTLSCerts() ([]*x509.Certificate, error) {
-	var certs []*x509.Certificate
+func (c *EndpointConfig) loadTLSCerts() ([]*sm2.Certificate, error) {
+	var certs []*sm2.Certificate
 	errs := multi.Errors{}
 
 	for _, peer := range c.networkPeers {

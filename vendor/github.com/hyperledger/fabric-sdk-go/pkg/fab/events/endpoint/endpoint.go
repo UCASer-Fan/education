@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package endpoint
 
 import (
-	"crypto/x509"
+	"github.com/ldstyle8/gmsm/sm2"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/options"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
@@ -16,7 +16,7 @@ import (
 
 // EventEndpoint extends a Peer endpoint
 type EventEndpoint struct {
-	Certificate *x509.Certificate
+	Certificate *sm2.Certificate
 	fab.Peer
 	opts []options.Opt
 }

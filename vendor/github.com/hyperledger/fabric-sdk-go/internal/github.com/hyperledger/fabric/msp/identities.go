@@ -13,8 +13,8 @@ package msp
 import (
 	"crypto"
 	"crypto/rand"
-	"crypto/x509"
 	"encoding/hex"
+	"github.com/ldstyle8/gmsm/sm2"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 
@@ -36,7 +36,7 @@ type identity struct {
 	id *IdentityIdentifier
 
 	// cert contains the x.509 certificate that signs the public key of this instance
-	cert *x509.Certificate
+	cert *sm2.Certificate
 
 	// this is the public key of this instance
 	pk core.Key
@@ -45,7 +45,7 @@ type identity struct {
 	msp *bccspmsp
 }
 
-func newIdentity(cert *x509.Certificate, pk core.Key, msp *bccspmsp) (Identity, error) {
+func newIdentity(cert *sm2.Certificate, pk core.Key, msp *bccspmsp) (Identity, error) {
 	if mspIdentityLogger.IsEnabledFor(logging.DEBUG) {
 		mspIdentityLogger.Debugf("Creating identity instance for cert %s", certToPEM(cert))
 	}
@@ -200,7 +200,7 @@ type signingidentity struct {
 	signer crypto.Signer
 }
 
-func newSigningIdentity(cert *x509.Certificate, pk core.Key, signer crypto.Signer, msp *bccspmsp) (SigningIdentity, error) {
+func newSigningIdentity(cert *sm2.Certificate, pk core.Key, signer crypto.Signer, msp *bccspmsp) (SigningIdentity, error) {
 	//mspIdentityLogger.Infof("Creating signing identity instance for ID %s", id)
 	mspId, err := newIdentity(cert, pk, msp)
 	if err != nil {

@@ -7,8 +7,8 @@ SPDX-License-Identifier: Apache-2.0
 package endpoint
 
 import (
-	"crypto/x509"
 	"encoding/pem"
+	"github.com/ldstyle8/gmsm/sm2"
 	"io/ioutil"
 	"strings"
 
@@ -105,12 +105,12 @@ func (cfg *TLSConfig) LoadBytes() error {
 }
 
 // TLSCert returns the tls certificate as a *x509.Certificate by loading it either from the embedded Pem or Path
-func (cfg *TLSConfig) TLSCert() (*x509.Certificate, bool, error) {
+func (cfg *TLSConfig) TLSCert() (*sm2.Certificate, bool, error) {
 
 	block, _ := pem.Decode(cfg.bytes)
 
 	if block != nil {
-		pub, err := x509.ParseCertificate(block.Bytes)
+		pub, err := sm2.ParseCertificate(block.Bytes)
 		if err != nil {
 			return nil, false, errors.Wrap(err, "certificate parsing failed")
 		}

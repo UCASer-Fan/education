@@ -11,12 +11,12 @@ Please review third_party pinning scripts and patches for more details.
 package comm
 
 import (
-	"crypto/tls"
-	"crypto/x509"
+	"github.com/ldstyle8/gmsm/sm2"
 	"time"
 
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/common/metrics"
 	flogging "github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/sdkpatch/logbridge"
+	tls "github.com/ldstyle8/gmtls"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 )
@@ -89,7 +89,7 @@ type SecureOptions struct {
 	// VerifyCertificate, if not nil, is called after normal
 	// certificate verification by either a TLS client or server.
 	// If it returns a non-nil error, the handshake is aborted and that error results.
-	VerifyCertificate func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error
+	VerifyCertificate func(rawCerts [][]byte, verifiedChains [][]*sm2.Certificate) error
 	// PEM-encoded X509 public key to be used for TLS communication
 	Certificate []byte
 	// PEM-encoded private key to be used for TLS communication

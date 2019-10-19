@@ -19,6 +19,7 @@ const (
 	shaHashOptsAlgorithm       = "SHA"
 	sha256HashOptsAlgorithm    = "SHA256"
 	ecdsap256KeyGenOpts        = "ECDSAP256"
+	gmsm2KeyGenOpts            = "GMSM2"
 	setDefAlreadySetErrorMsg   = "default crypto suite is already set"
 	InvalidDefSuiteSetErrorMsg = "attempting to set invalid default suite"
 )
@@ -34,7 +35,7 @@ func TestGetDefault(t *testing.T) {
 	assert.NotEmpty(t, defaultCryptoSuite, "default suite should have been initialized")
 	assert.True(t, atomic.LoadInt32(&initialized) > 0, "'initialized' flag supposed to be set to 1")
 
-	hashbytes, err := defSuite.Hash([]byte("Sample message"), GetSHAOpts())
+	hashbytes, err := defSuite.Hash([]byte("Sample message"), GetGMSM3Opts())
 	assert.Empty(t, err, "Not supposed to get error on defaultCryptSuite.Hash() call : %s", err)
 	assert.NotEmpty(t, hashbytes, "Supposed to get valid hash from defaultCryptSuite.Hash()")
 
@@ -75,7 +76,7 @@ func TestGetDefault(t *testing.T) {
 func TestHashOpts(t *testing.T) {
 
 	//Get CryptoSuite SHA Opts
-	hashOpts := GetSHAOpts()
+	hashOpts := GetGMSM3Opts()
 	assert.NotZero(t, hashOpts, "Not supposed to be empty shaHashOpts")
 	assert.True(t, hashOpts.Algorithm() == shaHashOptsAlgorithm, "Unexpected SHA hash opts, expected [%s], got [%s]", shaHashOptsAlgorithm, hashOpts.Algorithm())
 
@@ -97,5 +98,10 @@ func TestKeyGenOpts(t *testing.T) {
 	assert.NotZero(t, keygenOpts, "Not supposed to be empty ECDSAP256KeyGenOpts")
 	assert.False(t, keygenOpts.Ephemeral(), "Expected keygenOpts.Ephemeral() ==> false")
 	assert.True(t, keygenOpts.Algorithm() == ecdsap256KeyGenOpts, "Unexpected SHA hash opts, expected [%v], got [%v]", ecdsap256KeyGenOpts, keygenOpts.Algorithm())
+
+	keygenOpts = GetGMSM2KeyGenOpts(true)
+	assert.NotEmpty(t, keygenOpts, "Not supposed to be empty ECDSAP256KeyGenOpts")
+	assert.True(t, keygenOpts.Ephemeral(), "Expected keygenOpts.Ephemeral() ==> true")
+	assert.True(t, keygenOpts.Algorithm() == gmsm2KeyGenOpts, "Unexpected SHA hash opts, expected [%v], got [%v]", ecdsap256KeyGenOpts, keygenOpts.Algorithm())
 
 }

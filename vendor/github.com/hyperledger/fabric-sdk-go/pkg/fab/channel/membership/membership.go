@@ -7,8 +7,8 @@ SPDX-License-Identifier: Apache-2.0
 package membership
 
 import (
-	"crypto/x509"
 	"encoding/pem"
+	"github.com/ldstyle8/gmsm/sm2"
 
 	"strings"
 
@@ -89,7 +89,7 @@ func areCertDatesValid(serializedID []byte) error {
 	if bl == nil {
 		return errors.New("could not decode the PEM structure")
 	}
-	cert, err := x509.ParseCertificate(bl.Bytes)
+	cert, err := sm2.ParseCertificate(bl.Bytes)
 	if err != nil {
 		return err
 	}
@@ -216,7 +216,7 @@ func addCertsToConfig(config fab.EndpointConfig, pemCertsList [][]byte) {
 		return
 	}
 
-	var certs []*x509.Certificate
+	var certs []*sm2.Certificate
 	for _, pemCerts := range pemCertsList {
 		for len(pemCerts) > 0 {
 			var block *pem.Block
@@ -228,7 +228,7 @@ func addCertsToConfig(config fab.EndpointConfig, pemCertsList [][]byte) {
 				continue
 			}
 
-			cert, err := x509.ParseCertificate(block.Bytes)
+			cert, err := sm2.ParseCertificate(block.Bytes)
 			if err != nil {
 				continue
 			}

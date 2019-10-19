@@ -7,15 +7,14 @@ SPDX-License-Identifier: Apache-2.0
 package mocks
 
 import (
-	"crypto/tls"
+	"github.com/ldstyle8/gmsm/sm2"
+	tls "github.com/ldstyle8/gmtls"
 	"path/filepath"
 	"time"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config/endpoint"
 	"github.com/hyperledger/fabric-sdk-go/test/metadata"
-
-	"crypto/x509"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
@@ -155,7 +154,7 @@ func (c *MockConfig) TLSCACertPool() fab.CertPool {
 	} else if c.CustomTLSCACertPool != nil {
 		return c.CustomTLSCACertPool
 	}
-	return &mockfab.MockCertPool{CertPool: x509.NewCertPool()}
+	return &mockfab.MockCertPool{CertPool: sm2.NewCertPool()}
 }
 
 // TcertBatchSize ...
@@ -165,7 +164,7 @@ func (c *MockConfig) TcertBatchSize() int {
 
 // SecurityAlgorithm ...
 func (c *MockConfig) SecurityAlgorithm() string {
-	return "SHA2"
+	return "GMSM3"
 }
 
 // SecurityLevel ...
@@ -306,7 +305,7 @@ func (c *MockConfig) NetworkPeers() []fab.NetworkPeer {
 
 // SecurityProvider ...
 func (c *MockConfig) SecurityProvider() string {
-	return "sw"
+	return "gm"
 }
 
 // SecurityProviderLabel ...

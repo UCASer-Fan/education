@@ -206,7 +206,12 @@ func (c *Client) GenCSR(req *api.CSRInfo, id string) ([]byte, core.Key, error) {
 		return nil, nil, err
 	}
 
-	csrPEM, err := csr.Generate(cspSigner, cr)
+	var csrPEM []byte
+	csrPEM, err = generate(cspSigner, cr)
+	if err != nil || csrPEM == nil {
+		csrPEM, err = csr.Generate(cspSigner, cr)
+	}
+
 	if err != nil {
 		log.Debugf("failed generating CSR: %s", err)
 		return nil, nil, err
