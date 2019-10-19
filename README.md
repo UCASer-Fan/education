@@ -1,7 +1,32 @@
-参考资料：https://www.chaindesk.cn/witbook/11/220
-web：第12章 从零到壹构建基于 Fabric-SDK-Go 的Web项目实战之－Web应用实现
+liuyi1231:
 
+基于国密fabric1.4.3和国密fabric-sdk-go的案例
 
+一、 需要fabric-sdk-go支持
+
+################ 运行指令 ################
+
+1.拉取fabric-sdk-go包：
+
+cd vendor/github.com/hyperledger
+
+git clone https://github.com/ldstyle8/fabric-sdk-go.git
+
+cd fabric-sdk-go
+
+git checkout dev
+
+2.运行案例：
+
+cd ../../../..
+
+make
+
+#########################################
+
+二、 fabric1.4.3镜像支持，即
+
+要确保本机已经有国密fabric-1.4.3的镜像，并且把orderer等镜像标记为最新（自动编译国密镜像时已经完成）
 
 [TOC]
 
