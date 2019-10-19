@@ -1,12 +1,14 @@
 liuyi1231:
 
-基于国密fabric1.4.3和国密fabric-sdk-go的案例
+基于国密fabric1.4.3和国密fabric-sdk-go的案例(在$GOPATH/src/github.com/kongyixueyuan.com文件夹git clone本案例)
 
 一、 需要fabric-sdk-go支持
 
 ################ 运行指令 ################
 
 1.拉取fabric-sdk-go包：
+
+mkdir -p hyperledger
 
 cd vendor/github.com/hyperledger
 
