@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f43aa9a1-3d48-4bfd-bf14-0028ce9c1ad9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="f43aa9a1-3d48-4bfd-bf14-0028ce9c1ad9" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,8 +47,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="30">
-                <caret line="2" selection-start-line="2" selection-end-line="2" />
+              <first_editor relative-caret-position="398">
+                <caret line="28" column="59" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
               </first_editor>
               <second_editor />
             </state>
@@ -149,12 +147,12 @@
         <option value="$PROJECT_DIR$/fixtures/artifacts/genesis.block.json" />
         <option value="$APPLICATION_CONFIG_DIR$/goland.vmoptions" />
         <option value="$PROJECT_DIR$/web/webServer.go" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/fixtures/configtx.yaml" />
         <option value="$PROJECT_DIR$/Makefile" />
         <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/fixtures/docker-compose.yml" />
         <option value="$PROJECT_DIR$/vendor/github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/factory/sw/swfactory.go" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -303,7 +301,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="18" y="23" width="1274" height="813" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3181818" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -318,7 +315,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32732317" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49756098" visible="true" weight="0.4590846" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49756098" visible="true" weight="0.30651873" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.502439" side_tool="true" weight="0.40083218" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -551,8 +548,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="30">
-            <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <first_editor relative-caret-position="398">
+            <caret line="28" column="59" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
           </first_editor>
           <second_editor />
         </state>
